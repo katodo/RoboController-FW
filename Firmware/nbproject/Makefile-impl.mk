@@ -24,14 +24,14 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=CPU
+PROJECTNAME=Firmware
 
 # Active Configuration
-DEFAULTCONF=Myzhar
+DEFAULTCONF=Max_xxv
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=default Myzhar 
+ALLCONFS=default Myzhar Max_xxv 
 
 
 # build
@@ -47,6 +47,7 @@ ALLCONFS=default Myzhar
 .clobber-impl: .clobber-pre .depcheck-impl
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=default clean
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Myzhar clean
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Max_xxv clean
 
 
 
@@ -54,6 +55,7 @@ ALLCONFS=default Myzhar
 .all-impl: .all-pre .depcheck-impl
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=default build
 	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Myzhar build
+	    ${MAKE} SUBPROJECTS=${SUBPROJECTS} CONF=Max_xxv build
 
 
 
