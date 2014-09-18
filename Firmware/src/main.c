@@ -600,8 +600,11 @@ void AggiornaVariabiliModbus(void)
     //    VarModbus[INDICE_ENC2_SPEED] = Motore2.I_MotorAxelSpeed;
 
     /* RITORNO LA VELOCITA' ESPRESSA IN mm/Sec A PARTIRE DALLA VELOCITA' ANGOLARE DEL MOTORE*/
-    VarModbus[INDICE_ENC1_SPEED] = (int) ((float) Motore1.I_MotorAxelSpeed / Motore1.FL_Costante_Conversione_Vlin_to_Vang);
-    VarModbus[INDICE_ENC2_SPEED] = (int) ((float) Motore2.I_MotorAxelSpeed / Motore2.FL_Costante_Conversione_Vlin_to_Vang);
+    //VarModbus[INDICE_ENC1_SPEED] = (int) ((float) Motore1.I_MotorAxelSpeed / Motore1.FL_Costante_Conversione_Vlin_to_Vang);
+    //VarModbus[INDICE_ENC2_SPEED] = (int) ((float) Motore2.I_MotorAxelSpeed / Motore2.FL_Costante_Conversione_Vlin_to_Vang);
+    VarModbus[INDICE_ENC1_SPEED] = Motore1.I_MotorAxelSpeed;
+    VarModbus[INDICE_ENC2_SPEED] = Motore2.I_MotorAxelSpeed;
+
 
 
     VarModbus[INDICE_ENC1_PERIOD] = Motore1.I_MotorAxelSpeed;
