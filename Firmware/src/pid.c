@@ -132,8 +132,8 @@ void Pid2(void)
 
 void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
 {
-    long L_ScaledSetpoint = PID->Setpoint; // Dato da mantenere/raggiungere ( velocità di crociera ) moltiplicato per 1000
-    long L_ScaledProcesso = MOTORE->I_MotorAxelSpeed; // Dato istantaneo ( velocità istantanea ) moltiplicato per 1000
+    long L_ScaledSetpoint = PID->Setpoint; // Dato da mantenere/raggiungere ( velocità di crociera ) moltiplicato per 10
+    long L_ScaledProcesso = MOTORE->I_MotorAxelSpeed; // Dato istantaneo ( velocità istantanea ) moltiplicato per 10
 
     //    __builtin_disi(0x3FFF); /* disable interrupts, vedere pg 181 di MPLAB_XC16_C_Compiler_UG_52081.pdf */
 

@@ -16,9 +16,17 @@
 #define INDICE_AN4                      8
 #define INDICE_FLAG_TARATURA            9
 #define INDICE_VAL_TAR_FS               10  //!< Valore usato in taratura per tare il fondoscala
+//    #define INDICE_ENC1_TICK                11
+//    #define INDICE_ENC1_PERIOD              12
+//    #define INDICE_ENC2_TICK                13
+//    #define INDICE_ENC2_PERIOD              14
+//    #define INDICE_ENC1_SPEED               15
+//    #define INDICE_ENC2_SPEED               16
+//    #define INDICE_RD_PWM_CH1               17
+//    #define INDICE_RD_PWM_CH2               18
 #define INDICE_ENC1_TICK                11
-#define INDICE_ENC1_PERIOD              12
-#define INDICE_ENC2_TICK                13
+#define INDICE_ENC2_TICK                12
+#define INDICE_ENC1_PERIOD              13
 #define INDICE_ENC2_PERIOD              14
 #define INDICE_ENC1_SPEED               15
 #define INDICE_ENC2_SPEED               16
@@ -26,8 +34,6 @@
 #define INDICE_RD_PWM_CH2               18
 #define INDICE_PID_ERROR_LEFT           19
 #define INDICE_PID_ERROR_RIGHT          20
-
-
 
 #define INDICE_DEBUG_00                 21  //!< Serve per monitorare nella GUI un valore a caso ( modificando il FW )
 #define INDICE_DEBUG_01                 22
@@ -201,22 +207,52 @@
 */
 #define WORD_VAL_TAR_FS                 15
 
-/*! \def WORD_ENC1_TICK 
+//        /*! \def WORD_ENC1_TICK
+//        \brief 	( R )
+//        */
+//        #define WORD_ENC1_TICK                  16
+//
+//        /*! \def WORD_ENC1_PERIOD
+//        \brief	( R )
+//        */
+//        #define WORD_ENC1_PERIOD                17
+//
+//        /*! \def WORD_ENC2_TICK
+//        \brief	( R )
+//        */
+//        #define WORD_ENC2_TICK                  18
+//
+//        /*! \def WORD_ENC2_PERIOD
+//        \brief	( R )
+//        */
+//        #define WORD_ENC2_PERIOD                19
+//
+//        /*! \def WORD_ENC1_SPEED
+//        \brief	( R )
+//        */
+//        #define WORD_ENC1_SPEED                 20
+//
+//        /*! \def WORD_ENC2_SPEED
+//        \brief	( R )
+//        */
+//        #define WORD_ENC2_SPEED                 21
+
+/*! \def WORD_ENC1_TICK
 \brief 	( R )
 */
 #define WORD_ENC1_TICK                  16
 
-/*! \def WORD_ENC1_PERIOD  
+/*! \def WORD_ENC2_TICK
 \brief	( R )
 */
-#define WORD_ENC1_PERIOD                17
+#define WORD_ENC2_TICK                  17
 
-/*! \def WORD_ENC2_TICK 
+/*! \def WORD_ENC1_PERIOD
 \brief	( R )
 */
-#define WORD_ENC2_TICK                  18
+#define WORD_ENC1_PERIOD                18
 
-/*! \def WORD_ENC2_PERIOD 
+/*! \def WORD_ENC2_PERIOD
 \brief	( R )
 */
 #define WORD_ENC2_PERIOD                19
@@ -230,6 +266,8 @@
 \brief	( R )
 */
 #define WORD_ENC2_SPEED                 21
+
+
 
 /*! \def WORD_RD_PWM_CH1 : Mi permette in ogni istante di leggere il dato effettivo di PWM, utile per il touning
 \brief	( R )

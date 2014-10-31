@@ -36,8 +36,7 @@ unsigned int LeggiWord(unsigned int Address)
         case WORD_AN3                   :   return((unsigned int )VarModbus[INDICE_AN3]);
         case WORD_AN4                   :   return((unsigned int )VarModbus[INDICE_AN4]);
         case WORD_TENSIONE_ALIM         :   return((unsigned int )VarModbus[INDICE_TENSIONE_ALIM]);
-        case WORD_COMWATCHDOG_TIME      :   //return((unsigned int )VarModbus[INDICE_COMWATCHDOG_TIME]);
-                                            return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_COMWATCHDOG_TIME]);
+        case WORD_COMWATCHDOG_TIME      :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_COMWATCHDOG_TIME]);
         case WORD_FLAG_TARATURA         :   return((unsigned int )VarModbus[INDICE_FLAG_TARATURA]);
         case WORD_VAL_TAR_FS            :   return((unsigned int )VarModbus[INDICE_VAL_TAR_FS]);
         case WORD_ENC1_TICK             :   return((unsigned int )VarModbus[INDICE_ENC1_TICK]);
@@ -48,10 +47,8 @@ unsigned int LeggiWord(unsigned int Address)
         case WORD_RD_PWM_CH1            :   return((unsigned int )VarModbus[INDICE_RD_PWM_CH1]);
         case WORD_RD_PWM_CH2            :   return((unsigned int )VarModbus[INDICE_RD_PWM_CH2]);
         
-        case WORD_ENC1_SPEED            :   //return(Motore1.L_WheelSpeed);
-                                            return((unsigned int )VarModbus[INDICE_ENC1_SPEED]);
-        case WORD_ENC2_SPEED            :   //return(Motore2.L_WheelSpeed);
-                                            return((unsigned int )VarModbus[INDICE_ENC2_SPEED]);
+        case WORD_ENC1_SPEED            :   return((unsigned int )VarModbus[INDICE_ENC1_SPEED]);
+        case WORD_ENC2_SPEED            :   return((unsigned int )VarModbus[INDICE_ENC2_SPEED]);
 
 /* *****************************************************************************
  WORD MODBUS USATE PER LA CONFIGURAZIONE DEL ROBOT, MAPPATE DALL'INDIRIZZO 200
@@ -104,14 +101,23 @@ unsigned int LeggiWord(unsigned int Address)
 
         case WORD_DEBUG_00               :  return((unsigned int )VarModbus[INDICE_DEBUG_00]);
         case WORD_DEBUG_01               :  return((unsigned int )VarModbus[INDICE_DEBUG_01]);
-        case WORD_DEBUG_02               :  return((unsigned int )VarModbus[INDICE_DEBUG_02]);
-        case WORD_DEBUG_03               :   return((unsigned int )VarModbus[INDICE_DEBUG_03]);
-        case WORD_DEBUG_04               :   return((unsigned int )VarModbus[INDICE_DEBUG_04]);
-        case WORD_DEBUG_05               :   return((unsigned int )VarModbus[INDICE_DEBUG_05]);
-        case WORD_DEBUG_06               :   return((unsigned int )VarModbus[INDICE_DEBUG_06]);
-        case WORD_DEBUG_07               :   return((unsigned int )VarModbus[INDICE_DEBUG_07]);
-        case WORD_DEBUG_08               :   return((unsigned int )VarModbus[INDICE_DEBUG_08]);
-        case WORD_DEBUG_09               :   return((unsigned int )VarModbus[INDICE_DEBUG_09]);
+
+//        case WORD_DEBUG_02               :  return((unsigned int )VarModbus[INDICE_DEBUG_02]);
+//        case WORD_DEBUG_03               :   return((unsigned int )VarModbus[INDICE_DEBUG_03]);
+//        case WORD_DEBUG_04               :   return((unsigned int )VarModbus[INDICE_DEBUG_04]);
+//        case WORD_DEBUG_05               :   return((unsigned int )VarModbus[INDICE_DEBUG_05]);
+//        case WORD_DEBUG_06               :   return((unsigned int )VarModbus[INDICE_DEBUG_06]);
+//        case WORD_DEBUG_07               :   return((unsigned int )VarModbus[INDICE_DEBUG_07]);
+//        case WORD_DEBUG_08               :   return((unsigned int )VarModbus[INDICE_DEBUG_08]);
+//        case WORD_DEBUG_09               :   return((unsigned int )VarModbus[INDICE_DEBUG_09]);
+        case WORD_DEBUG_02               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_LEFT]);
+        case WORD_DEBUG_03               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT]);
+        case WORD_DEBUG_04               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_LEFT]);
+        case WORD_DEBUG_05               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_RIGHT]);
+        case WORD_DEBUG_06               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT]);
+        case WORD_DEBUG_07               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_RIGHT]);
+        case WORD_DEBUG_08               :   return((unsigned int )((float)Motore1.FL_Costante_Conversione_Vlin_to_Vang * 10000));
+        case WORD_DEBUG_09               :   return((unsigned int )((float)Motore1.FL_Costante_Conversione_Vlin_to_Vang * 10000));
         case WORD_DEBUG_10               :   return((unsigned int )VarModbus[INDICE_DEBUG_10]);
         case WORD_DEBUG_11               :   return((unsigned int )VarModbus[INDICE_DEBUG_11]);
         case WORD_DEBUG_12               :   return((unsigned int )VarModbus[INDICE_DEBUG_12]);
@@ -150,10 +156,10 @@ unsigned char ScriviWord(unsigned int Address,unsigned int Word)
         
 
 
-        case WORD_PWM_CH1               :
+        case WORD_PWM_CH1               :   //VarModbus[INDICE_DEBUG_00] = Word;
                                             VarModbus[INDICE_PWM_CH1] = Word;
                                             break;
-        case WORD_PWM_CH2               :
+        case WORD_PWM_CH2               :   //VarModbus[INDICE_DEBUG_01] = Word;
                                             VarModbus[INDICE_PWM_CH2] = Word;
                                             break;
         case WORD_COMWATCHDOG_TIME      :   //VarModbus[INDICE_COMWATCHDOG_TIME] = Word;  break;
@@ -169,10 +175,8 @@ unsigned char ScriviWord(unsigned int Address,unsigned int Word)
         case WORD_ENC1_PERIOD           :   VarModbus[INDICE_ENC1_PERIOD] = Word;  break;
         case WORD_ENC2_TICK             :   VarModbus[INDICE_ENC2_TICK] = Word;  break;
         case WORD_ENC2_PERIOD           :   VarModbus[INDICE_ENC2_PERIOD] = Word;  break;
-        case WORD_ENC1_SPEED            :   //Motore1.L_WheelSpeed = Word; break;
-                                            VarModbus[INDICE_ENC1_SPEED] = Word;  break;
-        case WORD_ENC2_SPEED            :   //Motore2.L_WheelSpeed = Word; break;
-                                            VarModbus[INDICE_ENC2_SPEED] = Word;  break;
+        case WORD_ENC1_SPEED            :   VarModbus[INDICE_ENC1_SPEED] = Word;  break;
+        case WORD_ENC2_SPEED            :   VarModbus[INDICE_ENC2_SPEED] = Word;  break;
 
 
 
@@ -211,31 +215,37 @@ unsigned char ScriviWord(unsigned int Address,unsigned int Word)
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN)
                                                         {   DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_LEFT], EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_LEFT);
                                                         }
+                                                        UpdateMotorStructure(); // Update data used to calulate speed in funtion of robot-parameter
                                                         break;
         case WORD_ROBOT_WHEEL_RADIUS_RIGHT          :   ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_RIGHT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN)
                                                         {   DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_RIGHT], EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_RIGHT);
                                                         }
+                                                        UpdateMotorStructure(); // Update data used to calulate speed in funtion of robot-parameter
                                                         break;
         case WORD_ROBOT_ENCODER_CPR_LEFT            :   ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN)
                                                         {   DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT], EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT);
                                                         }
+                                                        UpdateMotorStructure(); // Update data used to calulate speed in funtion of robot-parameter
                                                         break;
         case WORD_ROBOT_ENCODER_CPR_RIGHT           :   ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN)
                                                         {   DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT], EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT);
                                                         }
+                                                        UpdateMotorStructure(); // Update data used to calulate speed in funtion of robot-parameter
                                                         break;
         case WORD_ROBOT_MOTOR_RPMMAX_LEFT           :   ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN)
                                                         {   DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT], EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT);
                                                         }
+                                                        UpdateMotorStructure(); // Update data used to calulate speed in funtion of robot-parameter
                                                         break;
         case WORD_ROBOT_MOTOR_RPMMAX_RIGHT          :   ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN)
                                                         {   DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT], EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT);
                                                         }
+                                                        UpdateMotorStructure(); // Update data used to calulate speed in funtion of robot-parameter
                                                         break;
         case WORD_ROBOT_MOTOR_IMAX_LEFT             :   ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_IMAX_LEFT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN)
@@ -261,21 +271,25 @@ unsigned char ScriviWord(unsigned int Address,unsigned int Word)
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN) {
                                                             DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_LEFT], EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_LEFT);
                                                         }
+                                                        UpdateMotorStructure(); // Update data used to calulate speed in funtion of robot-parameter
                                                         break;
         case WORD_ROBOT_GEARBOX_RATIO_AXE_RIGHT     :   ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_RIGHT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN)
                                                         {   DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_RIGHT], EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_RIGHT);
                                                         }
+                                                        UpdateMotorStructure(); // Update data used to calulate speed in funtion of robot-parameter
                                                         break;
         case WORD_ROBOT_GEARBOX_RATIO_MOTOR_LEFT    :   ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN) {
                                                             DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT], EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT);
                                                         }
+                                                        UpdateMotorStructure(); // Update data used to calulate speed in funtion of robot-parameter
                                                         break;
         case WORD_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT   :   ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN) {
                                                             DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT], EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT);
                                                         }
+                                                        UpdateMotorStructure(); // Update data used to calulate speed in funtion of robot-parameter
                                                         break;
         case WORD_ROBOT_CHARGED_BATT                :   ParametriEEPROM[EEPROM_MODBUS_ROBOT_CHARGED_BATT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN) {

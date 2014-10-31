@@ -92,6 +92,7 @@ int main(int argc, char** argv)
     //VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_JOYMODE);     // Al reset disattivo la modalità JoyStick
     //VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_PID_EN);      // Al reset disattivo la modalità PID
     VarModbus[INDICE_STATUSBIT1] |= FLG_STATUSBI1_PID_EN; // Al reset attivo la modalità PID
+    VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_EEPROM_RAMP_EN); // Al reset disattivo RAMPE
 
     OLD_INDICE_STATUSBIT1 = 0; // Se parto con il PID abilitato deve valere 0.
     //OLD_INDICE_STATUSBIT1 = 1;  // Se parto con il PWM abilitato deve valere 1.
@@ -100,6 +101,8 @@ int main(int argc, char** argv)
     //VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_COMWATCHDOG); // Al reset disattivo il WatchDog sulla comunicazione
     VarModbus[INDICE_STATUSBIT1] |= FLG_STATUSBI1_EEPROM_SAVE_EN; // Al reset attivo il Salvataggio automatico dei parametri in EEPROM
     //VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_EEPROM_SAVE_EN);   // Al reset disattivo il Salvataggio automatico dei parametri in EEPROM
+
+    
     VarModbus[INDICE_FLAG_TARATURA] = 0;
     //VarModbus[INDICE_PWM_CH1] = MOTORE_STOP;                      // Motori fermi all'accensione
     //VarModbus[INDICE_PWM_CH2] = MOTORE_STOP;                      // Motori fermi all'accensione
@@ -156,7 +159,7 @@ int main(int argc, char** argv)
         if (Timer1mSec.T_flag)
         {
             Timer1mSec.T_flag = FALSE;
-            GestioneWatchdog(); //  GESTIONE WATCHDOG COMUNICAZIONE
+//            GestioneWatchdog(); //  GESTIONE WATCHDOG COMUNICAZIONE
             GestioneSicurezzaMotore(); //  Gestisco situazioni di FAIL dei motori
         }
 
@@ -228,8 +231,18 @@ void GestioneSetpoint(void)
         /* ************ SONO IN MODALITA' PID, ROUTINE "MAIN"  ************ */
         /* **************************************************************** */
         // Converto Vlineare in Giri al secondo per il PID
-        Setpoint_M1 = Motore1.FL_Costante_Conversione_Vlin_to_Vang * ((float) VarModbus[INDICE_PWM_CH1]);
-        Setpoint_M2 = Motore2.FL_Costante_Conversione_Vlin_to_Vang * ((float) VarModbus[INDICE_PWM_CH2]);
+//        Setpoint_M1 = Motore1.FL_Costante_Conversione_Vlin_to_Vang * (2048+500);
+//        Setpoint_M2 = Motore2.FL_Costante_Conversione_Vlin_to_Vang * (2048-500);
+//
+//        Setpoint_M1 = 1600; //Motore1.FL_Costante_Conversione_Vlin_to_Vang * ((float) VarModbus[INDICE_PWM_CH1]);
+//        Setpoint_M2 = 1600; //Motore2.FL_Costante_Conversione_Vlin_to_Vang * ((float) VarModbus[INDICE_PWM_CH2]);
+
+
+        Setpoint_M1 = Motore1.FL_Costante_Conversione_Vlin_to_Vang * ((float)((int)VarModbus[INDICE_PWM_CH1]));
+        Setpoint_M2 = Motore2.FL_Costante_Conversione_Vlin_to_Vang * ((float)((int)VarModbus[INDICE_PWM_CH2]));
+        VarModbus[INDICE_RD_PWM_CH1] = VarModbus[INDICE_PWM_CH1]; // aggiorno PWM in lettura
+        VarModbus[INDICE_RD_PWM_CH2] = VarModbus[INDICE_PWM_CH2]; // aggiorno PWM in lettura
+
     }
     else
     {
@@ -302,12 +315,12 @@ void _ISR_PSV _T1Interrupt(void)
 
     DISICNT = 0; //re-enable interrupts
     InterruptTest4--;
+
 }
 
 void __attribute__((interrupt, auto_psv, shadow)) _T2Interrupt(void)
 {
     InterruptTest3++;
-    //    unsigned char i;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
 
     IFS0bits.T2IF = 0;
@@ -318,9 +331,7 @@ void __attribute__((interrupt, auto_psv, shadow)) _T2Interrupt(void)
     {
         Motore1.UC_OverFlowCounter = 4;
         Motore1.I_MotorAxelSpeed = 0;
-        //        for (i=0;i<8;i++)
-        //        {   Motore1.UI_MediaIC[i] = 0;
-        //        }
+
     }
     InterruptTest3--;
     DISICNT = 0; //re-enable interrupts
@@ -339,12 +350,8 @@ void __attribute__((interrupt, auto_psv, shadow)) _T3Interrupt(void)
     {
         Motore2.UC_OverFlowCounter = 4;
         Motore2.I_MotorAxelSpeed = 0;
-        //        for (i=0;i<8;i++)
-        //        {   Motore2.UI_MediaIC[i] = 0;
-        //        }
     }
     DISICNT = 0; //re-enable interrupts
-    //return;
 
     InterruptTest2--;
 }
@@ -358,8 +365,6 @@ void __attribute__((interrupt, auto_psv, shadow)) _T3Interrupt(void)
  */
 void __attribute__((interrupt, auto_psv, shadow)) _IC1Interrupt(void)
 {
-
-    InterruptTest1++;
     long int tmp = 0;
     unsigned int ActualIC1BUF;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
@@ -380,108 +385,24 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC1Interrupt(void)
         tmp *= Motore1.UC_OverFlowCounter; // overflow offset
         tmp += ActualIC1BUF; // capture
         tmp -= Motore1.UI_Old_Capture; // click period
-        //
-        //                    /*
-        //                     * FILTRO MISURE ERRATE : Inizio
-        //                     */
-        //
-        //                            /* FILTRO MISURE ERRATE PER ERRORI LEGATI A SOVRAPPOSIZIONE DI INTERRUPT
-        //                             * Nel caso l'evento del timerOverflow avvenga nello stesso istante
-        //                             * in cui vi è il fronte di salita del segnale da misurare ( ENCODER )
-        //                             * può essere conteggiato in modo errato il numero di Overflow.
-        //                             *
-        //                             * Provvisoriamente introduciamo un filtro che di fatto intercetta
-        //                             * se la nuova misura discosta dalla precedente per una quantità
-        //                             * prossima 0xFFFF.
-        //                             * Non possiamo usare oxFFFF perchè tra due misure consecutive, a causa
-        //                             * dell'accelerazione o decelerazione del motore, vi sarà comunque una
-        //                             * certa differenza il cui risultato è sommato al valore errato di Overflow.
-        //                             *
-        //                             * Se per 3 misure consecutive il dato misurato discosta dal primo dato
-        //                             * campionato aggiorno il filtro al nuovo dato.
-        //                             * Serve nella malaugurata ipotesi che andassimo a campionare come primo
-        //                             * dato un dato errato :)
-        //                             * */
-        //
-        //
-        //                            /* Mantengo aggiornato uno storico degli ultimi mille campioni per analisi
-        //                             *  -> TestInputCapture1.Anomalie è l'indice
-        //                             *  -> TestInputCapture1.LogginArea[x][0] : Valore della misura letta
-        //                             *  -> TestInputCapture1.LogginArea[x][1] : Valore restituito dal filtro nello stesso istante
-        //                             */
-        //
-        //                            if(TestInputCapture1.Anomalie > (LOGSIZE - 1) )  TestInputCapture1.Anomalie = 0;
-        //                            else TestInputCapture1.Anomalie++ ;
-        //                            TestInputCapture1.LogginArea[TestInputCapture1.Anomalie][0] = tmp; // Registro dato calcolato
-        //
-        //
-        //
-        //                            /*      FILTRO:
-        //                             *      se una misura è molto diversa da quella precedente il filtro ritorna quella precedente per
-        //                             *      un massimo di 3 cicli.
-        //                             *      Se la nuova misura "Errata" rimane stabile per 3 cicli allora il filtro si aggiorna,
-        //                             *      restituisce la nuova misura e prende questo valore come riferimento.
-        //                             */
-        //                            if( ((tmp > InputCapture1.OldMeasure+60000) || (tmp < InputCapture1.OldMeasure-60000)) &&
-        //                                (InputCapture1.ErrorCounter < 3) )
-        //                            {   // Conto quanti errori avvengono consecutivamente
-        //                                // oltre 3 errori consecutivi significa che la misura è stabile e aggiorno
-        //                                // il filtro al nuovo valore
-        //                                InputCapture1.ErrorCounter++;
-        //
-        //                                /* Per il momento tengo buona la misura precedente. */
-        //                                tmp = InputCapture1.OldMeasure;
-        //
-        //                                //PIN_CN_IC2_5 ^= PIN_ON;      // DEBUG
-        //
-        //                            }
-        //                            else
-        //                            {
-        //                                InputCapture1.OldMeasure = tmp;
-        //                                InputCapture1.ErrorCounter = 0;
-        //                            }
-        //
-        //                            /* -> TestInputCapture1.LogginArea[x][1] : Valore restituito dal filtro nello stesso istante */
-        //                            TestInputCapture1.LogginArea[TestInputCapture1.Anomalie][1] = tmp; // Registro dato restituito dal filtro
-        //
-        //                            /*  In TestInputCapture1.LogginArea mi trovo le ultime lille musure e i relativi valori filtrati restituiti dal
-        //                             *  filtro in ogni istante.
-        //                             */
-        //                    /*
-        //                     * FILTRO MISURE ERRATE : Fine
-        //                     */
         Motore1.UI_Period = (unsigned int) ((long) Motore1.L_RpmConversion / tmp);
         Motore1.I_MotorAxelSpeed = Motore1.UI_Period;
-        //        Motore1.UI_MediaIC[Motore1.UC_IC_idx] = Motore1.UI_Period;
-        //        Motore1.UC_IC_idx++;
-        //        if(Motore1.UC_IC_idx > 7) Motore1.UC_IC_idx = 0;
-        //
-        //        // media mobile
-        //        tmp = 0;
-        //        for (i=0;i<8;i++)   tmp += Motore1.UI_MediaIC[i]; // Sommatoria degli 8 campioni
-        //
-        //        Motore1.I_MotorAxelSpeed = __builtin_divud(tmp,8);
-
         // CCW or CW
         if (!QEI1CONbits.UPDN)
         {
             Motore1.I_MotorAxelSpeed *= -1;
         }
-
         Motore1.UC_First_IC_Interrupt_Done = 0;
-
         IC1CONbits.ICM = 0; // Disable Input Capture 1 module,
         // re-enabled after PID computation on 1mSec Interrupt Timer
     }
 
     DISICNT = 0; //re-enable interrupts
     Motore1.UC_OverFlowCounter = 0; // reset overflow
-    InterruptTest1--;
 }
 
 void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
 {
-    InterruptTest0++;
     long int tmp = 0;
     unsigned int ActualIC2BUF;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
@@ -502,18 +423,8 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
         tmp *= Motore2.UC_OverFlowCounter; // overflow offset
         tmp += ActualIC2BUF; // capture
         tmp -= Motore2.UI_Old_Capture; // click period
-
         Motore2.UI_Period = (unsigned int) ((long) Motore2.L_RpmConversion / tmp); // Valore istantaneo di periodo.
         Motore2.I_MotorAxelSpeed = Motore2.UI_Period;
-        //        Motore2.UI_MediaIC[Motore2.UC_IC_idx] = Motore2.UI_Period;
-        //        Motore2.UC_IC_idx++;
-        //        if(Motore2.UC_IC_idx > 7) Motore2.UC_IC_idx = 0;
-        //
-        //        // media mobile
-        //        tmp = 0;
-        //        for (i=0;i<8;i++)   tmp += Motore2.UI_MediaIC[i];   // Sommatoria degli 8 campioni
-        //
-        //        Motore2.I_MotorAxelSpeed = __builtin_divud(tmp,8);
 
         // CCW or CW
         if (!QEI2CONbits.UPDN)
@@ -527,8 +438,6 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
     }
     DISICNT = 0; //re-enable interrupts
     Motore1.UC_OverFlowCounter = 0; // reset overflow
-
-    InterruptTest0--;
 }
 
 void AggiornaDatiVelocita(void)
@@ -596,30 +505,27 @@ void AggiornaVariabiliModbus(void)
     VarModbus[INDICE_PID_ERROR_RIGHT] = (int) PID1.Errore;
     VarModbus[INDICE_PID_ERROR_LEFT] = (int) PID2.Errore;
 
-    //    VarModbus[INDICE_ENC1_SPEED] = Motore1.I_MotorAxelSpeed;
-    //    VarModbus[INDICE_ENC2_SPEED] = Motore2.I_MotorAxelSpeed;
-
     /* RITORNO LA VELOCITA' ESPRESSA IN mm/Sec A PARTIRE DALLA VELOCITA' ANGOLARE DEL MOTORE*/
     //VarModbus[INDICE_ENC1_SPEED] = (int) ((float) Motore1.I_MotorAxelSpeed / Motore1.FL_Costante_Conversione_Vlin_to_Vang);
     //VarModbus[INDICE_ENC2_SPEED] = (int) ((float) Motore2.I_MotorAxelSpeed / Motore2.FL_Costante_Conversione_Vlin_to_Vang);
     VarModbus[INDICE_ENC1_SPEED] = Motore1.I_MotorAxelSpeed;
     VarModbus[INDICE_ENC2_SPEED] = Motore2.I_MotorAxelSpeed;
 
-
-
     VarModbus[INDICE_ENC1_PERIOD] = Motore1.I_MotorAxelSpeed;
     VarModbus[INDICE_ENC2_PERIOD] = Motore2.I_MotorAxelSpeed;
-    //    VarModbus[INDICE_ENC1_TICK] =
-    //    VarModbus[INDICE_ENC2_TICK] =
 
-    VarModbus[INDICE_DEBUG_00] = Motore1.I_Prescaler_IC; //Motore1.UI_Period;
-    VarModbus[INDICE_DEBUG_01] = Motore2.I_Prescaler_IC; //Motore2.UI_Period;
-    VarModbus[INDICE_DEBUG_02] = Motore1.I_MotorAxelSpeed;
-    VarModbus[INDICE_DEBUG_03] = Motore2.I_MotorAxelSpeed;
-    VarModbus[INDICE_DEBUG_04] = Motore1.I_GearAxelSpeed;
-    VarModbus[INDICE_DEBUG_05] = Motore2.I_GearAxelSpeed;
-    VarModbus[INDICE_DEBUG_06] = Motore1.L_WheelSpeed;
-    VarModbus[INDICE_DEBUG_07] = Motore2.L_WheelSpeed;
+   //    VarModbus[INDICE_DEBUG_00] Usata in modbus.c per vedere il dato  VarModbus[INDICE_PWM_CH1]
+   //    VarModbus[INDICE_DEBUG_01] Usata in modbus.c per vedere il dato  VarModbus[INDICE_PWM_CH2]
+
+
+//    VarModbus[INDICE_DEBUG_00] = Motore1.I_Prescaler_IC; //Motore1.UI_Period;
+//    VarModbus[INDICE_DEBUG_01] = Motore2.I_Prescaler_IC; //Motore2.UI_Period;
+//    VarModbus[INDICE_DEBUG_02] = Motore1.I_MotorAxelSpeed;
+//    VarModbus[INDICE_DEBUG_03] = Motore2.I_MotorAxelSpeed;
+//    VarModbus[INDICE_DEBUG_04] = Motore1.I_GearAxelSpeed;
+//    VarModbus[INDICE_DEBUG_05] = Motore2.I_GearAxelSpeed;
+//    VarModbus[INDICE_DEBUG_06] = Motore1.L_WheelSpeed;
+//    VarModbus[INDICE_DEBUG_07] = Motore2.L_WheelSpeed;
 
 }
 
@@ -660,12 +566,36 @@ float Costante_Conversione_Vlin_to_Vang(unsigned int GearBoxRatio_AXE, unsigned 
      *          K=(GearBoxRatio_Motor * 60 * 100)/(GearBoxRatio_AXE * Wheel_Radius * 2 * PI)
      */
 
-    Numeratore = (float) GearBoxRatio_Motor /** 60*/ * 100; // Giri al secondo, non al minuto... Walt
+    Numeratore = (float) GearBoxRatio_Motor * 1000; // /** 60*/ Giri al secondo, non al minuto... Walt
 
     Denominatore = (float) GearBoxRatio_AXE * Wheel_Radius * 2 * PI;
 
     K = Numeratore / Denominatore;
+
     return K;
+
+    /*
+     * Esempio di calcolo per il debug:
+     *  GearBoxRatio_AXE = 3000
+     *  GearBoxRatio_Motor = 55000
+     *  Wheel_Radius = 3500
+     *
+     * Numeratore = GearBoxRatio_Motor * 100 = 5500000
+     * Denominatore = GearBoxRatio_AXE * Wheel_Radius * 2 * PI = 65973445,725385655
+     * K = K = Numeratore / Denominatore = 0,083366875
+     *
+     *  GearBoxRatio_AXE = 3000
+     *  GearBoxRatio_Motor = 55000
+     *  Wheel_Radius = 35
+     *
+     * Numeratore = GearBoxRatio_Motor * 100 = 5500000
+     * Denominatore = GearBoxRatio_AXE * Wheel_Radius * 2 * PI = 659734,45725385655
+     * K = K = Numeratore / Denominatore = 8,336687495
+     *
+     */
+
+
+
 }
 
 void __attribute__((interrupt, auto_psv, shadow)) _StackError(void)
