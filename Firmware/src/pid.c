@@ -77,10 +77,6 @@ void Pid1(void)
         Motore1.I_Prescaler_IC = 16; //  bit2-0:     Generate capture event on every 16th rising
         Motore1.L_RpmConversion = Motore1.T_FattoreConversioneRPM_3; // every 16th rising edge
     }
-
-    //    Motore1.UC_ICM_Restart_Value = 0b100;
-    //    Motore1.I_Prescaler_IC = 4;  //  bit2-0:     Generate capture event on every 4th rising
-    //    Motore1.L_RpmConversion = Motore1.T_FattoreConversioneRPM_2 ; // every 4th rising edge
     /*  *************************************************************************** */
 
     if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN)
@@ -115,10 +111,6 @@ void Pid2(void)
         Motore2.I_Prescaler_IC = 16; //  bit2-0:     Generate capture event on every 16th rising
         Motore2.L_RpmConversion = Motore2.T_FattoreConversioneRPM_3; // every 16th rising edge
     }
-
-    //    Motore2.UC_ICM_Restart_Value = 0b100;
-    //    Motore2.I_Prescaler_IC = 4;  //  bit2-0:     Generate capture event on every 4th rising
-    //    Motore2.L_RpmConversion = Motore2.T_FattoreConversioneRPM_2 ; // every 4th rising edge
     /*  *************************************************************************** */
 
     if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN)
