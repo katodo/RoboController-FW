@@ -23,8 +23,8 @@
 */
 void InitMotorStructure()
 {
-    Motore1.L_RpmConversion = Motore1.T_FattoreConversioneRPM_1;
-    Motore2.L_RpmConversion = Motore2.T_FattoreConversioneRPM_1;
+    //Motore1.L_RpmConversion = Motore1.T_FattoreConversioneRPM_1;
+    //Motore2.L_RpmConversion = Motore2.T_FattoreConversioneRPM_1;
 
     Motore1.UC_OverFlowCounter = 1;
     Motore2.UC_OverFlowCounter = 1;
@@ -82,19 +82,19 @@ void UpdateMotorStructure()
      *  => T_FattoreConversioneRPM_1 = (60000000000 * IC_PRESCALER_1) / ( ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_XXX] * T_Prescaler_TIMER )
      *
      */
-    Motore1.T_FattoreConversioneRPM_1 = (60000000000 * IC_PRESCALER_1) /
-                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT] * Motore1.I_Prescaler_TIMER);
-    Motore1.T_FattoreConversioneRPM_2 = (60000000000 * IC_PRESCALER_4) /
-                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT] * Motore1.I_Prescaler_TIMER);
-    Motore1.T_FattoreConversioneRPM_3 = (60000000000 * IC_PRESCALER_16) /
-                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT] * Motore1.I_Prescaler_TIMER);
-
-    Motore2.T_FattoreConversioneRPM_1 = (60000000000 * IC_PRESCALER_1) /
-                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
-    Motore2.T_FattoreConversioneRPM_2 = (60000000000 * IC_PRESCALER_4) /
-                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
-    Motore2.T_FattoreConversioneRPM_3 = (60000000000 * IC_PRESCALER_16) /
-                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
+//    Motore1.T_FattoreConversioneRPM_1 = (60000000000 * IC_PRESCALER_1) /
+//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT] * Motore1.I_Prescaler_TIMER);
+//    Motore1.T_FattoreConversioneRPM_2 = (60000000000 * IC_PRESCALER_4) /
+//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT] * Motore1.I_Prescaler_TIMER);
+//    Motore1.T_FattoreConversioneRPM_3 = (60000000000 * IC_PRESCALER_16) /
+//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT] * Motore1.I_Prescaler_TIMER);
+//
+//    Motore2.T_FattoreConversioneRPM_1 = (60000000000 * IC_PRESCALER_1) /
+//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
+//    Motore2.T_FattoreConversioneRPM_2 = (60000000000 * IC_PRESCALER_4) /
+//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
+//    Motore2.T_FattoreConversioneRPM_3 = (60000000000 * IC_PRESCALER_16) /
+//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
     
     Motore1.I_MotorRpmMax = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT];
     Motore1.I_MotorRpmMin = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT] * -1;
@@ -102,14 +102,14 @@ void UpdateMotorStructure()
     Motore2.I_MotorRpmMax = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT];
     Motore2.I_MotorRpmMin = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT] * -1;
     
-    Motore1.FL_Costante_Conversione_Vlin_to_Vang = Costante_Conversione_Vlin_to_Vang(  ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_LEFT],
-                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT],
-                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_LEFT]
-                                                                                 );
-    Motore2.FL_Costante_Conversione_Vlin_to_Vang = Costante_Conversione_Vlin_to_Vang(  ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_RIGHT],
-                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT],
-                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_RIGHT]
-                                                                                 );    
+//    Motore1.FL_Costante_Conversione_Vlin_to_Vang = Costante_Conversione_Vlin_to_Vang(  ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_LEFT],
+//                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT],
+//                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_LEFT]
+//                                                                                 );
+//    Motore2.FL_Costante_Conversione_Vlin_to_Vang = Costante_Conversione_Vlin_to_Vang(  ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_RIGHT],
+//                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT],
+//                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_RIGHT]
+//                                                                                 );
 
 }
 

@@ -743,6 +743,10 @@ void Settings(void)
     IC1CONbits.ICM = 0b011;		//  bit2-0:     1X   mode : Generate capture event on every 1st rising
     //IC1CONbits.ICM = 0b100;		//  bit2-0:     1/4X mode : Generate capture event on every 4th rising
     //IC1CONbits.ICM = 0b101;		//  bit2-0:     1/16X mode : Generate capture event on every 16th rising
+    Motore1.UC_CaptureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
+    //Motore1.UC_CaptureEventDivisor = 4; // con IC1CONbits.ICM = 0b100;
+    //Motore1.UC_CaptureEventDivisor = 16; // con IC1CONbits.ICM = 0b101;
+
                                         //              In caso di motore lento posso cambiare campionamento
                                         //              senza modificare il timer!!!! :)
                                         // Con encoder a risoluzione elevata devo campionare ogni 16 impulsi
@@ -772,6 +776,10 @@ void Settings(void)
     IC2CONbits.ICM = 0b011;		//  bit2-0:     1X   mode : Generate capture event on every 1st rising
     //IC2CONbits.ICM = 0b100;		//  bit2-0:     1/4X mode : Generate capture event on every 4th rising
     //IC2CONbits.ICM = 0b101;		//  bit2-0:     1/16X mode : Generate capture event on every 16th rising
+    Motore2.UC_CaptureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
+    //Motore2.UC_CaptureEventDivisor = 4; // con IC1CONbits.ICM = 0b100;
+    //Motore2.UC_CaptureEventDivisor = 16; // con IC1CONbits.ICM = 0b101;
+
                                         //              In caso di motore lento posso cambiare campionamento
                                         //              senza modificare il timer!!!! :)
                                         // Con encoder a risoluzione elevata devo campionare ogni 16 impulsi

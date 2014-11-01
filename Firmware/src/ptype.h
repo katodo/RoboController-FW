@@ -36,9 +36,9 @@ typedef struct
 //! al relativo encoder.
 typedef struct
 {   /* VARIABILI USATE PER INTERFACCIARSI CON L'ESTERNO */
-    volatile int            I_GearAxelSpeed;        //!< Velocità asse riduttore in RPM x100
-    volatile int            I_MotorAxelSpeed;           // contengono la velocità attuale
-    volatile long           L_WheelSpeed;           // Velocità in mm/Sec della ruota
+//    volatile int            I_GearAxelSpeed;        //!< Velocità asse riduttore in RPM x100
+//    volatile int            I_MotorAxelSpeed;           // contengono la velocità attuale
+//    volatile long           L_WheelSpeed;           // Velocità in mm/Sec della ruota
     
     /* VARIABILI INTERNE ALLA ROBOCONTROLLER            */
     volatile unsigned char  UC_Fail;                // Se a "1" il motore è in Fail, azzero il PID e fermo i ponti.
@@ -48,15 +48,23 @@ typedef struct
     volatile unsigned char  UC_ICM_Restart_Value;       //  Valore di ICM con cui riattivare l'interrupt
     volatile unsigned char  UC_First_IC_Interrupt_Done; // indici per arry e controllo primo interrupt
     volatile unsigned char  UC_IC_idx;
-    volatile unsigned int   UI_MediaIC[10];             // array per la media
+
+    //volatile unsigned int   UI_MediaIC[10];             // array per la media
     volatile unsigned int   UI_Old_Capture;             // variabili per il primo interrupt
-    volatile unsigned int   UI_Period;                   // contengono la velocità attuale
+    //volatile unsigned int   UI_Period;                   // contengono la velocità attuale
+    //volatile unsigned int   UI_TimeBase;
 
     volatile int            I_MotorRpmMax;
     volatile int            I_MotorRpmMin;
-    volatile int            I_Prescaler_IC;             // Prescaler usato per la misura del tempo tramite l'InputCapture
+    //volatile int            I_Prescaler_IC;             // Prescaler usato per la misura del tempo tramite l'InputCapture
+
     volatile int            I_Prescaler_TIMER;      // Prescaler usato dal TIMER2/3, mi serve a calcolare la base tempi
-    volatile long           L_RpmConversion;
+    volatile unsigned char  UC_CaptureEventDivisor; // Value: 1,4,16 , see IC2CONbits.ICM bit status
+    volatile long           L_EncoderTimeBase;
+    volatile long           L_Period;               // nSec vale of time from 2 tick of encoder
+
+
+    //volatile long           L_RpmConversion;
 
 /*
     NOTE:
@@ -206,8 +214,20 @@ typedef struct
    };
 } fvalue;
 
+//Struttura per accedere ad un dato o come Long o come due Integer ( per inviare il dato via Modbus )
+typedef struct
+{   union
+    {   struct
+        {   unsigned int high_part;
+            unsigned int low_part;
+        };
+        long LongVal;
+   };
+} lvalue;
 
-void AggiornaDatiVelocita(void);
+
+
+//void AggiornaDatiVelocita(void);
 //void NavigationGuideMode(void);
 //void ManualGuideMode(void);
 void GestioneSetpoint(void);
@@ -232,7 +252,7 @@ void _ISR _CNInterrupt(void);
 
 //unsigned int modul(signed int x);
 //int Vlin_to_Vang(long Vlin, int WheelRadius);
-float Costante_Conversione_Vlin_to_Vang(unsigned int GearBoxRatio_AXE, unsigned int GearBoxRatio_Motor, unsigned int Wheel_Radius);
+//float Costante_Conversione_Vlin_to_Vang(unsigned int GearBoxRatio_AXE, unsigned int GearBoxRatio_Motor, unsigned int Wheel_Radius);
 
 
 //TIMER SOFTWARE

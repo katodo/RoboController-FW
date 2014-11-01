@@ -179,7 +179,8 @@ Fcy = Fosc / 2 = 39.6288
 #define HALFPI      1.570796327         //  90°
 #define QUARTPI     0.7853981634        //  45°
 
-#define TWOPINSEC   6283185307.2	// 360° ( 2 Pigreco * 10^9  per la conversione da nSec a rad/Sec )
+#define TWOPINSEC       6283185307.2	// 360° ( 2 Pigreco * 10^9  per la conversione da nSec a rad/Sec )
+#define TWOPI_decNSEC   628318530.72	// 360° ( 2 Pigreco * 10^8  per la conversione da nSec a decirad/Sec )
 #define PI_x_100000 314159,26536        // Pigreco * 10^5
 #define PI_x_16384  51471               // Pigreco * 16384 ( = 3,1415926536 shift a SX di 14 posti )
 

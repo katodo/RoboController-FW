@@ -99,25 +99,24 @@ unsigned int LeggiWord(unsigned int Address)
  WORD MODBUS USATE PER DEBUG, MAPPATE DALL'INDIRIZZO 60000
   ******************************************************************************/
 
-        case WORD_DEBUG_00               :  return((unsigned int )VarModbus[INDICE_DEBUG_00]);
-        case WORD_DEBUG_01               :  return((unsigned int )VarModbus[INDICE_DEBUG_01]);
-
-//        case WORD_DEBUG_02               :  return((unsigned int )VarModbus[INDICE_DEBUG_02]);
-//        case WORD_DEBUG_03               :   return((unsigned int )VarModbus[INDICE_DEBUG_03]);
-//        case WORD_DEBUG_04               :   return((unsigned int )VarModbus[INDICE_DEBUG_04]);
-//        case WORD_DEBUG_05               :   return((unsigned int )VarModbus[INDICE_DEBUG_05]);
-//        case WORD_DEBUG_06               :   return((unsigned int )VarModbus[INDICE_DEBUG_06]);
-//        case WORD_DEBUG_07               :   return((unsigned int )VarModbus[INDICE_DEBUG_07]);
-//        case WORD_DEBUG_08               :   return((unsigned int )VarModbus[INDICE_DEBUG_08]);
-//        case WORD_DEBUG_09               :   return((unsigned int )VarModbus[INDICE_DEBUG_09]);
-        case WORD_DEBUG_02               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_LEFT]);
-        case WORD_DEBUG_03               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT]);
-        case WORD_DEBUG_04               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_LEFT]);
-        case WORD_DEBUG_05               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_RIGHT]);
-        case WORD_DEBUG_06               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT]);
-        case WORD_DEBUG_07               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_RIGHT]);
-        case WORD_DEBUG_08               :   return((unsigned int )((float)Motore1.FL_Costante_Conversione_Vlin_to_Vang * 10000));
-        case WORD_DEBUG_09               :   return((unsigned int )((float)Motore1.FL_Costante_Conversione_Vlin_to_Vang * 10000));
+        case WORD_DEBUG_00               :   return((unsigned int )VarModbus[INDICE_DEBUG_00]);
+        case WORD_DEBUG_01               :   return((unsigned int )VarModbus[INDICE_DEBUG_01]);
+        case WORD_DEBUG_02               :   return((unsigned int )VarModbus[INDICE_DEBUG_02]);
+        case WORD_DEBUG_03               :   return((unsigned int )VarModbus[INDICE_DEBUG_03]);
+        case WORD_DEBUG_04               :   return((unsigned int )VarModbus[INDICE_DEBUG_04]);
+        case WORD_DEBUG_05               :   return((unsigned int )VarModbus[INDICE_DEBUG_05]);
+        case WORD_DEBUG_06               :   return((unsigned int )VarModbus[INDICE_DEBUG_06]);
+        case WORD_DEBUG_07               :   return((unsigned int )VarModbus[INDICE_DEBUG_07]);
+        case WORD_DEBUG_08               :   return((unsigned int )VarModbus[INDICE_DEBUG_08]);
+        case WORD_DEBUG_09               :   return((unsigned int )VarModbus[INDICE_DEBUG_09]);
+//        case WORD_DEBUG_02               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_LEFT]);
+//        case WORD_DEBUG_03               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT]);
+//        case WORD_DEBUG_04               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_LEFT]);
+//        case WORD_DEBUG_05               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_RIGHT]);
+//        case WORD_DEBUG_06               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT]);
+//        case WORD_DEBUG_07               :   return((unsigned int )ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_RIGHT]);
+//        case WORD_DEBUG_08               :   return((unsigned int )((float)Motore1.FL_Costante_Conversione_Vlin_to_Vang * 10000));
+//        case WORD_DEBUG_09               :   return((unsigned int )((float)Motore1.FL_Costante_Conversione_Vlin_to_Vang * 10000));
         case WORD_DEBUG_10               :   return((unsigned int )VarModbus[INDICE_DEBUG_10]);
         case WORD_DEBUG_11               :   return((unsigned int )VarModbus[INDICE_DEBUG_11]);
         case WORD_DEBUG_12               :   return((unsigned int )VarModbus[INDICE_DEBUG_12]);

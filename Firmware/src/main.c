@@ -53,7 +53,7 @@ int main(int argc, char** argv)
     Settings();
 
 
-
+   //long E1, E2; // E = [( 2π * 10^9 ) / EncoderResolution]
 
     /* ******************************************************************************************************** */
     /* ******************************************************************************************************** */
@@ -146,6 +146,18 @@ int main(int argc, char** argv)
     //    if(!Motore2.UC_Fail) PID2.Setpoint = (long)(SetpointRPM_M2);
     //    /* ***** */
 
+
+
+    /* test */
+    //E1, E2; // ( 2π * 10^9 ) / EncoderResolution
+    // TWOPINSEC  = 6283185307.2	// 360° ( 2 Pigreco * 10^9  per la conversione da nSec a rad/Sec )
+    /*
+
+     */
+    E1 = TWOPI_decNSEC / ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT];
+    E2 = TWOPI_decNSEC / ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT];
+    /* **** */
+
     while (1)
     { // ----------------------  Gestione protocollo ModBus ---------------------- //
         ModbusRoutine(PORT_COM1);
@@ -175,7 +187,7 @@ int main(int argc, char** argv)
 
         GestioneAllarmi();
         GestioneSetpoint();
-        AggiornaDatiVelocita();
+        //AggiornaDatiVelocita();
         AggiornaVariabiliModbus();
     }
     return (EXIT_SUCCESS);
@@ -202,7 +214,8 @@ int main(int argc, char** argv)
  */
 void GestioneSetpoint(void)
 {
-    float Setpoint_M1, Setpoint_M2;
+    //float Setpoint_M1, Setpoint_M2;
+    long Setpoint_M1, Setpoint_M2;
 
 
 
@@ -230,16 +243,15 @@ void GestioneSetpoint(void)
         /* **************************************************************** */
         /* ************ SONO IN MODALITA' PID, ROUTINE "MAIN"  ************ */
         /* **************************************************************** */
-        // Converto Vlineare in Giri al secondo per il PID
-//        Setpoint_M1 = Motore1.FL_Costante_Conversione_Vlin_to_Vang * (2048+500);
-//        Setpoint_M2 = Motore2.FL_Costante_Conversione_Vlin_to_Vang * (2048-500);
-//
-//        Setpoint_M1 = 1600; //Motore1.FL_Costante_Conversione_Vlin_to_Vang * ((float) VarModbus[INDICE_PWM_CH1]);
-//        Setpoint_M2 = 1600; //Motore2.FL_Costante_Conversione_Vlin_to_Vang * ((float) VarModbus[INDICE_PWM_CH2]);
 
+        //VarModbus[INDICE_PWM_CH1] = 1000;
+        // E1 = TWOPINSEC / ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT];
+        // E2 = TWOPINSEC / ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT];
+        Setpoint_M1 = (long)E1 / (long)VarModbus[INDICE_PWM_CH1];
+        Setpoint_M2 = (long)E2 / (long)VarModbus[INDICE_PWM_CH2];
 
-        Setpoint_M1 = Motore1.FL_Costante_Conversione_Vlin_to_Vang * ((float)((int)VarModbus[INDICE_PWM_CH1]));
-        Setpoint_M2 = Motore2.FL_Costante_Conversione_Vlin_to_Vang * ((float)((int)VarModbus[INDICE_PWM_CH2]));
+        //Setpoint_M1 = Motore1.FL_Costante_Conversione_Vlin_to_Vang * ((float)((int)VarModbus[INDICE_PWM_CH1]));
+        //Setpoint_M2 = Motore2.FL_Costante_Conversione_Vlin_to_Vang * ((float)((int)VarModbus[INDICE_PWM_CH2]));
         VarModbus[INDICE_RD_PWM_CH1] = VarModbus[INDICE_PWM_CH1]; // aggiorno PWM in lettura
         VarModbus[INDICE_RD_PWM_CH2] = VarModbus[INDICE_PWM_CH2]; // aggiorno PWM in lettura
 
@@ -282,7 +294,7 @@ void GestioneSetpoint(void)
 
 void _ISR_PSV _T1Interrupt(void)
 {
-    InterruptTest4++;
+    //InterruptTest4++;
     // Timer 1	1ms
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
     IFS0bits.T1IF = 0; // interrupt flag reset
@@ -314,13 +326,13 @@ void _ISR_PSV _T1Interrupt(void)
     /* ************************************************************************* */
 
     DISICNT = 0; //re-enable interrupts
-    InterruptTest4--;
+    //InterruptTest4--;
 
 }
 
 void __attribute__((interrupt, auto_psv, shadow)) _T2Interrupt(void)
 {
-    InterruptTest3++;
+    //InterruptTest3++;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
 
     IFS0bits.T2IF = 0;
@@ -330,10 +342,10 @@ void __attribute__((interrupt, auto_psv, shadow)) _T2Interrupt(void)
     if (Motore1.UC_OverFlowCounter > 4)
     {
         Motore1.UC_OverFlowCounter = 4;
-        Motore1.I_MotorAxelSpeed = 0;
+        //Motore1.I_MotorAxelSpeed = 0;
 
     }
-    InterruptTest3--;
+    //InterruptTest3--;
     DISICNT = 0; //re-enable interrupts
     return;
 }
@@ -341,7 +353,7 @@ void __attribute__((interrupt, auto_psv, shadow)) _T2Interrupt(void)
 void __attribute__((interrupt, auto_psv, shadow)) _T3Interrupt(void)
 {
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
-    InterruptTest2++;
+    //InterruptTest2++;
     IFS0bits.T3IF = 0;
     Motore2.UC_OverFlowCounter++;
 
@@ -349,11 +361,11 @@ void __attribute__((interrupt, auto_psv, shadow)) _T3Interrupt(void)
     if (Motore2.UC_OverFlowCounter > 4)
     {
         Motore2.UC_OverFlowCounter = 4;
-        Motore2.I_MotorAxelSpeed = 0;
+        //Motore2.I_MotorAxelSpeed = 0;
     }
     DISICNT = 0; //re-enable interrupts
 
-    InterruptTest2--;
+    //InterruptTest2--;
 }
 
 
@@ -365,7 +377,7 @@ void __attribute__((interrupt, auto_psv, shadow)) _T3Interrupt(void)
  */
 void __attribute__((interrupt, auto_psv, shadow)) _IC1Interrupt(void)
 {
-    long int tmp = 0;
+    long tmp = 0;
     unsigned int ActualIC1BUF;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
     IFS0bits.IC1IF = 0;
@@ -385,13 +397,22 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC1Interrupt(void)
         tmp *= Motore1.UC_OverFlowCounter; // overflow offset
         tmp += ActualIC1BUF; // capture
         tmp -= Motore1.UI_Old_Capture; // click period
-        Motore1.UI_Period = (unsigned int) ((long) Motore1.L_RpmConversion / tmp);
-        Motore1.I_MotorAxelSpeed = Motore1.UI_Period;
-        // CCW or CW
+
+        //Motore1.UI_Period = tmp << Motore1.UC_PrescalerDivisor;
+        Motore1.L_Period = tmp * Motore1.L_EncoderTimeBase;
         if (!QEI1CONbits.UPDN)
         {
-            Motore1.I_MotorAxelSpeed *= -1;
+            Motore1.L_Period *= -1;
         }
+
+
+//        Motore1.UI_Period = (unsigned int) ((long) Motore1.L_RpmConversion / tmp);
+//        Motore1.I_MotorAxelSpeed = Motore1.UI_Period;
+//        // CCW or CW
+//        if (!QEI1CONbits.UPDN)
+//        {
+//            Motore1.I_MotorAxelSpeed *= -1;
+//        }
         Motore1.UC_First_IC_Interrupt_Done = 0;
         IC1CONbits.ICM = 0; // Disable Input Capture 1 module,
         // re-enabled after PID computation on 1mSec Interrupt Timer
@@ -403,7 +424,7 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC1Interrupt(void)
 
 void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
 {
-    long int tmp = 0;
+    long tmp = 0;
     unsigned int ActualIC2BUF;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
     IFS0bits.IC2IF = 0;
@@ -419,18 +440,32 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
     else
     {
         // 2nd interrupt
+
         tmp = TMR2_VALUE;
         tmp *= Motore2.UC_OverFlowCounter; // overflow offset
         tmp += ActualIC2BUF; // capture
         tmp -= Motore2.UI_Old_Capture; // click period
-        Motore2.UI_Period = (unsigned int) ((long) Motore2.L_RpmConversion / tmp); // Valore istantaneo di periodo.
-        Motore2.I_MotorAxelSpeed = Motore2.UI_Period;
 
-        // CCW or CW
+        //Motore1.UI_Period = tmp << Motore1.UC_PrescalerDivisor;
+        Motore2.L_Period = tmp * Motore2.L_EncoderTimeBase;
         if (!QEI2CONbits.UPDN)
         {
-            Motore2.I_MotorAxelSpeed *= -1;
+            Motore2.L_Period *= -1;
         }
+
+
+//        tmp = TMR2_VALUE;
+//        tmp *= Motore2.UC_OverFlowCounter; // overflow offset
+//        tmp += ActualIC2BUF; // capture
+//        tmp -= Motore2.UI_Old_Capture; // click period
+//        Motore2.UI_Period = (unsigned int) ((long) Motore2.L_RpmConversion / tmp); // Valore istantaneo di periodo.
+//        Motore2.I_MotorAxelSpeed = Motore2.UI_Period;
+//
+//        // CCW or CW
+//        if (!QEI2CONbits.UPDN)
+//        {
+//            Motore2.I_MotorAxelSpeed *= -1;
+//        }
 
         Motore2.UC_First_IC_Interrupt_Done = 0;
         IC2CONbits.ICM = 0; // Disable Input Capture 1 module,
@@ -438,46 +473,6 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
     }
     DISICNT = 0; //re-enable interrupts
     Motore1.UC_OverFlowCounter = 0; // reset overflow
-}
-
-void AggiornaDatiVelocita(void)
-{
-    long tmp;
-
-    /*
-     *  RPMruota = RPMmotore * ( RapportoRiduzioneMotore:RapportoRiduzioneAsse)
-     *
-     *  MotoreX.I_MotorAxelSpeed    :	RPM asse motore, un motore "standard" ruota nel range 0-10000RPM, il dato è un intero.
-     *  MotoreX.I_GearAxelSpeed     :	RPM uscita riduttore, considerando un rapporto riduzione minimo di 1:100 per motori da
-     * 					10000RPM e di 1:10 per motori sotto i 3000RPM il dato varierà al max nel range 0-300
-     *					**** Il dato GearAxelSpeed è un intero moltiplicato per un fattore 100		******
-     *					**** Range 0-30000 con due cifre decimali in visualizzazione			******
-     * I calcoli vengono effettuati passando per un LONG per evitare problemi di overflow nelle moltiplicazioni tra interi
-     */
-    tmp = __builtin_mulss(Motore1.I_MotorAxelSpeed, ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_LEFT]);
-    tmp *= 100; // Per ottenere I_GearAxelSpeed riscalato di un fattore 100
-    tmp = __builtin_divsd(tmp, ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT]);
-    Motore1.I_GearAxelSpeed = (int) tmp;
-
-    tmp = __builtin_mulss(Motore2.I_MotorAxelSpeed, ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_RIGHT]);
-    tmp *= 100; // Per ottenere I_GearAxelSpeed riscalato di un fattore 100
-    tmp = __builtin_divsd(tmp, ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT]);
-    Motore2.I_GearAxelSpeed = (int) tmp;
-
-    /* Calcolo la velocità di rotazione delle ruote espressa in centesimi di radianti al secondo
-     * MotoreX.L_WheelSpeed deriva da I_GearAxelSpeed ed è ritornato alla GUI moltiplicato per 100
-     *
-     * EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_xxxx : Raggio espresso in decimi di millimetro 360 = 3,6Cm
-     *  */
-    tmp = __builtin_mulss(ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_LEFT], Motore1.I_GearAxelSpeed);
-    tmp *= TWOPI;
-    tmp = __builtin_divsd(tmp, 6000);
-    Motore1.L_WheelSpeed = tmp;
-
-    tmp = __builtin_mulss(ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_RIGHT], Motore2.I_GearAxelSpeed);
-    tmp *= TWOPI;
-    tmp = __builtin_divsd(tmp, 6000);
-    Motore2.L_WheelSpeed = tmp;
 }
 
 void AggiornaVariabiliModbus(void)
@@ -505,97 +500,51 @@ void AggiornaVariabiliModbus(void)
     VarModbus[INDICE_PID_ERROR_RIGHT] = (int) PID1.Errore;
     VarModbus[INDICE_PID_ERROR_LEFT] = (int) PID2.Errore;
 
-    /* RITORNO LA VELOCITA' ESPRESSA IN mm/Sec A PARTIRE DALLA VELOCITA' ANGOLARE DEL MOTORE*/
-    //VarModbus[INDICE_ENC1_SPEED] = (int) ((float) Motore1.I_MotorAxelSpeed / Motore1.FL_Costante_Conversione_Vlin_to_Vang);
-    //VarModbus[INDICE_ENC2_SPEED] = (int) ((float) Motore2.I_MotorAxelSpeed / Motore2.FL_Costante_Conversione_Vlin_to_Vang);
-    VarModbus[INDICE_ENC1_SPEED] = Motore1.I_MotorAxelSpeed;
-    VarModbus[INDICE_ENC2_SPEED] = Motore2.I_MotorAxelSpeed;
-
-    VarModbus[INDICE_ENC1_PERIOD] = Motore1.I_MotorAxelSpeed;
-    VarModbus[INDICE_ENC2_PERIOD] = Motore2.I_MotorAxelSpeed;
-
-   //    VarModbus[INDICE_DEBUG_00] Usata in modbus.c per vedere il dato  VarModbus[INDICE_PWM_CH1]
-   //    VarModbus[INDICE_DEBUG_01] Usata in modbus.c per vedere il dato  VarModbus[INDICE_PWM_CH2]
-
-
-//    VarModbus[INDICE_DEBUG_00] = Motore1.I_Prescaler_IC; //Motore1.UI_Period;
-//    VarModbus[INDICE_DEBUG_01] = Motore2.I_Prescaler_IC; //Motore2.UI_Period;
-//    VarModbus[INDICE_DEBUG_02] = Motore1.I_MotorAxelSpeed;
-//    VarModbus[INDICE_DEBUG_03] = Motore2.I_MotorAxelSpeed;
-//    VarModbus[INDICE_DEBUG_04] = Motore1.I_GearAxelSpeed;
-//    VarModbus[INDICE_DEBUG_05] = Motore2.I_GearAxelSpeed;
-//    VarModbus[INDICE_DEBUG_06] = Motore1.L_WheelSpeed;
-//    VarModbus[INDICE_DEBUG_07] = Motore2.L_WheelSpeed;
-
-}
-
-/*  Data:
- *              Vangolare = K * Vlineare in giri al secondo
- *              Vlineare = Vangolare / K
- *
- *  questa funzione mi ritorna il valore di K e va richiamata solo quando modifico i 
- *  parametri e all'accensione della RoboController.
- *
- *  Vedi funzioni:
- *  -   void UpdateMotorStructure()
- *  -   void InitMotorStructure()
- *
- *  La funzione mi ritorna un dato di tipo Float per semplificare i calcoli.
- */
-
-float Costante_Conversione_Vlin_to_Vang(unsigned int GearBoxRatio_AXE, unsigned int GearBoxRatio_Motor, unsigned int Wheel_Radius)
-{
-    float Numeratore;
-    float Denominatore;
-    float K;
-
-    /*      Costanti nei calcoli:
-     *      PI      =       3.1415926535897931159979634685441851615905761718750 definito in dsp.h
-     *      60      =       fattore di conversione da minuti a secondi (dato della velocità a RPM)
-     *      100000  =       fattore di conversione da metri a centesimi di mm, ovvero dalla velocità
-     *                      espressa in m/Sec all'unità di misura per la ruota ( Wheel_Radius).
-     *                      Ovviamente vale 1000 se la velocità ci arriva in cm/S.
-     *                      Ovviamente vale 100 se la velocità ci arriva in  mm/S.
-     *
-     *      Essendo la velocità passata alla robocontroller come intero nel range +/- 32768 e accettando come
-     *      "limite" una velocità di 32,768 m/Sec (117.9648 Km/h) la Vlineare che arriva dal protocollo modbus
-     *      è da considerarsi espressa in millimetri/Secondo.
-     *
-     *      Premesso questo la formula di conversione diventa:
-     *
-     *          K=(GearBoxRatio_Motor * 60 * 100)/(GearBoxRatio_AXE * Wheel_Radius * 2 * PI)
-     */
-
-    Numeratore = (float) GearBoxRatio_Motor * 1000; // /** 60*/ Giri al secondo, non al minuto... Walt
-
-    Denominatore = (float) GearBoxRatio_AXE * Wheel_Radius * 2 * PI;
-
-    K = Numeratore / Denominatore;
-
-    return K;
-
-    /*
-     * Esempio di calcolo per il debug:
-     *  GearBoxRatio_AXE = 3000
-     *  GearBoxRatio_Motor = 55000
-     *  Wheel_Radius = 3500
-     *
-     * Numeratore = GearBoxRatio_Motor * 100 = 5500000
-     * Denominatore = GearBoxRatio_AXE * Wheel_Radius * 2 * PI = 65973445,725385655
-     * K = K = Numeratore / Denominatore = 0,083366875
-     *
-     *  GearBoxRatio_AXE = 3000
-     *  GearBoxRatio_Motor = 55000
-     *  Wheel_Radius = 35
-     *
-     * Numeratore = GearBoxRatio_Motor * 100 = 5500000
-     * Denominatore = GearBoxRatio_AXE * Wheel_Radius * 2 * PI = 659734,45725385655
-     * K = K = Numeratore / Denominatore = 8,336687495
-     *
-     */
 
 
 
+    /* */
+    //Struttura per accedere ad un dato o come Long o come due Integer ( per inviare il dato via Modbus )
+    //    typedef struct
+    //    {   union
+    //        {   struct
+    //            {   unsigned int high_part;
+    //                unsigned int low_part;
+    //            };
+    //            long LongVal;
+    //       };
+    //    } lvalue;
+    //      extern volatile lvalue TmpSplitLongToWord;
+
+
+    TmpSplitLongToWord.LongVal = 0;
+    TmpSplitLongToWord.high_part = 0;
+    TmpSplitLongToWord.low_part = 0;
+    TmpSplitLongToWord.LongVal = Motore1.L_Period;
+    VarModbus[INDICE_DEBUG_00] = TmpSplitLongToWord.low_part;
+    VarModbus[INDICE_DEBUG_01] = TmpSplitLongToWord.high_part;
+
+    TmpSplitLongToWord.LongVal = 0;
+    TmpSplitLongToWord.high_part = 0;
+    TmpSplitLongToWord.low_part = 0;
+    TmpSplitLongToWord.LongVal = Motore2.L_Period;
+    VarModbus[INDICE_DEBUG_02] = TmpSplitLongToWord.low_part;
+    VarModbus[INDICE_DEBUG_03] = TmpSplitLongToWord.high_part;
+
+
+    TmpSplitLongToWord.LongVal = 0;
+    TmpSplitLongToWord.high_part = 0;
+    TmpSplitLongToWord.low_part = 0;
+    TmpSplitLongToWord.LongVal = PID1.Setpoint;
+    VarModbus[INDICE_DEBUG_04] = TmpSplitLongToWord.low_part;
+    VarModbus[INDICE_DEBUG_05] = TmpSplitLongToWord.high_part;
+
+    TmpSplitLongToWord.LongVal = 0;
+    TmpSplitLongToWord.high_part = 0;
+    TmpSplitLongToWord.low_part = 0;
+    TmpSplitLongToWord.LongVal = PID1.Setpoint;
+    VarModbus[INDICE_DEBUG_06] = TmpSplitLongToWord.low_part;
+    VarModbus[INDICE_DEBUG_07] = TmpSplitLongToWord.high_part;
 }
 
 void __attribute__((interrupt, auto_psv, shadow)) _StackError(void)
@@ -608,19 +557,6 @@ void __attribute__((interrupt, auto_psv, shadow)) _StackError(void)
     MotorControlEnable(MOTORE2, MOTOR_DEACTIVE);
 
     while (1);
-    InterruptTest0 = 0;
-    InterruptTest1 = 0;
-    InterruptTest2 = 0;
-    InterruptTest3 = 0;
-    InterruptTest4 = 0;
-    InterruptTest5 = 0;
-    InterruptTest6 = 0;
-    InterruptTest7 = 0;
-    InterruptTest8 = 0;
-    InterruptTest9 = 0;
-    InterruptTest10 = 0;
-    InterruptTest11 = 0;
-    InterruptTest12 = 0;
 }
 
 void __attribute__((interrupt, auto_psv, shadow)) _OscillatorFail(void)

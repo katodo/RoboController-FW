@@ -69,15 +69,11 @@ lib/libfastm-elf.a(divsi3.eo)
 lib/libfastm-elf.a(fixsfsi.eo)
                               build/Max_xxv/production/src/adc.o (_(float, int, long long, short, float, short, int))
 lib/libfastm-elf.a(fixunssfsi.eo)
-                              build/Max_xxv/production/src/modbus.o (___fixunssfsi)
-lib/libfastm-elf.a(floatsisf.eo)
-                              build/Max_xxv/production/src/main.o (___floatsisf)
+                              build/Max_xxv/production/src/uart.o (___fixunssfsi)
 lib/libfastm-elf.a(floatunsisf.eo)
                               build/Max_xxv/production/src/adc.o (___floatunsisf)
 lib/libfastm-elf.a(funpack.eo)
                               lib/libfastm-elf.a(fixsfsi.eo) (__funpack)
-lib/libfastm-elf.a(divmoddi3.eo)
-                              build/Max_xxv/production/src/motor.o (___divdi3)
 lib/libfastm-elf.a(addsf3x.eo)
                               build/Max_xxv/production/src/uart.o (___subsf3)
 lib/libfastm-elf.a(mulsf3x.eo)
@@ -97,8 +93,6 @@ lib/libfastm-elf.a(dnrmpackfx.eo)
 lib/libfastm-elf.a(spackfx.eo)
                               lib/libfastm-elf.a(divsf3x.eo) (__spackf)
 lib/libfastm-elf.a(errno.eo)  lib/libfastm-elf.a(divsf3x.eo) (_errno)
-lib/libfastm-elf.a(floatdisf.eo)
-                              lib/libfastm-elf.a(floatsisf.eo) (___floatdisf)
 lib/libfastm-elf.a(floatundisf.eo)
                               lib/libfastm-elf.a(floatunsisf.eo) (___floatundisf)
 lib/libfastm-elf.a(fpack.eo)  lib/libfastm-elf.a(floatundisf.eo) (__fpack)
@@ -142,15 +136,17 @@ Program Memory  [Origin = 0x200, Length = 0x15600]
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
-.text                        0x200               0xc40          0x1260  (4704)
-.const                       0xe40                0x2c            0x42  (66)
-.text                        0xe6c                0x58            0x84  (132)
-.dinit                       0xec4                0x58            0x84  (132)
-.text                        0xf1c                0xca           0x12f  (303)
-_0x563bc0b8544975fa         0x1000              0x1800          0x2400  (9216)
-.text                       0x2800              0x3be4          0x59d6  (22998)
+.text                        0x200               0xa26           0xf39  (3897)
+.const                       0xc26                0x2c            0x42  (66)
+.text                        0xc52               0x34a           0x4ef  (1263)
+.text                        0xf9c                0x58            0x84  (132)
+_0x563bc0b85454b5d3         0x1000              0x1800          0x2400  (9216)
+.text                       0x2800              0x3270          0x4ba8  (19368)
+.text                       0x5a70               0x3f2           0x5eb  (1515)
+.dinit                      0x5e62                0x58            0x84  (132)
+.text                       0x5eba                0xca           0x12f  (303)
 
-                     Total program memory used (bytes):         0x92af  (37551) 28%
+                     Total program memory used (bytes):         0x8c34  (35892) 27%
 
 
 Data Memory  [Origin = 0x800, Length = 0x4000]
@@ -158,25 +154,25 @@ Data Memory  [Origin = 0x800, Length = 0x4000]
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
 .nbss                        0x800                   0             0x2  (2)
-.bss                         0x802                   0          0x2428  (9256)
-.heap                       0x2c2a                   0           0x200  (512)
-_0x564752e054497768         0x4600                   0            0x40  (64)
+.bss                         0x802                   0          0x23e6  (9190)
+.heap                       0x2be8                   0           0x200  (512)
+_0x5647633c54550098         0x4600                   0            0x40  (64)
 .data                       0x4640                   0            0x2c  (44)
 .bss                        0x466c                   0             0x2  (2)
-_0x5647533c54497768         0x4700                   0            0x80  (128)
-_0x5647539854497768         0x4780                   0            0x80  (128)
+_0x5647639854550098         0x4700                   0            0x80  (128)
+_0x564763f454550098         0x4780                   0            0x80  (128)
 
-                        Total data memory used (bytes):         0x2798  (10136) 61%
+                        Total data memory used (bytes):         0x2756  (10070) 61%
 
 
 Dynamic Memory Usage
 
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
-heap                        0x2c2a                               0x200  (512)
-stack                       0x2e2a                              0x17d6  (6102)
+heap                        0x2be8                               0x200  (512)
+stack                       0x2de8                              0x1818  (6168)
 
-                        Maximum dynamic memory (bytes):         0x19d6  (6614)
+                        Maximum dynamic memory (bytes):         0x1a18  (6680)
 
 
 External Symbols in Data Memory (by address):
@@ -193,47 +189,37 @@ External Symbols in Data Memory (by address):
                     0x08a2                  _Timer10mSec
                     0x08a8                  _Timer1mSec
                     0x08ae                  _Motore1
-                    0x08f2                  _Motore2
-                    0x0936                  _InputCapture1
-                    0x093c                  _InputCapture2
-                    0x0942                  _TestInputCapture1
-                    0x2884                  _Led1Segnalazione
-                    0x2892                  _Led2Segnalazione
-                    0x28a0                  _VOLbits1
-                    0x28a2                  _Old_Indice_Status_Bit1
-                    0x28a4                  _ParametriEEPROM
-                    0x2912                  _IngressiAnalogici
-                    0x291c                  _ComunicationWatchDogTimer
-                    0x291e                  _Uart1RxStatus
-                    0x2920                  _ChkSum1
-                    0x2922                  _Uart2RxStatus
-                    0x2924                  _ChkSum2
-                    0x2925                  _TxNByte_UART2
-                    0x2926                  _TxPointer_UART2
-                    0x2928                  _VarModbus
-                    0x297c                  _StatoSeriale
-                    0x2980                  _RxNByte
-                    0x2982                  _RxPointer
-                    0x2986                  _TxPointer
-                    0x298a                  _TimerOutRxModbus
-                    0x298c                  _TimerRitardoModbus
-                    0x298e                  _TxComplete
-                    0x2990                  _ModbusTxBuff
-                    0x2a90                  _ModbusRxBuff
-                    0x2b90                  _UartRxBuff
-                    0x2c10                  _InterruptTest0
-                    0x2c12                  _InterruptTest1
-                    0x2c14                  _InterruptTest2
-                    0x2c16                  _InterruptTest3
-                    0x2c18                  _InterruptTest4
-                    0x2c1a                  _InterruptTest5
-                    0x2c1c                  _InterruptTest6
-                    0x2c1e                  _InterruptTest7
-                    0x2c20                  _InterruptTest8
-                    0x2c22                  _InterruptTest9
-                    0x2c24                  _InterruptTest10
-                    0x2c26                  _InterruptTest11
-                    0x2c28                  _InterruptTest12
+                    0x08d8                  _Motore2
+                    0x0902                  _InputCapture1
+                    0x0908                  _InputCapture2
+                    0x090e                  _TestInputCapture1
+                    0x2850                  _Led1Segnalazione
+                    0x285e                  _Led2Segnalazione
+                    0x286c                  _VOLbits1
+                    0x286e                  _Old_Indice_Status_Bit1
+                    0x2870                  _ParametriEEPROM
+                    0x28de                  _IngressiAnalogici
+                    0x28e8                  _ComunicationWatchDogTimer
+                    0x28ea                  _Uart1RxStatus
+                    0x28ec                  _ChkSum1
+                    0x28ee                  _Uart2RxStatus
+                    0x28f0                  _ChkSum2
+                    0x28f1                  _TxNByte_UART2
+                    0x28f2                  _TxPointer_UART2
+                    0x28f4                  _TmpSplitLongToWord
+                    0x28f8                  _VarModbus
+                    0x294c                  _StatoSeriale
+                    0x2950                  _RxNByte
+                    0x2952                  _RxPointer
+                    0x2956                  _TxPointer
+                    0x295a                  _TimerOutRxModbus
+                    0x295c                  _TimerRitardoModbus
+                    0x295e                  _TxComplete
+                    0x2960                  _ModbusTxBuff
+                    0x2a60                  _ModbusRxBuff
+                    0x2b60                  _UartRxBuff
+                    0x2be0                  _E1
+                    0x2be4                  _E2
                     0x4600                  _Uart1TxBuff
                     0x4640                  _Ver
                     0x466c                  _dataEEFlags
@@ -242,9 +228,9 @@ External Symbols in Data Memory (by address):
 
 External Symbols in Data Memory (by name):
 
-                    0x2920                  _ChkSum1
-                    0x2924                  _ChkSum2
-                    0x291c                  _ComunicationWatchDogTimer
+                    0x28ec                  _ChkSum1
+                    0x28f0                  _ChkSum2
+                    0x28e8                  _ComunicationWatchDogTimer
                     0x0804                  _CostanteTaraturaAN0
                     0x0808                  _CostanteTaraturaAN1
                     0x080c                  _CostanteTaraturaAN2
@@ -253,51 +239,41 @@ External Symbols in Data Memory (by name):
                     0x4700                  _DmaAdc_A
                     0x4780                  _DmaAdc_B
                     0x0802                  _DmaBuffer
-                    0x2912                  _IngressiAnalogici
-                    0x0936                  _InputCapture1
-                    0x093c                  _InputCapture2
-                    0x2c10                  _InterruptTest0
-                    0x2c12                  _InterruptTest1
-                    0x2c24                  _InterruptTest10
-                    0x2c26                  _InterruptTest11
-                    0x2c28                  _InterruptTest12
-                    0x2c14                  _InterruptTest2
-                    0x2c16                  _InterruptTest3
-                    0x2c18                  _InterruptTest4
-                    0x2c1a                  _InterruptTest5
-                    0x2c1c                  _InterruptTest6
-                    0x2c1e                  _InterruptTest7
-                    0x2c20                  _InterruptTest8
-                    0x2c22                  _InterruptTest9
-                    0x2884                  _Led1Segnalazione
-                    0x2892                  _Led2Segnalazione
-                    0x2a90                  _ModbusRxBuff
-                    0x2990                  _ModbusTxBuff
+                    0x2be0                  _E1
+                    0x2be4                  _E2
+                    0x28de                  _IngressiAnalogici
+                    0x0902                  _InputCapture1
+                    0x0908                  _InputCapture2
+                    0x2850                  _Led1Segnalazione
+                    0x285e                  _Led2Segnalazione
+                    0x2a60                  _ModbusRxBuff
+                    0x2960                  _ModbusTxBuff
                     0x08ae                  _Motore1
-                    0x08f2                  _Motore2
-                    0x28a2                  _Old_Indice_Status_Bit1
+                    0x08d8                  _Motore2
+                    0x286e                  _Old_Indice_Status_Bit1
                     0x0818                  _PID1
                     0x085c                  _PID2
-                    0x28a4                  _ParametriEEPROM
-                    0x2980                  _RxNByte
-                    0x2982                  _RxPointer
+                    0x2870                  _ParametriEEPROM
+                    0x2950                  _RxNByte
+                    0x2952                  _RxPointer
                     0x08a0                  _SampleICSwitcher
-                    0x297c                  _StatoSeriale
-                    0x0942                  _TestInputCapture1
+                    0x294c                  _StatoSeriale
+                    0x090e                  _TestInputCapture1
                     0x08a2                  _Timer10mSec
                     0x08a8                  _Timer1mSec
-                    0x298a                  _TimerOutRxModbus
-                    0x298c                  _TimerRitardoModbus
-                    0x298e                  _TxComplete
-                    0x2925                  _TxNByte_UART2
-                    0x2986                  _TxPointer
-                    0x2926                  _TxPointer_UART2
-                    0x291e                  _Uart1RxStatus
+                    0x295a                  _TimerOutRxModbus
+                    0x295c                  _TimerRitardoModbus
+                    0x28f4                  _TmpSplitLongToWord
+                    0x295e                  _TxComplete
+                    0x28f1                  _TxNByte_UART2
+                    0x2956                  _TxPointer
+                    0x28f2                  _TxPointer_UART2
+                    0x28ea                  _Uart1RxStatus
                     0x4600                  _Uart1TxBuff
-                    0x2922                  _Uart2RxStatus
-                    0x2b90                  _UartRxBuff
-                    0x28a0                  _VOLbits1
-                    0x2928                  _VarModbus
+                    0x28ee                  _Uart2RxStatus
+                    0x2b60                  _UartRxBuff
+                    0x286c                  _VOLbits1
+                    0x28f8                  _VarModbus
                     0x4640                  _Ver
                     0x466c                  _dataEEFlags
 
@@ -310,252 +286,234 @@ External Symbols in Program Memory (by address):
                   0x00029a                  ___divsi3
                   0x0002b8                  ___fixsfsi
                   0x0002fa                  ___fixunssfsi
-                  0x000330                  ___floatsisf
-                  0x000336                  ___floatunsisf
-                  0x00033a                  __funpack
-                  0x0003bc                  ___udivmoddi3
-                  0x000480                  ___udivdi3
-                  0x00048e                  ___umoddi3
-                  0x000496                  ___divdi3
-                  0x0004fc                  ___moddi3
-                  0x000558                  ___subsf3
-                  0x000558                  ___subsf3x
-                  0x00056a                  ___addsf3
-                  0x00056a                  ___addsf3x
-                  0x000734                  ___mulsf3
-                  0x000734                  ___mulsf3x
-                  0x000840                  ___udivsi3x
-                  0x000840                  ___udivsi3
-                  0x00091a                  __unpackdnrmf
-                  0x000978                  ___divsf3x
-                  0x000978                  ___divsf3
-                  0x000b0a                  __sdivf
-                  0x000b36                  __propnanf
-                  0x000b48                  __unpackf
-                  0x000bae                  __dnrmpackf
-                  0x000c02                  __spackf
-                  0x000ca8                  ___floatdisf
-                  0x000cc8                  ___floatundisf
-                  0x000d26                  __fpack
-                  0x000d72                  __typef
-                  0x000da6                  _ConfigIntMCPWM1
-                  0x000dee                  _OpenMCPWM1
-                  0x000dfa                  _SetDCMCPWM1
-                  0x000e10                  _SetMCPWM1DeadTimeGeneration
-                  0x000e14                  _OpenTimer1
-                  0x000e1c                  _ReadUART1
-                  0x000e2e                  _ReadUART2
-                  0x000e40                  _Tcy
-                  0x000e44                  _TabMaskBitModbus
-                  0x000e4c                  _TabMaskBitIO
-                  0x000e6c                  _GestioneAllarmi
-                  0x000e72                  _SetLedErrorCode
-                  0x000eb4                  _GestioneLed1ErrorCode
-                  0x000ebc                  _GestioneLed2ErrorCode
-                  0x000f1c                  _GestioneWatchdog
-                  0x000f6e                  _GestioneTimerSW
-                  0x000fa4                  _ReloadTimerSW
-                  0x000fb4                  _ReadPMHigh
-                  0x000fb8                  _ReadPMLow
-                  0x000fbc                  _UnlockPM
-                  0x000fd6                  _WritePMHigh
-                  0x000fda                  _WritePMHighB
-                  0x000fde                  _WritePMLow
-                  0x000fe2                  _WritePMLowB
+                  0x000330                  ___floatunsisf
+                  0x000334                  __funpack
+                  0x00035e                  ___subsf3
+                  0x00035e                  ___subsf3x
+                  0x000370                  ___addsf3
+                  0x000370                  ___addsf3x
+                  0x00053a                  ___mulsf3
+                  0x00053a                  ___mulsf3x
+                  0x000646                  ___udivsi3x
+                  0x000646                  ___udivsi3
+                  0x000720                  __unpackdnrmf
+                  0x00077e                  ___divsf3x
+                  0x00077e                  ___divsf3
+                  0x000910                  __sdivf
+                  0x00093c                  __propnanf
+                  0x00094e                  __unpackf
+                  0x0009b4                  __dnrmpackf
+                  0x000a08                  __spackf
+                  0x000aae                  ___floatundisf
+                  0x000b0c                  __fpack
+                  0x000b58                  __typef
+                  0x000b8c                  _ConfigIntMCPWM1
+                  0x000bd4                  _OpenMCPWM1
+                  0x000be0                  _SetDCMCPWM1
+                  0x000bf6                  _SetMCPWM1DeadTimeGeneration
+                  0x000bfa                  _OpenTimer1
+                  0x000c02                  _ReadUART1
+                  0x000c14                  _ReadUART2
+                  0x000c26                  _Tcy
+                  0x000c2a                  _TabMaskBitModbus
+                  0x000c32                  _TabMaskBitIO
+                  0x000c52                  _Usart1Setting
+                  0x000ce2                  _Usart2Setting
+                  0x000d98                  _TxString
+                  0x000e24                  __DMA6Interrupt
+                  0x000e42                  __U1ErrInterrupt
+                  0x000e58                  __U2ErrInterrupt
+                  0x000e6e                  __U1RXInterrupt
+                  0x000ede                  __U2RXInterrupt
+                  0x000f50                  __U2TXInterrupt
+                  0x000f9c                  _GestioneAllarmi
+                  0x000fa2                  _SetLedErrorCode
+                  0x000fe4                  _GestioneLed1ErrorCode
+                  0x000fec                  _GestioneLed2ErrorCode
                   0x001000                  _emulationPages
                   0x002800                  _LeggiWord
-                  0x002b58                  _ScriviWord
-                  0x0030f8                  _LeggiBit
-                  0x003126                  _ScriviBit
-                  0x003182                  _ModbusRoutine
-                  0x003302                  _ModbusRxRoutine
-                  0x003372                  _ModbusReadBit
-                  0x00351e                  _ModbusReadWord
-                  0x003684                  _ModbusWriteSingleBit
-                  0x003722                  _ModbusWriteSingleWord
-                  0x0037b0                  _ModbusWriteMultipleBits
-                  0x0038e0                  _ModbusWriteMultipleWords
-                  0x003a16                  _ModbusErroreResponse
-                  0x003ac2                  _ModbusCheckCRC16
-                  0x003b28                  _FreeRxBuffer
-                  0x003b50                  _InizializzaSeriale
-                  0x003b80                  _UnlockWrite
-                  0x003bca                  _GetPageStatus
-                  0x003c74                  _ErasePage
-                  0x003ce2                  _GetNextAvailCount
-                  0x003d92                  _PackEE
-                  0x004112                  _DataEEInit
-                  0x0042be                  _DataEERead
-                  0x0043d0                  _DataEEWrite
-                  0x0045a6                  _main
-                  0x0046ae                  _GestioneSetpoint
-                  0x004790                  __T1Interrupt
-                  0x004822                  __T2Interrupt
-                  0x004864                  __T3Interrupt
-                  0x0048a6                  __IC1Interrupt
-                  0x004974                  __IC2Interrupt
-                  0x004a3c                  _AggiornaDatiVelocita
-                  0x004b22                  _AggiornaVariabiliModbus
-                  0x004b70                  _Costante_Conversione_Vlin_to_Vang
-                  0x004bdc                  __StackError
-                  0x004bfe                  __OscillatorFail
-                  0x004c0c                  __MathError
-                  0x004c1a                  __DMACError
-                  0x004c28                  _Pid1
-                  0x004cc4                  _Pid2
-                  0x004d60                  _Pid
-                  0x005152                  _PidReset
-                  0x0051b4                  _InitializationEEPROM
-                  0x0051c4                  _RestoreEEPROMData
-                  0x0056ae                  _InitADC
-                  0x00576c                  _LeggiADC
-                  0x005834                  _MediaADC
-                  0x0058dc                  _TaraturaAnalogiche
-                  0x005b1e                  __DMA7Interrupt
-                  0x005b68                  _Usart1Setting
-                  0x005bf8                  _Usart2Setting
-                  0x005cae                  _TxString
-                  0x005d3a                  __DMA6Interrupt
-                  0x005d64                  __U1ErrInterrupt
-                  0x005d86                  __U2ErrInterrupt
-                  0x005da8                  __U1RXInterrupt
-                  0x005e24                  __U2RXInterrupt
-                  0x005ea2                  __U2TXInterrupt
-                  0x005efa                  _Settings
-                  0x00616e                  _ISR_Settings
-                  0x0061e6                  _InitMotorStructure
-                  0x006246                  _UpdateMotorStructure
-                  0x006354                  _GestioneSicurezzaMotore
-                  0x006386                  _MotorControlEnable
+                  0x002b30                  _ScriviWord
+                  0x0030d0                  _LeggiBit
+                  0x0030fe                  _ScriviBit
+                  0x00315a                  _ModbusRoutine
+                  0x0032da                  _ModbusRxRoutine
+                  0x00334a                  _ModbusReadBit
+                  0x0034f6                  _ModbusReadWord
+                  0x00365c                  _ModbusWriteSingleBit
+                  0x0036fa                  _ModbusWriteSingleWord
+                  0x003788                  _ModbusWriteMultipleBits
+                  0x0038b8                  _ModbusWriteMultipleWords
+                  0x0039ee                  _ModbusErroreResponse
+                  0x003a9a                  _ModbusCheckCRC16
+                  0x003b00                  _FreeRxBuffer
+                  0x003b28                  _InizializzaSeriale
+                  0x003b58                  _UnlockWrite
+                  0x003ba2                  _GetPageStatus
+                  0x003c4c                  _ErasePage
+                  0x003cba                  _GetNextAvailCount
+                  0x003d6a                  _PackEE
+                  0x0040ea                  _DataEEInit
+                  0x004296                  _DataEERead
+                  0x0043a8                  _DataEEWrite
+                  0x00457e                  _Pid1
+                  0x004644                  _Pid2
+                  0x00470a                  _Pid
+                  0x004ad4                  _PidReset
+                  0x004b36                  _main
+                  0x004c78                  _GestioneSetpoint
+                  0x004d42                  __T1Interrupt
+                  0x004dc8                  __T2Interrupt
+                  0x004dfa                  __T3Interrupt
+                  0x004e2c                  __IC1Interrupt
+                  0x004efc                  __IC2Interrupt
+                  0x004fc6                  _AggiornaVariabiliModbus
+                  0x00507c                  __StackError
+                  0x00509e                  __OscillatorFail
+                  0x0050ac                  __MathError
+                  0x0050ba                  __DMACError
+                  0x0050c8                  _InitializationEEPROM
+                  0x0050d8                  _RestoreEEPROMData
+                  0x0055c2                  _InitADC
+                  0x005680                  _LeggiADC
+                  0x005748                  _MediaADC
+                  0x0057f0                  _TaraturaAnalogiche
+                  0x005a32                  __DMA7Interrupt
+                  0x005a70                  _Settings
+                  0x005cf0                  _ISR_Settings
+                  0x005d68                  _InitMotorStructure
+                  0x005db8                  _UpdateMotorStructure
+                  0x005dd2                  _GestioneSicurezzaMotore
+                  0x005e04                  _MotorControlEnable
+                  0x005eba                  _GestioneWatchdog
+                  0x005f0c                  _GestioneTimerSW
+                  0x005f42                  _ReloadTimerSW
+                  0x005f52                  _ReadPMHigh
+                  0x005f56                  _ReadPMLow
+                  0x005f5a                  _UnlockPM
+                  0x005f74                  _WritePMHigh
+                  0x005f78                  _WritePMHighB
+                  0x005f7c                  _WritePMLow
+                  0x005f80                  _WritePMLowB
                   0xf80004                  __FGS.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x004a3c                  _AggiornaDatiVelocita
-                  0x004b22                  _AggiornaVariabiliModbus
-                  0x000da6                  _ConfigIntMCPWM1
-                  0x004b70                  _Costante_Conversione_Vlin_to_Vang
-                  0x004112                  _DataEEInit
-                  0x0042be                  _DataEERead
-                  0x0043d0                  _DataEEWrite
-                  0x003c74                  _ErasePage
-                  0x003b28                  _FreeRxBuffer
-                  0x000e6c                  _GestioneAllarmi
-                  0x000eb4                  _GestioneLed1ErrorCode
-                  0x000ebc                  _GestioneLed2ErrorCode
-                  0x0046ae                  _GestioneSetpoint
-                  0x006354                  _GestioneSicurezzaMotore
-                  0x000f6e                  _GestioneTimerSW
-                  0x000f1c                  _GestioneWatchdog
-                  0x003ce2                  _GetNextAvailCount
-                  0x003bca                  _GetPageStatus
-                  0x00616e                  _ISR_Settings
-                  0x0056ae                  _InitADC
-                  0x0061e6                  _InitMotorStructure
-                  0x0051b4                  _InitializationEEPROM
-                  0x003b50                  _InizializzaSeriale
-                  0x00576c                  _LeggiADC
-                  0x0030f8                  _LeggiBit
+                  0x004fc6                  _AggiornaVariabiliModbus
+                  0x000b8c                  _ConfigIntMCPWM1
+                  0x0040ea                  _DataEEInit
+                  0x004296                  _DataEERead
+                  0x0043a8                  _DataEEWrite
+                  0x003c4c                  _ErasePage
+                  0x003b00                  _FreeRxBuffer
+                  0x000f9c                  _GestioneAllarmi
+                  0x000fe4                  _GestioneLed1ErrorCode
+                  0x000fec                  _GestioneLed2ErrorCode
+                  0x004c78                  _GestioneSetpoint
+                  0x005dd2                  _GestioneSicurezzaMotore
+                  0x005f0c                  _GestioneTimerSW
+                  0x005eba                  _GestioneWatchdog
+                  0x003cba                  _GetNextAvailCount
+                  0x003ba2                  _GetPageStatus
+                  0x005cf0                  _ISR_Settings
+                  0x0055c2                  _InitADC
+                  0x005d68                  _InitMotorStructure
+                  0x0050c8                  _InitializationEEPROM
+                  0x003b28                  _InizializzaSeriale
+                  0x005680                  _LeggiADC
+                  0x0030d0                  _LeggiBit
                   0x002800                  _LeggiWord
-                  0x005834                  _MediaADC
-                  0x003ac2                  _ModbusCheckCRC16
-                  0x003a16                  _ModbusErroreResponse
-                  0x003372                  _ModbusReadBit
-                  0x00351e                  _ModbusReadWord
-                  0x003182                  _ModbusRoutine
-                  0x003302                  _ModbusRxRoutine
-                  0x0037b0                  _ModbusWriteMultipleBits
-                  0x0038e0                  _ModbusWriteMultipleWords
-                  0x003684                  _ModbusWriteSingleBit
-                  0x003722                  _ModbusWriteSingleWord
-                  0x006386                  _MotorControlEnable
-                  0x000dee                  _OpenMCPWM1
-                  0x000e14                  _OpenTimer1
-                  0x003d92                  _PackEE
-                  0x004d60                  _Pid
-                  0x004c28                  _Pid1
-                  0x004cc4                  _Pid2
-                  0x005152                  _PidReset
-                  0x000fb4                  _ReadPMHigh
-                  0x000fb8                  _ReadPMLow
-                  0x000e1c                  _ReadUART1
-                  0x000e2e                  _ReadUART2
-                  0x000fa4                  _ReloadTimerSW
-                  0x0051c4                  _RestoreEEPROMData
-                  0x003126                  _ScriviBit
-                  0x002b58                  _ScriviWord
-                  0x000dfa                  _SetDCMCPWM1
-                  0x000e72                  _SetLedErrorCode
-                  0x000e10                  _SetMCPWM1DeadTimeGeneration
-                  0x005efa                  _Settings
-                  0x000e4c                  _TabMaskBitIO
-                  0x000e44                  _TabMaskBitModbus
-                  0x0058dc                  _TaraturaAnalogiche
-                  0x000e40                  _Tcy
-                  0x005cae                  _TxString
-                  0x000fbc                  _UnlockPM
-                  0x003b80                  _UnlockWrite
-                  0x006246                  _UpdateMotorStructure
-                  0x005b68                  _Usart1Setting
-                  0x005bf8                  _Usart2Setting
-                  0x000fd6                  _WritePMHigh
-                  0x000fda                  _WritePMHighB
-                  0x000fde                  _WritePMLow
-                  0x000fe2                  _WritePMLowB
-                  0x005d3a                  __DMA6Interrupt
-                  0x005b1e                  __DMA7Interrupt
-                  0x004c1a                  __DMACError
+                  0x005748                  _MediaADC
+                  0x003a9a                  _ModbusCheckCRC16
+                  0x0039ee                  _ModbusErroreResponse
+                  0x00334a                  _ModbusReadBit
+                  0x0034f6                  _ModbusReadWord
+                  0x00315a                  _ModbusRoutine
+                  0x0032da                  _ModbusRxRoutine
+                  0x003788                  _ModbusWriteMultipleBits
+                  0x0038b8                  _ModbusWriteMultipleWords
+                  0x00365c                  _ModbusWriteSingleBit
+                  0x0036fa                  _ModbusWriteSingleWord
+                  0x005e04                  _MotorControlEnable
+                  0x000bd4                  _OpenMCPWM1
+                  0x000bfa                  _OpenTimer1
+                  0x003d6a                  _PackEE
+                  0x00470a                  _Pid
+                  0x00457e                  _Pid1
+                  0x004644                  _Pid2
+                  0x004ad4                  _PidReset
+                  0x005f52                  _ReadPMHigh
+                  0x005f56                  _ReadPMLow
+                  0x000c02                  _ReadUART1
+                  0x000c14                  _ReadUART2
+                  0x005f42                  _ReloadTimerSW
+                  0x0050d8                  _RestoreEEPROMData
+                  0x0030fe                  _ScriviBit
+                  0x002b30                  _ScriviWord
+                  0x000be0                  _SetDCMCPWM1
+                  0x000fa2                  _SetLedErrorCode
+                  0x000bf6                  _SetMCPWM1DeadTimeGeneration
+                  0x005a70                  _Settings
+                  0x000c32                  _TabMaskBitIO
+                  0x000c2a                  _TabMaskBitModbus
+                  0x0057f0                  _TaraturaAnalogiche
+                  0x000c26                  _Tcy
+                  0x000d98                  _TxString
+                  0x005f5a                  _UnlockPM
+                  0x003b58                  _UnlockWrite
+                  0x005db8                  _UpdateMotorStructure
+                  0x000c52                  _Usart1Setting
+                  0x000ce2                  _Usart2Setting
+                  0x005f74                  _WritePMHigh
+                  0x005f78                  _WritePMHighB
+                  0x005f7c                  _WritePMLow
+                  0x005f80                  _WritePMLowB
+                  0x000e24                  __DMA6Interrupt
+                  0x005a32                  __DMA7Interrupt
+                  0x0050ba                  __DMACError
                   0xf80004                  __FGS.sec
-                  0x0048a6                  __IC1Interrupt
-                  0x004974                  __IC2Interrupt
-                  0x004c0c                  __MathError
-                  0x004bfe                  __OscillatorFail
-                  0x004bdc                  __StackError
-                  0x004790                  __T1Interrupt
-                  0x004822                  __T2Interrupt
-                  0x004864                  __T3Interrupt
-                  0x005d64                  __U1ErrInterrupt
-                  0x005da8                  __U1RXInterrupt
-                  0x005d86                  __U2ErrInterrupt
-                  0x005e24                  __U2RXInterrupt
-                  0x005ea2                  __U2TXInterrupt
-                  0x00056a                  ___addsf3
-                  0x00056a                  ___addsf3x
-                  0x000496                  ___divdi3
-                  0x000978                  ___divsf3
-                  0x000978                  ___divsf3x
+                  0x004e2c                  __IC1Interrupt
+                  0x004efc                  __IC2Interrupt
+                  0x0050ac                  __MathError
+                  0x00509e                  __OscillatorFail
+                  0x00507c                  __StackError
+                  0x004d42                  __T1Interrupt
+                  0x004dc8                  __T2Interrupt
+                  0x004dfa                  __T3Interrupt
+                  0x000e42                  __U1ErrInterrupt
+                  0x000e6e                  __U1RXInterrupt
+                  0x000e58                  __U2ErrInterrupt
+                  0x000ede                  __U2RXInterrupt
+                  0x000f50                  __U2TXInterrupt
+                  0x000370                  ___addsf3
+                  0x000370                  ___addsf3x
+                  0x00077e                  ___divsf3
+                  0x00077e                  ___divsf3x
                   0x00029a                  ___divsi3
                   0x0002b8                  ___fixsfsi
                   0x0002fa                  ___fixunssfsi
-                  0x000ca8                  ___floatdisf
-                  0x000330                  ___floatsisf
-                  0x000cc8                  ___floatundisf
-                  0x000336                  ___floatunsisf
-                  0x0004fc                  ___moddi3
-                  0x000734                  ___mulsf3
-                  0x000734                  ___mulsf3x
-                  0x000558                  ___subsf3
-                  0x000558                  ___subsf3x
-                  0x000480                  ___udivdi3
-                  0x0003bc                  ___udivmoddi3
-                  0x000840                  ___udivsi3
-                  0x000840                  ___udivsi3x
-                  0x00048e                  ___umoddi3
+                  0x000aae                  ___floatundisf
+                  0x000330                  ___floatunsisf
+                  0x00053a                  ___mulsf3
+                  0x00053a                  ___mulsf3x
+                  0x00035e                  ___subsf3
+                  0x00035e                  ___subsf3x
+                  0x000646                  ___udivsi3
+                  0x000646                  ___udivsi3x
                   0x00023c                  __data_init
                   0x00023c                  __data_init_standard
-                  0x000bae                  __dnrmpackf
-                  0x000d26                  __fpack
-                  0x00033a                  __funpack
-                  0x000b36                  __propnanf
+                  0x0009b4                  __dnrmpackf
+                  0x000b0c                  __fpack
+                  0x000334                  __funpack
+                  0x00093c                  __propnanf
                   0x00022c                  __psv_init
                   0x000200                  __resetPRI
-                  0x000b0a                  __sdivf
-                  0x000c02                  __spackf
-                  0x000d72                  __typef
-                  0x00091a                  __unpackdnrmf
-                  0x000b48                  __unpackf
+                  0x000910                  __sdivf
+                  0x000a08                  __spackf
+                  0x000b58                  __typef
+                  0x000720                  __unpackdnrmf
+                  0x00094e                  __unpackf
                   0x001000                  _emulationPages
-                  0x0045a6                  _main
+                  0x004b36                  _main
 
 Configurazione della memoria
 
@@ -630,7 +588,7 @@ LOAD /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a
                   0x000002          0x2 SHORT 0x0 ((ABSOLUTE (__reset) >> 0x10) & 0x7f)
                   0x000003          0x2 SHORT 0x0
 
-.text             0x000200        0xc40
+.text             0x000200        0xa26
  *(.init)
  .init            0x000200         0x3c /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
                   0x000200                  __reset
@@ -653,82 +611,57 @@ LOAD /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a
  .libm.fixunssfsi
                   0x0002fa         0x36 lib/libfastm-elf.a(fixunssfsi.eo)
                   0x0002fa                  ___fixunssfsi
- .libm.floatsisf
-                  0x000330          0x6 lib/libfastm-elf.a(floatsisf.eo)
-                  0x000330                  ___floatsisf
  .libm.floatunsisf
-                  0x000336          0x4 lib/libfastm-elf.a(floatunsisf.eo)
-                  0x000336                  ___floatunsisf
- .libm.funpack    0x00033a         0x2a lib/libfastm-elf.a(funpack.eo)
-                  0x00033a                  __funpack
- .libm.__PplusBdi.__PplusBdi
-                  0x000364         0x28 lib/libfastm-elf.a(divmoddi3.eo)
- .libm.__PminusBdi.__PminusBdi
-                  0x00038c         0x30 lib/libfastm-elf.a(divmoddi3.eo)
- .libm.__udivmoddi3.__udivmoddi3
-                  0x0003bc         0xc4 lib/libfastm-elf.a(divmoddi3.eo)
-                  0x0003bc                  ___udivmoddi3
- .libm.__udivdi3.__udivdi3
-                  0x000480          0xe lib/libfastm-elf.a(divmoddi3.eo)
-                  0x000480                  ___udivdi3
- .libm.__umoddi3.__umoddi3
-                  0x00048e          0x8 lib/libfastm-elf.a(divmoddi3.eo)
-                  0x00048e                  ___umoddi3
- .libm.__divdi3.__divdi3
-                  0x000496         0x66 lib/libfastm-elf.a(divmoddi3.eo)
-                  0x000496                  ___divdi3
- .libm.__moddi3.__moddi3
-                  0x0004fc         0x5c lib/libfastm-elf.a(divmoddi3.eo)
-                  0x0004fc                  ___moddi3
- .libmx           0x000558        0x1dc lib/libfastm-elf.a(addsf3x.eo)
-                  0x000558                  ___subsf3
-                  0x000558                  ___subsf3x
-                  0x00056a                  ___addsf3
-                  0x00056a                  ___addsf3x
- .libmx           0x000734        0x10c lib/libfastm-elf.a(mulsf3x.eo)
-                  0x000734                  ___mulsf3
-                  0x000734                  ___mulsf3x
- .libmx           0x000840         0xda lib/libfastm-elf.a(udivsi3x.eo)
-                  0x000840                  ___udivsi3x
-                  0x000840                  ___udivsi3
- .libmx           0x00091a         0x5e lib/libfastm-elf.a(unpackdnrmfx.eo)
-                  0x00091a                  __unpackdnrmf
- .libmx           0x000978        0x1be lib/libfastm-elf.a(divsf3x.eo)
-                  0x000978                  ___divsf3x
-                  0x000978                  ___divsf3
-                  0x000b0a                  __sdivf
- .libmx           0x000b36         0x12 lib/libfastm-elf.a(propnanfx.eo)
-                  0x000b36                  __propnanf
- .libmx           0x000b48         0x66 lib/libfastm-elf.a(unpackfx.eo)
-                  0x000b48                  __unpackf
- .libmx           0x000bae         0x54 lib/libfastm-elf.a(dnrmpackfx.eo)
-                  0x000bae                  __dnrmpackf
- .libmx           0x000c02         0xa6 lib/libfastm-elf.a(spackfx.eo)
-                  0x000c02                  __spackf
- .libm.floatdisf
-                  0x000ca8         0x20 lib/libfastm-elf.a(floatdisf.eo)
-                  0x000ca8                  ___floatdisf
+                  0x000330          0x4 lib/libfastm-elf.a(floatunsisf.eo)
+                  0x000330                  ___floatunsisf
+ .libm.funpack    0x000334         0x2a lib/libfastm-elf.a(funpack.eo)
+                  0x000334                  __funpack
+ .libmx           0x00035e        0x1dc lib/libfastm-elf.a(addsf3x.eo)
+                  0x00035e                  ___subsf3
+                  0x00035e                  ___subsf3x
+                  0x000370                  ___addsf3
+                  0x000370                  ___addsf3x
+ .libmx           0x00053a        0x10c lib/libfastm-elf.a(mulsf3x.eo)
+                  0x00053a                  ___mulsf3
+                  0x00053a                  ___mulsf3x
+ .libmx           0x000646         0xda lib/libfastm-elf.a(udivsi3x.eo)
+                  0x000646                  ___udivsi3x
+                  0x000646                  ___udivsi3
+ .libmx           0x000720         0x5e lib/libfastm-elf.a(unpackdnrmfx.eo)
+                  0x000720                  __unpackdnrmf
+ .libmx           0x00077e        0x1be lib/libfastm-elf.a(divsf3x.eo)
+                  0x00077e                  ___divsf3x
+                  0x00077e                  ___divsf3
+                  0x000910                  __sdivf
+ .libmx           0x00093c         0x12 lib/libfastm-elf.a(propnanfx.eo)
+                  0x00093c                  __propnanf
+ .libmx           0x00094e         0x66 lib/libfastm-elf.a(unpackfx.eo)
+                  0x00094e                  __unpackf
+ .libmx           0x0009b4         0x54 lib/libfastm-elf.a(dnrmpackfx.eo)
+                  0x0009b4                  __dnrmpackf
+ .libmx           0x000a08         0xa6 lib/libfastm-elf.a(spackfx.eo)
+                  0x000a08                  __spackf
  .libm.floatundisf
-                  0x000cc8         0x5e lib/libfastm-elf.a(floatundisf.eo)
-                  0x000cc8                  ___floatundisf
- .libm.fpack      0x000d26         0x4c lib/libfastm-elf.a(fpack.eo)
-                  0x000d26                  __fpack
- .libmx           0x000d72         0x34 lib/libfastm-elf.a(typefx.eo)
-                  0x000d72                  __typef
- .libperi         0x000da6         0x48 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ConfigIntMCPWM1.o)
-                  0x000da6                  _ConfigIntMCPWM1
- .libperi         0x000dee          0xc /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenMCPWM1.o)
-                  0x000dee                  _OpenMCPWM1
- .libperi         0x000dfa         0x16 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetDutyCycleMCPWM1.o)
-                  0x000dfa                  _SetDCMCPWM1
- .libperi         0x000e10          0x4 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetMCPWM1DeadTimeGeneration.o)
-                  0x000e10                  _SetMCPWM1DeadTimeGeneration
- .libperi         0x000e14          0x8 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenTimer1.o)
-                  0x000e14                  _OpenTimer1
- .libperi         0x000e1c         0x12 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART1.o)
-                  0x000e1c                  _ReadUART1
- .libperi         0x000e2e         0x12 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART2.o)
-                  0x000e2e                  _ReadUART2
+                  0x000aae         0x5e lib/libfastm-elf.a(floatundisf.eo)
+                  0x000aae                  ___floatundisf
+ .libm.fpack      0x000b0c         0x4c lib/libfastm-elf.a(fpack.eo)
+                  0x000b0c                  __fpack
+ .libmx           0x000b58         0x34 lib/libfastm-elf.a(typefx.eo)
+                  0x000b58                  __typef
+ .libperi         0x000b8c         0x48 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ConfigIntMCPWM1.o)
+                  0x000b8c                  _ConfigIntMCPWM1
+ .libperi         0x000bd4          0xc /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenMCPWM1.o)
+                  0x000bd4                  _OpenMCPWM1
+ .libperi         0x000be0         0x16 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetDutyCycleMCPWM1.o)
+                  0x000be0                  _SetDCMCPWM1
+ .libperi         0x000bf6          0x4 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetMCPWM1DeadTimeGeneration.o)
+                  0x000bf6                  _SetMCPWM1DeadTimeGeneration
+ .libperi         0x000bfa          0x8 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenTimer1.o)
+                  0x000bfa                  _OpenTimer1
+ .libperi         0x000c02         0x12 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART1.o)
+                  0x000c02                  _ReadUART1
+ .libperi         0x000c14         0x12 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART2.o)
+                  0x000c14                  _ReadUART2
 
 usercode
  *(usercode)
@@ -779,82 +712,82 @@ __FUID3
 .comment
  *(.comment)
 
-.debug_info       0x000000       0xba55
+.debug_info       0x000000       0xb397
  *(.debug_info)
- .debug_info      0x000000       0x1574 build/Max_xxv/production/src/adc.o
- .debug_info      0x001574       0x1dd5 build/Max_xxv/production/src/main.o
- .debug_info      0x003349        0xe28 build/Max_xxv/production/src/modbus.o
- .debug_info      0x004171        0xaff build/Max_xxv/production/src/pid.o
- .debug_info      0x004c70       0x3536 build/Max_xxv/production/src/settings.o
- .debug_info      0x0081a6        0x1d5 build/Max_xxv/production/src/sw_timer.o
- .debug_info      0x00837b       0x1905 build/Max_xxv/production/src/uart.o
- .debug_info      0x009c80        0x575 build/Max_xxv/production/src/Eeprom.o
- .debug_info      0x00a1f5        0x628 build/Max_xxv/production/src/Alarm.o
- .debug_info      0x00a81d        0x31f build/Max_xxv/production/src/Led.o
- .debug_info      0x00ab3c        0x5e3 build/Max_xxv/production/src/motor.o
- .debug_info      0x00b11f        0x8a5 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
- .debug_info      0x00b9c4         0x91 build/Max_xxv/production/src/Flash_Operations.o
+ .debug_info      0x000000       0x1569 build/Max_xxv/production/src/adc.o
+ .debug_info      0x001569       0x1b97 build/Max_xxv/production/src/main.o
+ .debug_info      0x003100        0xb6a build/Max_xxv/production/src/modbus.o
+ .debug_info      0x003c6a        0xaa4 build/Max_xxv/production/src/pid.o
+ .debug_info      0x00470e       0x34d8 build/Max_xxv/production/src/settings.o
+ .debug_info      0x007be6        0x1e4 build/Max_xxv/production/src/sw_timer.o
+ .debug_info      0x007dca       0x1878 build/Max_xxv/production/src/uart.o
+ .debug_info      0x009642        0x584 build/Max_xxv/production/src/Eeprom.o
+ .debug_info      0x009bc6        0x5ca build/Max_xxv/production/src/Alarm.o
+ .debug_info      0x00a190        0x32e build/Max_xxv/production/src/Led.o
+ .debug_info      0x00a4be        0x585 build/Max_xxv/production/src/motor.o
+ .debug_info      0x00aa43        0x8b4 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+ .debug_info      0x00b2f7         0xa0 build/Max_xxv/production/src/Flash_Operations.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0xf76
+.debug_abbrev     0x000000        0xf4b
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x18a build/Max_xxv/production/src/adc.o
- .debug_abbrev    0x00018a        0x25d build/Max_xxv/production/src/main.o
- .debug_abbrev    0x0003e7        0x17d build/Max_xxv/production/src/modbus.o
- .debug_abbrev    0x000564        0x18c build/Max_xxv/production/src/pid.o
- .debug_abbrev    0x0006f0        0x17b build/Max_xxv/production/src/settings.o
- .debug_abbrev    0x00086b         0xa8 build/Max_xxv/production/src/sw_timer.o
- .debug_abbrev    0x000913        0x165 build/Max_xxv/production/src/uart.o
- .debug_abbrev    0x000a78         0xd7 build/Max_xxv/production/src/Eeprom.o
- .debug_abbrev    0x000b4f         0x98 build/Max_xxv/production/src/Alarm.o
- .debug_abbrev    0x000be7         0xa6 build/Max_xxv/production/src/Led.o
- .debug_abbrev    0x000c8d        0x113 build/Max_xxv/production/src/motor.o
- .debug_abbrev    0x000da0        0x1c2 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
- .debug_abbrev    0x000f62         0x14 build/Max_xxv/production/src/Flash_Operations.o
+ .debug_abbrev    0x00018a        0x244 build/Max_xxv/production/src/main.o
+ .debug_abbrev    0x0003ce        0x17d build/Max_xxv/production/src/modbus.o
+ .debug_abbrev    0x00054b        0x18c build/Max_xxv/production/src/pid.o
+ .debug_abbrev    0x0006d7        0x169 build/Max_xxv/production/src/settings.o
+ .debug_abbrev    0x000840         0xa8 build/Max_xxv/production/src/sw_timer.o
+ .debug_abbrev    0x0008e8        0x165 build/Max_xxv/production/src/uart.o
+ .debug_abbrev    0x000a4d         0xd7 build/Max_xxv/production/src/Eeprom.o
+ .debug_abbrev    0x000b24         0x98 build/Max_xxv/production/src/Alarm.o
+ .debug_abbrev    0x000bbc         0xa6 build/Max_xxv/production/src/Led.o
+ .debug_abbrev    0x000c62        0x113 build/Max_xxv/production/src/motor.o
+ .debug_abbrev    0x000d75        0x1c2 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+ .debug_abbrev    0x000f37         0x14 build/Max_xxv/production/src/Flash_Operations.o
 
-.debug_line       0x000000       0x42ed
+.debug_line       0x000000       0x412b
  *(.debug_line)
- .debug_line      0x000000        0x550 build/Max_xxv/production/src/adc.o
- .debug_line      0x000550        0x804 build/Max_xxv/production/src/main.o
- .debug_line      0x000d54       0x10bd build/Max_xxv/production/src/modbus.o
- .debug_line      0x001e11        0x45e build/Max_xxv/production/src/pid.o
- .debug_line      0x00226f        0x4c9 build/Max_xxv/production/src/settings.o
- .debug_line      0x002738         0x9d build/Max_xxv/production/src/sw_timer.o
- .debug_line      0x0027d5        0x61d build/Max_xxv/production/src/uart.o
- .debug_line      0x002df2        0x656 build/Max_xxv/production/src/Eeprom.o
- .debug_line      0x003448         0xc1 build/Max_xxv/production/src/Alarm.o
- .debug_line      0x003509         0xe4 build/Max_xxv/production/src/Led.o
- .debug_line      0x0035ed        0x295 build/Max_xxv/production/src/motor.o
- .debug_line      0x003882        0xa10 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
- .debug_line      0x004292         0x5b build/Max_xxv/production/src/Flash_Operations.o
+ .debug_line      0x000000        0x540 build/Max_xxv/production/src/adc.o
+ .debug_line      0x000540        0x762 build/Max_xxv/production/src/main.o
+ .debug_line      0x000ca2       0x10bd build/Max_xxv/production/src/modbus.o
+ .debug_line      0x001d5f        0x41e build/Max_xxv/production/src/pid.o
+ .debug_line      0x00217d        0x4d9 build/Max_xxv/production/src/settings.o
+ .debug_line      0x002656         0x9d build/Max_xxv/production/src/sw_timer.o
+ .debug_line      0x0026f3        0x5bd build/Max_xxv/production/src/uart.o
+ .debug_line      0x002cb0        0x656 build/Max_xxv/production/src/Eeprom.o
+ .debug_line      0x003306         0xc1 build/Max_xxv/production/src/Alarm.o
+ .debug_line      0x0033c7         0xe4 build/Max_xxv/production/src/Led.o
+ .debug_line      0x0034ab        0x215 build/Max_xxv/production/src/motor.o
+ .debug_line      0x0036c0        0xa10 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+ .debug_line      0x0040d0         0x5b build/Max_xxv/production/src/Flash_Operations.o
 
-.debug_frame      0x000000        0x560
+.debug_frame      0x000000        0x540
  *(.debug_frame)
  .debug_frame     0x000000         0x64 build/Max_xxv/production/src/adc.o
- .debug_frame     0x000064         0xf4 build/Max_xxv/production/src/main.o
- .debug_frame     0x000158        0x114 build/Max_xxv/production/src/modbus.o
- .debug_frame     0x00026c         0x54 build/Max_xxv/production/src/pid.o
- .debug_frame     0x0002c0         0x34 build/Max_xxv/production/src/settings.o
- .debug_frame     0x0002f4         0x34 build/Max_xxv/production/src/sw_timer.o
- .debug_frame     0x000328         0xa4 build/Max_xxv/production/src/uart.o
- .debug_frame     0x0003cc         0x34 build/Max_xxv/production/src/Eeprom.o
- .debug_frame     0x000400         0x24 build/Max_xxv/production/src/Alarm.o
- .debug_frame     0x000424         0x54 build/Max_xxv/production/src/Led.o
- .debug_frame     0x000478         0x54 build/Max_xxv/production/src/motor.o
- .debug_frame     0x0004cc         0x94 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+ .debug_frame     0x000064         0xd4 build/Max_xxv/production/src/main.o
+ .debug_frame     0x000138        0x114 build/Max_xxv/production/src/modbus.o
+ .debug_frame     0x00024c         0x54 build/Max_xxv/production/src/pid.o
+ .debug_frame     0x0002a0         0x34 build/Max_xxv/production/src/settings.o
+ .debug_frame     0x0002d4         0x34 build/Max_xxv/production/src/sw_timer.o
+ .debug_frame     0x000308         0xa4 build/Max_xxv/production/src/uart.o
+ .debug_frame     0x0003ac         0x34 build/Max_xxv/production/src/Eeprom.o
+ .debug_frame     0x0003e0         0x24 build/Max_xxv/production/src/Alarm.o
+ .debug_frame     0x000404         0x54 build/Max_xxv/production/src/Led.o
+ .debug_frame     0x000458         0x54 build/Max_xxv/production/src/motor.o
+ .debug_frame     0x0004ac         0x94 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
 
-.debug_str        0x000000        0x847
+.debug_str        0x000000        0x73c
  *(.debug_str)
- .debug_str       0x000000        0x153 build/Max_xxv/production/src/adc.o
- .debug_str       0x000153        0x1b0 build/Max_xxv/production/src/main.o
- .debug_str       0x000303         0xda build/Max_xxv/production/src/modbus.o
- .debug_str       0x0003dd         0x29 build/Max_xxv/production/src/pid.o
- .debug_str       0x000406        0x17b build/Max_xxv/production/src/settings.o
- .debug_str       0x000581        0x17d build/Max_xxv/production/src/uart.o
- .debug_str       0x0006fe         0x9a build/Max_xxv/production/src/Eeprom.o
- .debug_str       0x000798         0x24 build/Max_xxv/production/src/Alarm.o
- .debug_str       0x0007bc         0x19 build/Max_xxv/production/src/motor.o
- .debug_str       0x0007d5         0x72 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+ .debug_str       0x000000        0x143 build/Max_xxv/production/src/adc.o
+ .debug_str       0x000143        0x110 build/Max_xxv/production/src/main.o
+ .debug_str       0x000253         0xda build/Max_xxv/production/src/modbus.o
+ .debug_str       0x00032d         0x29 build/Max_xxv/production/src/pid.o
+ .debug_str       0x000356        0x17b build/Max_xxv/production/src/settings.o
+ .debug_str       0x0004d1        0x122 build/Max_xxv/production/src/uart.o
+ .debug_str       0x0005f3         0x9a build/Max_xxv/production/src/Eeprom.o
+ .debug_str       0x00068d         0x24 build/Max_xxv/production/src/Alarm.o
+ .debug_str       0x0006b1         0x19 build/Max_xxv/production/src/motor.o
+ .debug_str       0x0006ca         0x72 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
 
 .debug_loc
  *(.debug_loc)
@@ -863,32 +796,32 @@ __FUID3
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0xa99
+                  0x000000        0x985
  *(.debug_pubnames)
  .debug_pubnames
                   0x000000         0x62 build/Max_xxv/production/src/adc.o
  .debug_pubnames
-                  0x000062        0x589 build/Max_xxv/production/src/main.o
+                  0x000062        0x475 build/Max_xxv/production/src/main.o
  .debug_pubnames
-                  0x0005eb        0x157 build/Max_xxv/production/src/modbus.o
+                  0x0004d7        0x157 build/Max_xxv/production/src/modbus.o
  .debug_pubnames
-                  0x000742         0x39 build/Max_xxv/production/src/pid.o
+                  0x00062e         0x39 build/Max_xxv/production/src/pid.o
  .debug_pubnames
-                  0x00077b         0x30 build/Max_xxv/production/src/settings.o
+                  0x000667         0x30 build/Max_xxv/production/src/settings.o
  .debug_pubnames
-                  0x0007ab         0x38 build/Max_xxv/production/src/sw_timer.o
+                  0x000697         0x38 build/Max_xxv/production/src/sw_timer.o
  .debug_pubnames
-                  0x0007e3         0xb7 build/Max_xxv/production/src/uart.o
+                  0x0006cf         0xb7 build/Max_xxv/production/src/uart.o
  .debug_pubnames
-                  0x00089a         0x41 build/Max_xxv/production/src/Eeprom.o
+                  0x000786         0x41 build/Max_xxv/production/src/Eeprom.o
  .debug_pubnames
-                  0x0008db         0x27 build/Max_xxv/production/src/Alarm.o
+                  0x0007c7         0x27 build/Max_xxv/production/src/Alarm.o
  .debug_pubnames
-                  0x000902         0x6e build/Max_xxv/production/src/Led.o
+                  0x0007ee         0x6e build/Max_xxv/production/src/Led.o
  .debug_pubnames
-                  0x000970         0x75 build/Max_xxv/production/src/motor.o
+                  0x00085c         0x75 build/Max_xxv/production/src/motor.o
  .debug_pubnames
-                  0x0009e5         0xb4 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+                  0x0008d1         0xb4 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -924,25 +857,25 @@ __FUID3
 
 .ivt              0x000004         0xfc
                   0x000004          0x4 LONG 0x0 DEFINED (__ReservedTrap0)?ABSOLUTE (__ReservedTrap0):ABSOLUTE (__DefaultInterrupt)
-                  0x000006          0x4 LONG 0x4bfe DEFINED (__OscillatorFail)?ABSOLUTE (__OscillatorFail):ABSOLUTE (__DefaultInterrupt)
+                  0x000006          0x4 LONG 0x509e DEFINED (__OscillatorFail)?ABSOLUTE (__OscillatorFail):ABSOLUTE (__DefaultInterrupt)
                   0x000008          0x4 LONG 0x0 DEFINED (__AddressError)?ABSOLUTE (__AddressError):ABSOLUTE (__DefaultInterrupt)
-                  0x00000a          0x4 LONG 0x4bdc DEFINED (__StackError)?ABSOLUTE (__StackError):ABSOLUTE (__DefaultInterrupt)
-                  0x00000c          0x4 LONG 0x4c0c DEFINED (__MathError)?ABSOLUTE (__MathError):ABSOLUTE (__DefaultInterrupt)
-                  0x00000e          0x4 LONG 0x4c1a DEFINED (__DMACError)?ABSOLUTE (__DMACError):ABSOLUTE (__DefaultInterrupt)
+                  0x00000a          0x4 LONG 0x507c DEFINED (__StackError)?ABSOLUTE (__StackError):ABSOLUTE (__DefaultInterrupt)
+                  0x00000c          0x4 LONG 0x50ac DEFINED (__MathError)?ABSOLUTE (__MathError):ABSOLUTE (__DefaultInterrupt)
+                  0x00000e          0x4 LONG 0x50ba DEFINED (__DMACError)?ABSOLUTE (__DMACError):ABSOLUTE (__DefaultInterrupt)
                   0x000010          0x4 LONG 0x0 DEFINED (__ReservedTrap6)?ABSOLUTE (__ReservedTrap6):ABSOLUTE (__DefaultInterrupt)
                   0x000012          0x4 LONG 0x0 DEFINED (__ReservedTrap7)?ABSOLUTE (__ReservedTrap7):ABSOLUTE (__DefaultInterrupt)
                   0x000014          0x4 LONG 0x0 DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000016          0x4 LONG 0x48a6 DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000016          0x4 LONG 0x4e2c DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000018          0x4 LONG 0x0 DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00001a          0x4 LONG 0x4790 DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00001a          0x4 LONG 0x4d42 DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00001c          0x4 LONG 0x0 DEFINED (__DMA0Interrupt)?ABSOLUTE (__DMA0Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00001e          0x4 LONG 0x4974 DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00001e          0x4 LONG 0x4efc DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000020          0x4 LONG 0x0 DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000022          0x4 LONG 0x4822 DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000024          0x4 LONG 0x4864 DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000022          0x4 LONG 0x4dc8 DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000024          0x4 LONG 0x4dfa DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000026          0x4 LONG 0x0 DEFINED (__SPI1ErrInterrupt)?ABSOLUTE (__SPI1ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000028          0x4 LONG 0x0 DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00002a          0x4 LONG 0x5da8 DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00002a          0x4 LONG 0xe6e DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00002c          0x4 LONG 0x0 DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00002e          0x4 LONG 0x0 DEFINED (__ADC1Interrupt)?ABSOLUTE (__ADC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000030          0x4 LONG 0x0 DEFINED (__DMA1Interrupt)?ABSOLUTE (__DMA1Interrupt):ABSOLUTE (__DefaultInterrupt)
@@ -961,8 +894,8 @@ __FUID3
                   0x00004a          0x4 LONG 0x0 DEFINED (__T4Interrupt)?ABSOLUTE (__T4Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00004c          0x4 LONG 0x0 DEFINED (__T5Interrupt)?ABSOLUTE (__T5Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00004e          0x4 LONG 0x0 DEFINED (__INT2Interrupt)?ABSOLUTE (__INT2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000050          0x4 LONG 0x5e24 DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000052          0x4 LONG 0x5ea2 DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000050          0x4 LONG 0xede DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000052          0x4 LONG 0xf50 DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000054          0x4 LONG 0x0 DEFINED (__SPI2ErrInterrupt)?ABSOLUTE (__SPI2ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000056          0x4 LONG 0x0 DEFINED (__SPI2Interrupt)?ABSOLUTE (__SPI2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000058          0x4 LONG 0x0 DEFINED (__C1RxRdyInterrupt)?ABSOLUTE (__C1RxRdyInterrupt):ABSOLUTE (__DefaultInterrupt)
@@ -996,11 +929,11 @@ __FUID3
                   0x000090          0x4 LONG 0x0 DEFINED (__RTCCInterrupt)?ABSOLUTE (__RTCCInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000092          0x4 LONG 0x0 DEFINED (__FLTA1Interrupt)?ABSOLUTE (__FLTA1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000094          0x4 LONG 0x0 DEFINED (__Interrupt64)?ABSOLUTE (__Interrupt64):ABSOLUTE (__DefaultInterrupt)
-                  0x000096          0x4 LONG 0x5d64 DEFINED (__U1ErrInterrupt)?ABSOLUTE (__U1ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000098          0x4 LONG 0x5d86 DEFINED (__U2ErrInterrupt)?ABSOLUTE (__U2ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000096          0x4 LONG 0xe42 DEFINED (__U1ErrInterrupt)?ABSOLUTE (__U1ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000098          0x4 LONG 0xe58 DEFINED (__U2ErrInterrupt)?ABSOLUTE (__U2ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00009a          0x4 LONG 0x0 DEFINED (__CRCInterrupt)?ABSOLUTE (__CRCInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00009c          0x4 LONG 0x5d3a DEFINED (__DMA6Interrupt)?ABSOLUTE (__DMA6Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00009e          0x4 LONG 0x5b1e DEFINED (__DMA7Interrupt)?ABSOLUTE (__DMA7Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00009c          0x4 LONG 0xe24 DEFINED (__DMA6Interrupt)?ABSOLUTE (__DMA6Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00009e          0x4 LONG 0x5a32 DEFINED (__DMA7Interrupt)?ABSOLUTE (__DMA7Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a0          0x4 LONG 0x0 DEFINED (__C1TxReqInterrupt)?ABSOLUTE (__C1TxReqInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000a2          0x4 LONG 0x0 DEFINED (__Interrupt71)?ABSOLUTE (__Interrupt71):ABSOLUTE (__DefaultInterrupt)
                   0x0000a4          0x4 LONG 0x0 DEFINED (__Interrupt72)?ABSOLUTE (__Interrupt72):ABSOLUTE (__DefaultInterrupt)
@@ -1052,25 +985,25 @@ __FUID3
 
 .aivt             0x000104         0xfc
                   0x000104          0x4 LONG 0x0 DEFINED (__AltReservedTrap0)?ABSOLUTE (__AltReservedTrap0):DEFINED (__ReservedTrap0)?ABSOLUTE (__ReservedTrap0):ABSOLUTE (__DefaultInterrupt)
-                  0x000106          0x4 LONG 0x4bfe DEFINED (__AltOscillatorFail)?ABSOLUTE (__AltOscillatorFail):DEFINED (__OscillatorFail)?ABSOLUTE (__OscillatorFail):ABSOLUTE (__DefaultInterrupt)
+                  0x000106          0x4 LONG 0x509e DEFINED (__AltOscillatorFail)?ABSOLUTE (__AltOscillatorFail):DEFINED (__OscillatorFail)?ABSOLUTE (__OscillatorFail):ABSOLUTE (__DefaultInterrupt)
                   0x000108          0x4 LONG 0x0 DEFINED (__AltAddressError)?ABSOLUTE (__AltAddressError):DEFINED (__AddressError)?ABSOLUTE (__AddressError):ABSOLUTE (__DefaultInterrupt)
-                  0x00010a          0x4 LONG 0x4bdc DEFINED (__AltStackError)?ABSOLUTE (__AltStackError):DEFINED (__StackError)?ABSOLUTE (__StackError):ABSOLUTE (__DefaultInterrupt)
-                  0x00010c          0x4 LONG 0x4c0c DEFINED (__AltMathError)?ABSOLUTE (__AltMathError):DEFINED (__MathError)?ABSOLUTE (__MathError):ABSOLUTE (__DefaultInterrupt)
-                  0x00010e          0x4 LONG 0x4c1a DEFINED (__AltDMACError)?ABSOLUTE (__AltDMACError):DEFINED (__DMACError)?ABSOLUTE (__DMACError):ABSOLUTE (__DefaultInterrupt)
+                  0x00010a          0x4 LONG 0x507c DEFINED (__AltStackError)?ABSOLUTE (__AltStackError):DEFINED (__StackError)?ABSOLUTE (__StackError):ABSOLUTE (__DefaultInterrupt)
+                  0x00010c          0x4 LONG 0x50ac DEFINED (__AltMathError)?ABSOLUTE (__AltMathError):DEFINED (__MathError)?ABSOLUTE (__MathError):ABSOLUTE (__DefaultInterrupt)
+                  0x00010e          0x4 LONG 0x50ba DEFINED (__AltDMACError)?ABSOLUTE (__AltDMACError):DEFINED (__DMACError)?ABSOLUTE (__DMACError):ABSOLUTE (__DefaultInterrupt)
                   0x000110          0x4 LONG 0x0 DEFINED (__AltReservedTrap6)?ABSOLUTE (__AltReservedTrap6):DEFINED (__ReservedTrap6)?ABSOLUTE (__ReservedTrap6):ABSOLUTE (__DefaultInterrupt)
                   0x000112          0x4 LONG 0x0 DEFINED (__AltReservedTrap7)?ABSOLUTE (__AltReservedTrap7):DEFINED (__ReservedTrap7)?ABSOLUTE (__ReservedTrap7):ABSOLUTE (__DefaultInterrupt)
                   0x000114          0x4 LONG 0x0 DEFINED (__AltINT0Interrupt)?ABSOLUTE (__AltINT0Interrupt):DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000116          0x4 LONG 0x48a6 DEFINED (__AltIC1Interrupt)?ABSOLUTE (__AltIC1Interrupt):DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000116          0x4 LONG 0x4e2c DEFINED (__AltIC1Interrupt)?ABSOLUTE (__AltIC1Interrupt):DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000118          0x4 LONG 0x0 DEFINED (__AltOC1Interrupt)?ABSOLUTE (__AltOC1Interrupt):DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00011a          0x4 LONG 0x4790 DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00011a          0x4 LONG 0x4d42 DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00011c          0x4 LONG 0x0 DEFINED (__AltDMA0Interrupt)?ABSOLUTE (__AltDMA0Interrupt):DEFINED (__DMA0Interrupt)?ABSOLUTE (__DMA0Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00011e          0x4 LONG 0x4974 DEFINED (__AltIC2Interrupt)?ABSOLUTE (__AltIC2Interrupt):DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00011e          0x4 LONG 0x4efc DEFINED (__AltIC2Interrupt)?ABSOLUTE (__AltIC2Interrupt):DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000120          0x4 LONG 0x0 DEFINED (__AltOC2Interrupt)?ABSOLUTE (__AltOC2Interrupt):DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000122          0x4 LONG 0x4822 DEFINED (__AltT2Interrupt)?ABSOLUTE (__AltT2Interrupt):DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000124          0x4 LONG 0x4864 DEFINED (__AltT3Interrupt)?ABSOLUTE (__AltT3Interrupt):DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000122          0x4 LONG 0x4dc8 DEFINED (__AltT2Interrupt)?ABSOLUTE (__AltT2Interrupt):DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000124          0x4 LONG 0x4dfa DEFINED (__AltT3Interrupt)?ABSOLUTE (__AltT3Interrupt):DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000126          0x4 LONG 0x0 DEFINED (__AltSPI1ErrInterrupt)?ABSOLUTE (__AltSPI1ErrInterrupt):DEFINED (__SPI1ErrInterrupt)?ABSOLUTE (__SPI1ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000128          0x4 LONG 0x0 DEFINED (__AltSPI1Interrupt)?ABSOLUTE (__AltSPI1Interrupt):DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00012a          0x4 LONG 0x5da8 DEFINED (__AltU1RXInterrupt)?ABSOLUTE (__AltU1RXInterrupt):DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00012a          0x4 LONG 0xe6e DEFINED (__AltU1RXInterrupt)?ABSOLUTE (__AltU1RXInterrupt):DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00012c          0x4 LONG 0x0 DEFINED (__AltU1TXInterrupt)?ABSOLUTE (__AltU1TXInterrupt):DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00012e          0x4 LONG 0x0 DEFINED (__AltADC1Interrupt)?ABSOLUTE (__AltADC1Interrupt):DEFINED (__ADC1Interrupt)?ABSOLUTE (__ADC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000130          0x4 LONG 0x0 DEFINED (__AltDMA1Interrupt)?ABSOLUTE (__AltDMA1Interrupt):DEFINED (__DMA1Interrupt)?ABSOLUTE (__DMA1Interrupt):ABSOLUTE (__DefaultInterrupt)
@@ -1089,8 +1022,8 @@ __FUID3
                   0x00014a          0x4 LONG 0x0 DEFINED (__AltT4Interrupt)?ABSOLUTE (__AltT4Interrupt):DEFINED (__T4Interrupt)?ABSOLUTE (__T4Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00014c          0x4 LONG 0x0 DEFINED (__AltT5Interrupt)?ABSOLUTE (__AltT5Interrupt):DEFINED (__T5Interrupt)?ABSOLUTE (__T5Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00014e          0x4 LONG 0x0 DEFINED (__AltINT2Interrupt)?ABSOLUTE (__AltINT2Interrupt):DEFINED (__INT2Interrupt)?ABSOLUTE (__INT2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000150          0x4 LONG 0x5e24 DEFINED (__AltU2RXInterrupt)?ABSOLUTE (__AltU2RXInterrupt):DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000152          0x4 LONG 0x5ea2 DEFINED (__AltU2TXInterrupt)?ABSOLUTE (__AltU2TXInterrupt):DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000150          0x4 LONG 0xede DEFINED (__AltU2RXInterrupt)?ABSOLUTE (__AltU2RXInterrupt):DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000152          0x4 LONG 0xf50 DEFINED (__AltU2TXInterrupt)?ABSOLUTE (__AltU2TXInterrupt):DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000154          0x4 LONG 0x0 DEFINED (__AltSPI2ErrInterrupt)?ABSOLUTE (__AltSPI2ErrInterrupt):DEFINED (__SPI2ErrInterrupt)?ABSOLUTE (__SPI2ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000156          0x4 LONG 0x0 DEFINED (__AltSPI2Interrupt)?ABSOLUTE (__AltSPI2Interrupt):DEFINED (__SPI2Interrupt)?ABSOLUTE (__SPI2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000158          0x4 LONG 0x0 DEFINED (__AltC1RxRdyInterrupt)?ABSOLUTE (__AltC1RxRdyInterrupt):DEFINED (__C1RxRdyInterrupt)?ABSOLUTE (__C1RxRdyInterrupt):ABSOLUTE (__DefaultInterrupt)
@@ -1124,11 +1057,11 @@ __FUID3
                   0x000190          0x4 LONG 0x0 DEFINED (__AltRTCCInterrupt)?ABSOLUTE (__AltRTCCInterrupt):DEFINED (__RTCCInterrupt)?ABSOLUTE (__RTCCInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000192          0x4 LONG 0x0 DEFINED (__AltFLTA1Interrupt)?ABSOLUTE (__AltFLTA1Interrupt):DEFINED (__FLTA1Interrupt)?ABSOLUTE (__FLTA1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000194          0x4 LONG 0x0 DEFINED (__AltInterrupt64)?ABSOLUTE (__AltInterrupt64):DEFINED (__Interrupt64)?ABSOLUTE (__Interrupt64):ABSOLUTE (__DefaultInterrupt)
-                  0x000196          0x4 LONG 0x5d64 DEFINED (__AltU1ErrInterrupt)?ABSOLUTE (__AltU1ErrInterrupt):DEFINED (__U1ErrInterrupt)?ABSOLUTE (__U1ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000198          0x4 LONG 0x5d86 DEFINED (__AltU2ErrInterrupt)?ABSOLUTE (__AltU2ErrInterrupt):DEFINED (__U2ErrInterrupt)?ABSOLUTE (__U2ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000196          0x4 LONG 0xe42 DEFINED (__AltU1ErrInterrupt)?ABSOLUTE (__AltU1ErrInterrupt):DEFINED (__U1ErrInterrupt)?ABSOLUTE (__U1ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000198          0x4 LONG 0xe58 DEFINED (__AltU2ErrInterrupt)?ABSOLUTE (__AltU2ErrInterrupt):DEFINED (__U2ErrInterrupt)?ABSOLUTE (__U2ErrInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00019a          0x4 LONG 0x0 DEFINED (__AltCRCInterrupt)?ABSOLUTE (__AltCRCInterrupt):DEFINED (__CRCInterrupt)?ABSOLUTE (__CRCInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00019c          0x4 LONG 0x5d3a DEFINED (__AltDMA6Interrupt)?ABSOLUTE (__AltDMA6Interrupt):DEFINED (__DMA6Interrupt)?ABSOLUTE (__DMA6Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00019e          0x4 LONG 0x5b1e DEFINED (__AltDMA7Interrupt)?ABSOLUTE (__AltDMA7Interrupt):DEFINED (__DMA7Interrupt)?ABSOLUTE (__DMA7Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00019c          0x4 LONG 0xe24 DEFINED (__AltDMA6Interrupt)?ABSOLUTE (__AltDMA6Interrupt):DEFINED (__DMA6Interrupt)?ABSOLUTE (__DMA6Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00019e          0x4 LONG 0x5a32 DEFINED (__AltDMA7Interrupt)?ABSOLUTE (__AltDMA7Interrupt):DEFINED (__DMA7Interrupt)?ABSOLUTE (__DMA7Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0001a0          0x4 LONG 0x0 DEFINED (__AltC1TxReqInterrupt)?ABSOLUTE (__AltC1TxReqInterrupt):DEFINED (__C1TxReqInterrupt)?ABSOLUTE (__C1TxReqInterrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0001a2          0x4 LONG 0x0 DEFINED (__AltInterrupt71)?ABSOLUTE (__AltInterrupt71):DEFINED (__Interrupt71)?ABSOLUTE (__Interrupt71):ABSOLUTE (__DefaultInterrupt)
                   0x0001a4          0x4 LONG 0x0 DEFINED (__AltInterrupt72)?ABSOLUTE (__AltInterrupt72):DEFINED (__Interrupt72)?ABSOLUTE (__Interrupt72):ABSOLUTE (__DefaultInterrupt)
@@ -2296,34 +2229,34 @@ LOAD heap
 LOAD data_init
 
 .debug_pubtypes
-                  0x000138        0xa9c
+                  0x000138        0xa9b
  .debug_pubtypes
                   0x000138        0x1ab build/Max_xxv/production/src/adc.o
  .debug_pubtypes
-                  0x0002e3        0x136 build/Max_xxv/production/src/main.o
+                  0x0002e3        0x141 build/Max_xxv/production/src/main.o
  .debug_pubtypes
-                  0x000419         0x45 build/Max_xxv/production/src/modbus.o
+                  0x000424         0x39 build/Max_xxv/production/src/modbus.o
  .debug_pubtypes
-                  0x00045e         0x73 build/Max_xxv/production/src/pid.o
+                  0x00045d         0x73 build/Max_xxv/production/src/pid.o
  .debug_pubtypes
-                  0x0004d1        0x46a build/Max_xxv/production/src/settings.o
+                  0x0004d0        0x46a build/Max_xxv/production/src/settings.o
  .debug_pubtypes
-                  0x00093b         0x1e build/Max_xxv/production/src/sw_timer.o
+                  0x00093a         0x1e build/Max_xxv/production/src/sw_timer.o
  .debug_pubtypes
-                  0x000959        0x186 build/Max_xxv/production/src/uart.o
+                  0x000958        0x186 build/Max_xxv/production/src/uart.o
  .debug_pubtypes
-                  0x000adf         0x39 build/Max_xxv/production/src/Eeprom.o
+                  0x000ade         0x39 build/Max_xxv/production/src/Eeprom.o
  .debug_pubtypes
-                  0x000b18         0x28 build/Max_xxv/production/src/Alarm.o
+                  0x000b17         0x28 build/Max_xxv/production/src/Alarm.o
  .debug_pubtypes
-                  0x000b40         0x1c build/Max_xxv/production/src/Led.o
+                  0x000b3f         0x1c build/Max_xxv/production/src/Led.o
  .debug_pubtypes
-                  0x000b5c         0x3b build/Max_xxv/production/src/motor.o
+                  0x000b5b         0x3b build/Max_xxv/production/src/motor.o
  .debug_pubtypes
-                  0x000b97         0x3d build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+                  0x000b96         0x3d build/Max_xxv/production/src/DEE_Emulation_16-bit.o
 
 __c30_signature
-                  0x000bd4         0xc0
+                  0x000bd4         0xae
  __c30_signature
                   0x000bd4          0x6 build/Max_xxv/production/src/adc.o
  __c30_signature
@@ -2355,55 +2288,49 @@ __c30_signature
  __c30_signature
                   0x000c28          0x6 lib/libfastm-elf.a(fixunssfsi.eo)
  __c30_signature
-                  0x000c2e          0x6 lib/libfastm-elf.a(floatsisf.eo)
+                  0x000c2e          0x6 lib/libfastm-elf.a(floatunsisf.eo)
  __c30_signature
-                  0x000c34          0x6 lib/libfastm-elf.a(floatunsisf.eo)
+                  0x000c34          0x6 lib/libfastm-elf.a(funpack.eo)
  __c30_signature
-                  0x000c3a          0x6 lib/libfastm-elf.a(funpack.eo)
+                  0x000c3a          0x6 lib/libfastm-elf.a(errno.eo)
  __c30_signature
-                  0x000c40          0x6 lib/libfastm-elf.a(divmoddi3.eo)
+                  0x000c40          0x6 lib/libfastm-elf.a(floatundisf.eo)
  __c30_signature
-                  0x000c46          0x6 lib/libfastm-elf.a(errno.eo)
+                  0x000c46          0x6 lib/libfastm-elf.a(fpack.eo)
  __c30_signature
-                  0x000c4c          0x6 lib/libfastm-elf.a(floatdisf.eo)
+                  0x000c4c          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ConfigIntMCPWM1.o)
  __c30_signature
-                  0x000c52          0x6 lib/libfastm-elf.a(floatundisf.eo)
+                  0x000c52          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenMCPWM1.o)
  __c30_signature
-                  0x000c58          0x6 lib/libfastm-elf.a(fpack.eo)
+                  0x000c58          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetDutyCycleMCPWM1.o)
  __c30_signature
-                  0x000c5e          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ConfigIntMCPWM1.o)
+                  0x000c5e          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetMCPWM1DeadTimeGeneration.o)
  __c30_signature
-                  0x000c64          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenMCPWM1.o)
+                  0x000c64          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenTimer1.o)
  __c30_signature
-                  0x000c6a          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetDutyCycleMCPWM1.o)
+                  0x000c6a          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART1.o)
  __c30_signature
-                  0x000c70          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetMCPWM1DeadTimeGeneration.o)
+                  0x000c70          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART2.o)
  __c30_signature
-                  0x000c76          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenTimer1.o)
+                  0x000c76          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x000c7c          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART1.o)
- __c30_signature
-                  0x000c82          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART2.o)
- __c30_signature
-                  0x000c88          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
- __c30_signature
-                  0x000c8e          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
+                  0x000c7c          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
 
-_0x5647533c54497768
+_0x5647639854550098
                     0x4700         0x80
- _0x5647533c54497768
+ _0x5647639854550098
                     0x4700         0x80 build/Max_xxv/production/src/main.o
                     0x4700                  _DmaAdc_A
 
-_0x5647539854497768
+_0x564763f454550098
                     0x4780         0x80
- _0x5647539854497768
+ _0x564763f454550098
                     0x4780         0x80 build/Max_xxv/production/src/main.o
                     0x4780                  _DmaAdc_B
 
-_0x564752e054497768
+_0x5647633c54550098
                     0x4600         0x40
- _0x564752e054497768
+ _0x5647633c54550098
                     0x4600         0x40 build/Max_xxv/production/src/main.o
                     0x4600                  _Uart1TxBuff
 
@@ -2411,8 +2338,8 @@ _0x564752e054497768
  .nbss              0x0800          0x2 lib/libfastm-elf.a(errno.eo)
                     0x0800                  _errno
 
-.bss                0x0802       0x2428
- .bss               0x0802       0x2428 build/Max_xxv/production/src/main.o
+.bss                0x0802       0x23e6
+ .bss               0x0802       0x23e6 build/Max_xxv/production/src/main.o
                     0x0802                  _DmaBuffer
                     0x0804                  _CostanteTaraturaAN0
                     0x0808                  _CostanteTaraturaAN1
@@ -2425,47 +2352,37 @@ _0x564752e054497768
                     0x08a2                  _Timer10mSec
                     0x08a8                  _Timer1mSec
                     0x08ae                  _Motore1
-                    0x08f2                  _Motore2
-                    0x0936                  _InputCapture1
-                    0x093c                  _InputCapture2
-                    0x0942                  _TestInputCapture1
-                    0x2884                  _Led1Segnalazione
-                    0x2892                  _Led2Segnalazione
-                    0x28a0                  _VOLbits1
-                    0x28a2                  _Old_Indice_Status_Bit1
-                    0x28a4                  _ParametriEEPROM
-                    0x2912                  _IngressiAnalogici
-                    0x291c                  _ComunicationWatchDogTimer
-                    0x291e                  _Uart1RxStatus
-                    0x2920                  _ChkSum1
-                    0x2922                  _Uart2RxStatus
-                    0x2924                  _ChkSum2
-                    0x2925                  _TxNByte_UART2
-                    0x2926                  _TxPointer_UART2
-                    0x2928                  _VarModbus
-                    0x297c                  _StatoSeriale
-                    0x2980                  _RxNByte
-                    0x2982                  _RxPointer
-                    0x2986                  _TxPointer
-                    0x298a                  _TimerOutRxModbus
-                    0x298c                  _TimerRitardoModbus
-                    0x298e                  _TxComplete
-                    0x2990                  _ModbusTxBuff
-                    0x2a90                  _ModbusRxBuff
-                    0x2b90                  _UartRxBuff
-                    0x2c10                  _InterruptTest0
-                    0x2c12                  _InterruptTest1
-                    0x2c14                  _InterruptTest2
-                    0x2c16                  _InterruptTest3
-                    0x2c18                  _InterruptTest4
-                    0x2c1a                  _InterruptTest5
-                    0x2c1c                  _InterruptTest6
-                    0x2c1e                  _InterruptTest7
-                    0x2c20                  _InterruptTest8
-                    0x2c22                  _InterruptTest9
-                    0x2c24                  _InterruptTest10
-                    0x2c26                  _InterruptTest11
-                    0x2c28                  _InterruptTest12
+                    0x08d8                  _Motore2
+                    0x0902                  _InputCapture1
+                    0x0908                  _InputCapture2
+                    0x090e                  _TestInputCapture1
+                    0x2850                  _Led1Segnalazione
+                    0x285e                  _Led2Segnalazione
+                    0x286c                  _VOLbits1
+                    0x286e                  _Old_Indice_Status_Bit1
+                    0x2870                  _ParametriEEPROM
+                    0x28de                  _IngressiAnalogici
+                    0x28e8                  _ComunicationWatchDogTimer
+                    0x28ea                  _Uart1RxStatus
+                    0x28ec                  _ChkSum1
+                    0x28ee                  _Uart2RxStatus
+                    0x28f0                  _ChkSum2
+                    0x28f1                  _TxNByte_UART2
+                    0x28f2                  _TxPointer_UART2
+                    0x28f4                  _TmpSplitLongToWord
+                    0x28f8                  _VarModbus
+                    0x294c                  _StatoSeriale
+                    0x2950                  _RxNByte
+                    0x2952                  _RxPointer
+                    0x2956                  _TxPointer
+                    0x295a                  _TimerOutRxModbus
+                    0x295c                  _TimerRitardoModbus
+                    0x295e                  _TxComplete
+                    0x2960                  _ModbusTxBuff
+                    0x2a60                  _ModbusRxBuff
+                    0x2b60                  _UartRxBuff
+                    0x2be0                  _E1
+                    0x2be4                  _E2
 
 .data               0x4640         0x2c
  .data              0x4640         0x2c build/Max_xxv/production/src/main.o
@@ -2475,120 +2392,122 @@ _0x564752e054497768
  .bss               0x466c          0x2 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
                     0x466c                  _dataEEFlags
 
-.heap               0x2c2a        0x200
- .heap              0x2c2a        0x200 heap
+.heap               0x2be8        0x200
+ .heap              0x2be8        0x200 heap
 
-_0x563bc0b8544975fa
+_0x563bc0b85454b5d3
                     0x9000       0x1800 indirizzo di caricamento 0x001000  
- _0x563bc0b8544975fa
+ _0x563bc0b85454b5d3
                     0x9000       0x1800 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
                     0x9000                  _emulationPages
 
-.const              0x8e40         0x2c indirizzo di caricamento 0x000e40  
- .const             0x8e40         0x2c build/Max_xxv/production/src/main.o
-                    0x8e40                  _Tcy
-                    0x8e44                  _TabMaskBitModbus
-                    0x8e4c                  _TabMaskBitIO
+.const              0x8c26         0x2c indirizzo di caricamento 0x000c26  
+ .const             0x8c26         0x2c build/Max_xxv/production/src/main.o
+                    0x8c26                  _Tcy
+                    0x8c2a                  _TabMaskBitModbus
+                    0x8c32                  _TabMaskBitIO
 
-.text             0x002800       0x3be4
- .text            0x002800       0x1380 build/Max_xxv/production/src/modbus.o
+.text             0x002800       0x3270
+ .text            0x002800       0x1358 build/Max_xxv/production/src/modbus.o
                   0x002800                  _LeggiWord
-                  0x002b58                  _ScriviWord
-                  0x0030f8                  _LeggiBit
-                  0x003126                  _ScriviBit
-                  0x003182                  _ModbusRoutine
-                  0x003302                  _ModbusRxRoutine
-                  0x003372                  _ModbusReadBit
-                  0x00351e                  _ModbusReadWord
-                  0x003684                  _ModbusWriteSingleBit
-                  0x003722                  _ModbusWriteSingleWord
-                  0x0037b0                  _ModbusWriteMultipleBits
-                  0x0038e0                  _ModbusWriteMultipleWords
-                  0x003a16                  _ModbusErroreResponse
-                  0x003ac2                  _ModbusCheckCRC16
-                  0x003b28                  _FreeRxBuffer
-                  0x003b50                  _InizializzaSeriale
- .text            0x003b80        0xa26 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
-                  0x003b80                  _UnlockWrite
-                  0x003bca                  _GetPageStatus
-                  0x003c74                  _ErasePage
-                  0x003ce2                  _GetNextAvailCount
-                  0x003d92                  _PackEE
-                  0x004112                  _DataEEInit
-                  0x0042be                  _DataEERead
-                  0x0043d0                  _DataEEWrite
- .text            0x0045a6        0x682 build/Max_xxv/production/src/main.o
-                  0x0045a6                  _main
-                  0x0046ae                  _GestioneSetpoint
-                  0x004790                  __T1Interrupt
-                  0x004822                  __T2Interrupt
-                  0x004864                  __T3Interrupt
-                  0x0048a6                  __IC1Interrupt
-                  0x004974                  __IC2Interrupt
-                  0x004a3c                  _AggiornaDatiVelocita
-                  0x004b22                  _AggiornaVariabiliModbus
-                  0x004b70                  _Costante_Conversione_Vlin_to_Vang
-                  0x004bdc                  __StackError
-                  0x004bfe                  __OscillatorFail
-                  0x004c0c                  __MathError
-                  0x004c1a                  __DMACError
- .text            0x004c28        0x58c build/Max_xxv/production/src/pid.o
-                  0x004c28                  _Pid1
-                  0x004cc4                  _Pid2
-                  0x004d60                  _Pid
-                  0x005152                  _PidReset
- .text            0x0051b4        0x4fa build/Max_xxv/production/src/Eeprom.o
-                  0x0051b4                  _InitializationEEPROM
-                  0x0051c4                  _RestoreEEPROMData
- .text            0x0056ae        0x4ba build/Max_xxv/production/src/adc.o
-                  0x0056ae                  _InitADC
-                  0x00576c                  _LeggiADC
-                  0x005834                  _MediaADC
-                  0x0058dc                  _TaraturaAnalogiche
-                  0x005b1e                  __DMA7Interrupt
- .text            0x005b68        0x392 build/Max_xxv/production/src/uart.o
-                  0x005b68                  _Usart1Setting
-                  0x005bf8                  _Usart2Setting
-                  0x005cae                  _TxString
-                  0x005d3a                  __DMA6Interrupt
-                  0x005d64                  __U1ErrInterrupt
-                  0x005d86                  __U2ErrInterrupt
-                  0x005da8                  __U1RXInterrupt
-                  0x005e24                  __U2RXInterrupt
-                  0x005ea2                  __U2TXInterrupt
- .text            0x005efa        0x2ec build/Max_xxv/production/src/settings.o
-                  0x005efa                  _Settings
-                  0x00616e                  _ISR_Settings
- .text            0x0061e6        0x1fe build/Max_xxv/production/src/motor.o
-                  0x0061e6                  _InitMotorStructure
-                  0x006246                  _UpdateMotorStructure
-                  0x006354                  _GestioneSicurezzaMotore
-                  0x006386                  _MotorControlEnable
+                  0x002b30                  _ScriviWord
+                  0x0030d0                  _LeggiBit
+                  0x0030fe                  _ScriviBit
+                  0x00315a                  _ModbusRoutine
+                  0x0032da                  _ModbusRxRoutine
+                  0x00334a                  _ModbusReadBit
+                  0x0034f6                  _ModbusReadWord
+                  0x00365c                  _ModbusWriteSingleBit
+                  0x0036fa                  _ModbusWriteSingleWord
+                  0x003788                  _ModbusWriteMultipleBits
+                  0x0038b8                  _ModbusWriteMultipleWords
+                  0x0039ee                  _ModbusErroreResponse
+                  0x003a9a                  _ModbusCheckCRC16
+                  0x003b00                  _FreeRxBuffer
+                  0x003b28                  _InizializzaSeriale
+ .text            0x003b58        0xa26 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+                  0x003b58                  _UnlockWrite
+                  0x003ba2                  _GetPageStatus
+                  0x003c4c                  _ErasePage
+                  0x003cba                  _GetNextAvailCount
+                  0x003d6a                  _PackEE
+                  0x0040ea                  _DataEEInit
+                  0x004296                  _DataEERead
+                  0x0043a8                  _DataEEWrite
+ .text            0x00457e        0x5b8 build/Max_xxv/production/src/pid.o
+                  0x00457e                  _Pid1
+                  0x004644                  _Pid2
+                  0x00470a                  _Pid
+                  0x004ad4                  _PidReset
+ .text            0x004b36        0x592 build/Max_xxv/production/src/main.o
+                  0x004b36                  _main
+                  0x004c78                  _GestioneSetpoint
+                  0x004d42                  __T1Interrupt
+                  0x004dc8                  __T2Interrupt
+                  0x004dfa                  __T3Interrupt
+                  0x004e2c                  __IC1Interrupt
+                  0x004efc                  __IC2Interrupt
+                  0x004fc6                  _AggiornaVariabiliModbus
+                  0x00507c                  __StackError
+                  0x00509e                  __OscillatorFail
+                  0x0050ac                  __MathError
+                  0x0050ba                  __DMACError
+ .text            0x0050c8        0x4fa build/Max_xxv/production/src/Eeprom.o
+                  0x0050c8                  _InitializationEEPROM
+                  0x0050d8                  _RestoreEEPROMData
+ .text            0x0055c2        0x4ae build/Max_xxv/production/src/adc.o
+                  0x0055c2                  _InitADC
+                  0x005680                  _LeggiADC
+                  0x005748                  _MediaADC
+                  0x0057f0                  _TaraturaAnalogiche
+                  0x005a32                  __DMA7Interrupt
 
-.text             0x000e6c         0x58
- .text            0x000e6c         0x58 build/Max_xxv/production/src/Led.o
-                  0x000e6c                  _GestioneAllarmi
-                  0x000e72                  _SetLedErrorCode
-                  0x000eb4                  _GestioneLed1ErrorCode
-                  0x000ebc                  _GestioneLed2ErrorCode
+.text             0x000c52        0x34a
+ .text            0x000c52        0x34a build/Max_xxv/production/src/uart.o
+                  0x000c52                  _Usart1Setting
+                  0x000ce2                  _Usart2Setting
+                  0x000d98                  _TxString
+                  0x000e24                  __DMA6Interrupt
+                  0x000e42                  __U1ErrInterrupt
+                  0x000e58                  __U2ErrInterrupt
+                  0x000e6e                  __U1RXInterrupt
+                  0x000ede                  __U2RXInterrupt
+                  0x000f50                  __U2TXInterrupt
 
-.dinit            0x000ec4         0x58
- .dinit           0x000ec4         0x58 data_init
+.text             0x005a70        0x3f2
+ .text            0x005a70        0x2f8 build/Max_xxv/production/src/settings.o
+                  0x005a70                  _Settings
+                  0x005cf0                  _ISR_Settings
+ .text            0x005d68         0xfa build/Max_xxv/production/src/motor.o
+                  0x005d68                  _InitMotorStructure
+                  0x005db8                  _UpdateMotorStructure
+                  0x005dd2                  _GestioneSicurezzaMotore
+                  0x005e04                  _MotorControlEnable
 
-.text             0x000f1c         0xca
- .text            0x000f1c         0x52 build/Max_xxv/production/src/Alarm.o
-                  0x000f1c                  _GestioneWatchdog
- .text            0x000f6e         0x46 build/Max_xxv/production/src/sw_timer.o
-                  0x000f6e                  _GestioneTimerSW
-                  0x000fa4                  _ReloadTimerSW
- .text            0x000fb4         0x32 build/Max_xxv/production/src/Flash_Operations.o
-                  0x000fb4                  _ReadPMHigh
-                  0x000fb8                  _ReadPMLow
-                  0x000fbc                  _UnlockPM
-                  0x000fd6                  _WritePMHigh
-                  0x000fda                  _WritePMHighB
-                  0x000fde                  _WritePMLow
-                  0x000fe2                  _WritePMLowB
+.text             0x000f9c         0x58
+ .text            0x000f9c         0x58 build/Max_xxv/production/src/Led.o
+                  0x000f9c                  _GestioneAllarmi
+                  0x000fa2                  _SetLedErrorCode
+                  0x000fe4                  _GestioneLed1ErrorCode
+                  0x000fec                  _GestioneLed2ErrorCode
+
+.dinit            0x005e62         0x58
+ .dinit           0x005e62         0x58 data_init
+
+.text             0x005eba         0xca
+ .text            0x005eba         0x52 build/Max_xxv/production/src/Alarm.o
+                  0x005eba                  _GestioneWatchdog
+ .text            0x005f0c         0x46 build/Max_xxv/production/src/sw_timer.o
+                  0x005f0c                  _GestioneTimerSW
+                  0x005f42                  _ReloadTimerSW
+ .text            0x005f52         0x32 build/Max_xxv/production/src/Flash_Operations.o
+                  0x005f52                  _ReadPMHigh
+                  0x005f56                  _ReadPMLow
+                  0x005f5a                  _UnlockPM
+                  0x005f74                  _WritePMHigh
+                  0x005f78                  _WritePMHighB
+                  0x005f7c                  _WritePMLow
+                  0x005f80                  _WritePMLowB
 
 Tabella dei riferimenti incrociati
 
@@ -2611,7 +2530,6 @@ _AD1CSSLbits                                      build/Max_xxv/production/src/a
 _AD1PCFGL                                         build/Max_xxv/production/src/adc.o
 _AD1PCFGLbits                                     build/Max_xxv/production/src/adc.o
 _ADC1BUF0                                         build/Max_xxv/production/src/adc.o
-_AggiornaDatiVelocita                             build/Max_xxv/production/src/main.o
 _AggiornaVariabiliModbus                          build/Max_xxv/production/src/main.o
 _CLKDIVbits                                       build/Max_xxv/production/src/settings.o
 _CORCON                                           /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
@@ -2640,8 +2558,6 @@ _CostanteTaraturaAN3                              build/Max_xxv/production/src/m
 _CostanteTaraturaAN4                              build/Max_xxv/production/src/main.o
                                                   build/Max_xxv/production/src/Eeprom.o
                                                   build/Max_xxv/production/src/adc.o
-_Costante_Conversione_Vlin_to_Vang                build/Max_xxv/production/src/main.o
-                                                  build/Max_xxv/production/src/motor.o
 _DFLT1CONbits                                     build/Max_xxv/production/src/settings.o
 _DFLT2CONbits                                     build/Max_xxv/production/src/settings.o
 _DISICNT                                          build/Max_xxv/production/src/DEE_Emulation_16-bit.o
@@ -2675,6 +2591,8 @@ _DmaAdc_B                                         build/Max_xxv/production/src/m
                                                   build/Max_xxv/production/src/adc.o
 _DmaBuffer                                        build/Max_xxv/production/src/main.o
                                                   build/Max_xxv/production/src/adc.o
+_E1                                               build/Max_xxv/production/src/main.o
+_E2                                               build/Max_xxv/production/src/main.o
 _ErasePage                                        build/Max_xxv/production/src/DEE_Emulation_16-bit.o
 _FreeRxBuffer                                     build/Max_xxv/production/src/modbus.o
                                                   build/Max_xxv/production/src/uart.o
@@ -2738,26 +2656,6 @@ _InizializzaSeriale                               build/Max_xxv/production/src/m
                                                   build/Max_xxv/production/src/main.o
 _InputCapture1                                    build/Max_xxv/production/src/main.o
 _InputCapture2                                    build/Max_xxv/production/src/main.o
-_InterruptTest0                                   build/Max_xxv/production/src/main.o
-_InterruptTest1                                   build/Max_xxv/production/src/main.o
-_InterruptTest10                                  build/Max_xxv/production/src/main.o
-                                                  build/Max_xxv/production/src/uart.o
-_InterruptTest11                                  build/Max_xxv/production/src/main.o
-                                                  build/Max_xxv/production/src/adc.o
-_InterruptTest12                                  build/Max_xxv/production/src/main.o
-_InterruptTest2                                   build/Max_xxv/production/src/main.o
-_InterruptTest3                                   build/Max_xxv/production/src/main.o
-_InterruptTest4                                   build/Max_xxv/production/src/main.o
-_InterruptTest5                                   build/Max_xxv/production/src/main.o
-                                                  build/Max_xxv/production/src/uart.o
-_InterruptTest6                                   build/Max_xxv/production/src/main.o
-                                                  build/Max_xxv/production/src/uart.o
-_InterruptTest7                                   build/Max_xxv/production/src/main.o
-                                                  build/Max_xxv/production/src/uart.o
-_InterruptTest8                                   build/Max_xxv/production/src/main.o
-                                                  build/Max_xxv/production/src/uart.o
-_InterruptTest9                                   build/Max_xxv/production/src/main.o
-                                                  build/Max_xxv/production/src/uart.o
 _LATAbits                                         build/Max_xxv/production/src/motor.o
                                                   build/Max_xxv/production/src/modbus.o
                                                   build/Max_xxv/production/src/main.o
@@ -2793,7 +2691,6 @@ _Motore1                                          build/Max_xxv/production/src/m
                                                   build/Max_xxv/production/src/Alarm.o
                                                   build/Max_xxv/production/src/settings.o
                                                   build/Max_xxv/production/src/pid.o
-                                                  build/Max_xxv/production/src/modbus.o
 _Motore2                                          build/Max_xxv/production/src/main.o
                                                   build/Max_xxv/production/src/motor.o
                                                   build/Max_xxv/production/src/Alarm.o
@@ -2928,6 +2825,7 @@ _TimerOutRxModbus                                 build/Max_xxv/production/src/m
                                                   build/Max_xxv/production/src/modbus.o
 _TimerRitardoModbus                               build/Max_xxv/production/src/main.o
                                                   build/Max_xxv/production/src/modbus.o
+_TmpSplitLongToWord                               build/Max_xxv/production/src/main.o
 _TxComplete                                       build/Max_xxv/production/src/main.o
                                                   build/Max_xxv/production/src/uart.o
 _TxNByte_UART2                                    build/Max_xxv/production/src/main.o
@@ -3013,10 +2911,7 @@ __U2ErrInterrupt                                  build/Max_xxv/production/src/u
 __U2RXInterrupt                                   build/Max_xxv/production/src/uart.o
 __U2TXInterrupt                                   build/Max_xxv/production/src/uart.o
 ___addsf3                                         lib/libfastm-elf.a(addsf3x.eo)
-                                                  build/Max_xxv/production/src/main.o
 ___addsf3x                                        lib/libfastm-elf.a(addsf3x.eo)
-___divdi3                                         lib/libfastm-elf.a(divmoddi3.eo)
-                                                  build/Max_xxv/production/src/motor.o
 ___divsf3                                         lib/libfastm-elf.a(divsf3x.eo)
                                                   build/Max_xxv/production/src/uart.o
                                                   build/Max_xxv/production/src/main.o
@@ -3027,33 +2922,21 @@ ___divsi3                                         lib/libfastm-elf.a(divsi3.eo)
                                                   build/Max_xxv/production/src/main.o
 ___fixunssfsi                                     lib/libfastm-elf.a(fixunssfsi.eo)
                                                   build/Max_xxv/production/src/uart.o
-                                                  build/Max_xxv/production/src/modbus.o
-___floatdisf                                      lib/libfastm-elf.a(floatdisf.eo)
-                                                  lib/libfastm-elf.a(floatsisf.eo)
-___floatsisf                                      lib/libfastm-elf.a(floatsisf.eo)
-                                                  build/Max_xxv/production/src/main.o
 ___floatundisf                                    lib/libfastm-elf.a(floatundisf.eo)
-                                                  lib/libfastm-elf.a(floatdisf.eo)
                                                   lib/libfastm-elf.a(floatunsisf.eo)
 ___floatunsisf                                    lib/libfastm-elf.a(floatunsisf.eo)
                                                   build/Max_xxv/production/src/main.o
                                                   build/Max_xxv/production/src/adc.o
-___moddi3                                         lib/libfastm-elf.a(divmoddi3.eo)
 ___mulsf3                                         lib/libfastm-elf.a(mulsf3x.eo)
                                                   build/Max_xxv/production/src/uart.o
-                                                  build/Max_xxv/production/src/modbus.o
-                                                  build/Max_xxv/production/src/main.o
                                                   build/Max_xxv/production/src/adc.o
 ___mulsf3x                                        lib/libfastm-elf.a(mulsf3x.eo)
 ___subsf3                                         lib/libfastm-elf.a(addsf3x.eo)
                                                   build/Max_xxv/production/src/uart.o
 ___subsf3x                                        lib/libfastm-elf.a(addsf3x.eo)
-___udivdi3                                        lib/libfastm-elf.a(divmoddi3.eo)
-___udivmoddi3                                     lib/libfastm-elf.a(divmoddi3.eo)
 ___udivsi3                                        lib/libfastm-elf.a(udivsi3x.eo)
                                                   lib/libfastm-elf.a(divsi3.eo)
 ___udivsi3x                                       lib/libfastm-elf.a(udivsi3x.eo)
-___umoddi3                                        lib/libfastm-elf.a(divmoddi3.eo)
 __bootconst_psvpage                               dist/Max_xxv/production/Firmware.production.elf
 __const_length                                    dist/Max_xxv/production/Firmware.production.elf
                                                   /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)

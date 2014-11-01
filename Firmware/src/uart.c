@@ -309,11 +309,11 @@ void TxString(unsigned char *Punt, unsigned char NCar, unsigned char Port)	// [1
 
 
 void _ISR_PSV _DMA6Interrupt(void) {	// DMA for UART1 TX [6d]
-    InterruptTest10++;
+    //InterruptTest10++;
     _DMA6IF = 0;	// interrupt flag reset
     //TxComplete[PORT_COM1] = TRUE;
     TxComplete[PORT_COM2] = TRUE;
-    InterruptTest10--;
+    //InterruptTest10--;
 }
 
 //void _ISR_PSV _DMA5Interrupt(void)	// DMA for UART2 TX [6zd]
@@ -323,23 +323,23 @@ void _ISR_PSV _DMA6Interrupt(void) {	// DMA for UART1 TX [6d]
 //}
 
 void __attribute__ ((interrupt, no_auto_psv)) _U1ErrInterrupt(void) {
-    InterruptTest9++;
+    //InterruptTest9++;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
     IFS4bits.U1EIF = 0; // Clear the UART1 Error Interrupt Flag
     DISICNT = 0; //re-enable interrupts
-    InterruptTest9--;
+   // InterruptTest9--;
 }
 
 void __attribute__ ((interrupt, no_auto_psv)) _U2ErrInterrupt(void) {
-    InterruptTest8++;
+    //InterruptTest8++;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
     IFS4bits.U2EIF = 0; // Clear the UART2 Error Interrupt Flag
     DISICNT = 0; //re-enable interrupts
-    InterruptTest8--;
+    //InterruptTest8--;
 }
 
 void _ISR_PSV _U1RXInterrupt(void) {	// UART RX [6b]
-    InterruptTest7++;
+    //InterruptTest7++;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
     _U1RXIF = 0; 	// interrupt flag reset
     ClrWdt();		// [1]
@@ -360,11 +360,11 @@ void _ISR_PSV _U1RXInterrupt(void) {	// UART RX [6b]
         }
     }
     DISICNT = 0; //re-enable interrupts
-    InterruptTest7--;
+    //InterruptTest7--;
 }
 
 void _ISR_PSV _U2RXInterrupt(void) {	// UART2 RX [6zb]
-    InterruptTest6++;
+    //InterruptTest6++;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
     _U2RXIF = 0; 	// interrupt flag reset
     ClrWdt();		// [1]
@@ -386,12 +386,12 @@ void _ISR_PSV _U2RXInterrupt(void) {	// UART2 RX [6zb]
     }
     DISICNT = 0; //re-enable interrupts
 
-    InterruptTest6--;
+    //InterruptTest6--;
 }
 
 
 void _ISR_PSV _U2TXInterrupt(void)  {
-    InterruptTest5++;
+    //InterruptTest5++;
     _U2TXIF = 0;                        // interrupt flag reset
     unsigned char debugTX;
 
@@ -413,7 +413,7 @@ void _ISR_PSV _U2TXInterrupt(void)  {
         IEC1bits.U2TXIE = 0;            //  Disable Transmit Interrupts
     }
     DISICNT = 0; //re-enable interrupts
-    InterruptTest5--;
+    //InterruptTest5--;
 }
 
 

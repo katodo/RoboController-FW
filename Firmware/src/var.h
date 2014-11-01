@@ -82,6 +82,7 @@ volatile unsigned char TxNByte_UART2 = 0;                  // Trasmissione byte 
 unsigned char *TxPointer_UART2;
 
 //  MODBUS
+volatile lvalue TmpSplitLongToWord;
 unsigned int    VarModbus[N_PARAMETRI];
 unsigned int    StatoSeriale[NUMERO_PORT_SERIALI];
 unsigned char   RxNByte[NUMERO_PORT_SERIALI];
@@ -112,19 +113,22 @@ volatile unsigned char UartRxBuff[MAX_RX_BUFF][2];//serial communication buffer
 //volatile unsigned char IC1_idx=0,IC2_idx=0;
 //volatile unsigned char OVF1 = 1, OVF2 = 1;  // contatori overflow Timer 2, uno per ogni input capture
 
-volatile unsigned int InterruptTest0 = 0;
-volatile unsigned int InterruptTest1 = 0;
-volatile unsigned int InterruptTest2 = 0;
-volatile unsigned int InterruptTest3 = 0;
-volatile unsigned int InterruptTest4 = 0;
-volatile unsigned int InterruptTest5 = 0;
-volatile unsigned int InterruptTest6 = 0;
-volatile unsigned int InterruptTest7 = 0;
-volatile unsigned int InterruptTest8 = 0;
-volatile unsigned int InterruptTest9 = 0;
-volatile unsigned int InterruptTest10 = 0;
-volatile unsigned int InterruptTest11 = 0;
-volatile unsigned int InterruptTest12 = 0;
+//volatile unsigned int InterruptTest0 = 0;
+//volatile unsigned int InterruptTest1 = 0;
+//volatile unsigned int InterruptTest2 = 0;
+//volatile unsigned int InterruptTest3 = 0;
+//volatile unsigned int InterruptTest4 = 0;
+//volatile unsigned int InterruptTest5 = 0;
+//volatile unsigned int InterruptTest6 = 0;
+//volatile unsigned int InterruptTest7 = 0;
+//volatile unsigned int InterruptTest8 = 0;
+//volatile unsigned int InterruptTest9 = 0;
+//volatile unsigned int InterruptTest10 = 0;
+//volatile unsigned int InterruptTest11 = 0;
+//volatile unsigned int InterruptTest12 = 0;
+
+
+long E1, E2; // E = [( 2π * 10^9 ) / EncoderResolution]
 
 #else
     // ridefinisco le variabili come extern
@@ -184,6 +188,8 @@ extern volatile unsigned char TxNByte_UART2;                  // Trasmissione by
 extern unsigned char *TxPointer_UART2;
 
 //  MODBUS
+extern volatile lvalue TmpSplitLongToWord;
+
 extern unsigned int    VarModbus[N_PARAMETRI];
 extern unsigned int    StatoSeriale[NUMERO_PORT_SERIALI];
 extern unsigned char   RxNByte[NUMERO_PORT_SERIALI];
@@ -213,18 +219,22 @@ extern volatile unsigned char UartRxBuff[MAX_RX_BUFF][2];//serial communication 
 //extern volatile unsigned char IC1_idx,IC2_idx;
 //extern volatile unsigned char OVF1, OVF2;  // contatori overflow Timer 2, uno per ogni input capture
 
-extern volatile unsigned int InterruptTest0;
-extern volatile unsigned int InterruptTest1;
-extern volatile unsigned int InterruptTest2;
-extern volatile unsigned int InterruptTest3;
-extern volatile unsigned int InterruptTest4;
-extern volatile unsigned int InterruptTest5;
-extern volatile unsigned int InterruptTest6;
-extern volatile unsigned int InterruptTest7;
-extern volatile unsigned int InterruptTest8;
-extern volatile unsigned int InterruptTest9;
-extern volatile unsigned int InterruptTest10;
-extern volatile unsigned int InterruptTest11;
-extern volatile unsigned int InterruptTest12;
+//extern volatile unsigned int InterruptTest0;
+//extern volatile unsigned int InterruptTest1;
+//extern volatile unsigned int InterruptTest2;
+//extern volatile unsigned int InterruptTest3;
+//extern volatile unsigned int InterruptTest4;
+//extern volatile unsigned int InterruptTest5;
+//extern volatile unsigned int InterruptTest6;
+//extern volatile unsigned int InterruptTest7;
+//extern volatile unsigned int InterruptTest8;
+//extern volatile unsigned int InterruptTest9;
+//extern volatile unsigned int InterruptTest10;
+//extern volatile unsigned int InterruptTest11;
+//extern volatile unsigned int InterruptTest12;
+
+
+extern long E1, E2; // E = [( 2π * 10^9 ) / EncoderResolution]
+
 #endif
 
