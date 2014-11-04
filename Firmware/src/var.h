@@ -51,7 +51,7 @@ volatile Motor_t        Motore2;
 //! Struttura usata per la gestione dell'InputCapture e le misure di velocità
 volatile InputCapture_t InputCapture1;
 volatile InputCapture_t InputCapture2;
-volatile Debugger_t TestInputCapture1;
+//volatile Debugger_t TestInputCapture1;
 //volatile Debugger_t TestInputCapture2;
 
 

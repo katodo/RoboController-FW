@@ -19,38 +19,6 @@
 
 #include "limits.h"
 
-// Macro per la semplificazione della lettura del codice
-//#define _RAMPA                  PID->Rampa
-//#define _STEP_RAMPA             PID->RampaStep
-//#define _SETPOINT               PID->Setpoint
-//#define _INTEGRALE              PID->Integrale
-
-//#define _KP                     PID->Kp
-//#define _KI                     PID->Ki
-//#define _KD                     PID->Kd
-
-//#define _CONTR_INTEGRALE        PID->ContributoIntegrale
-//#define _CONTR_PROPORZIONALE    PID->ContributoProporzionale
-//#define _CONTR_DERIVATIVO       PID->ContributoDerivativo
-
-//#define _ERRORE                 PID->Errore
-//#define _ERRORE_PRECEDENTE      PID->OldError1
-//#define _ERRORE_PRE_PRECEDENTE  PID->OldError2
-
-//#define _SOMMATORIA             PID->Sommatoria
-//#define _OUT_PREC               PID->OldContrValue
-
-//#define _VALORE_ATTUALE         PID->Current
-
-//#define _COMPONENTE_FEEDFORWARD PID->ComponenteFeedForward
-//#define _OUT                    PID->OutPid
-
-
-//#define _MAX_RPM                MOTORE->I_MotorRpmMax
-//#define _MIN_RPM                MOTORE->I_MotorRpmMin
-
-//#define _AXELSPEED              MOTORE->I_MotorAxelSpeed
-
 void Pid1(void)
 { //__builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
     PID1_CALC_FLAG = 0; // Attivato sotto interrupt ogni 1mSec
@@ -150,10 +118,8 @@ void Pid2(void)
 
 void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
 {
-    long int RescaledErrore;
-    long L_ScaledSetpoint = PID->Setpoint; // Dato da mantenere/raggiungere ( velocità di crociera ) moltiplicato per 10
-    //long L_ScaledProcesso = MOTORE->I_MotorAxelSpeed; // Dato istantaneo ( velocità istantanea ) moltiplicato per 10
-    long L_ScaledProcesso = MOTORE->L_Period;
+    long Setpoint = PID->Setpoint; // Dato da mantenere/raggiungere ( velocità di crociera )
+    long Processo = MOTORE->L_Period;
 
     //    __builtin_disi(0x3FFF); /* disable interrupts, vedere pg 181 di MPLAB_XC16_C_Compiler_UG_52081.pdf */
 
@@ -183,8 +149,6 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
      *  ***************************************************************************************
      */
 
-    int rescaleFact = 10;
-
     int saturazione; // Indica se il controllo è in saturazione.
     // Da usare per l'anti-windup
 
@@ -197,7 +161,7 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
     // Tende a raggiungere il valore di SetPoint in base all'ampiezza dello Step.
     if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_RAMP_EN)
     { //  Modalità rampa
-        if (PID->Rampa < L_ScaledSetpoint)
+        if (PID->Rampa < Setpoint)
         { // Rampa in salita
 
             if ((PID->Rampa > -DEAD_ZONE) && (PID->Rampa < DEAD_ZONE))
@@ -207,14 +171,14 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
             }
 
             PID->Rampa += PID->RampaStep;
-            if (PID->Rampa > L_ScaledSetpoint)
-                PID->Rampa = L_ScaledSetpoint;
+            if (PID->Rampa > Setpoint)
+                PID->Rampa = Setpoint;
             if (PID->Rampa > MOTORE->I_MotorRpmMax)
                 PID->Rampa = MOTORE->I_MotorRpmMax;
         }
 
 
-        if (PID->Rampa > L_ScaledSetpoint)
+        if (PID->Rampa > Setpoint)
         { //  Rampa in discesa
 
 
@@ -233,34 +197,24 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
 
 
             PID->Rampa -= PID->RampaStep;
-            if (PID->Rampa < L_ScaledSetpoint)
-                PID->Rampa = L_ScaledSetpoint;
+            if (PID->Rampa < Setpoint)
+                PID->Rampa = Setpoint;
             if (PID->Rampa < MOTORE->I_MotorRpmMin)
                 PID->Rampa = MOTORE->I_MotorRpmMin;
         }
     }
     else
     { // Modalità senza rampa
-
-//        // Verifico limiti del setpoint in modalità senza rampa
-//        if (L_ScaledSetpoint > MOTORE->I_MotorRpmMax)
-//            L_ScaledSetpoint = MOTORE->I_MotorRpmMax;
-//
-//        if (L_ScaledSetpoint < MOTORE->I_MotorRpmMin)
-//            L_ScaledSetpoint = MOTORE->I_MotorRpmMin;
-
-        if ((L_ScaledSetpoint < DEAD_ZONE) & (L_ScaledSetpoint > -DEAD_ZONE))
+        if ((Setpoint < DEAD_ZONE) & (Setpoint > -DEAD_ZONE))
         {
-            L_ScaledSetpoint = 0;
+            Setpoint = 0;
             PidReset(PID, MOTORE); // All'interno della banda morta resetto il PID
         }
 
-        PID->Rampa = L_ScaledSetpoint;
+        PID->Rampa = Setpoint;
     }
 
-    PID->Errore = (PID->Rampa - L_ScaledProcesso); // calcolo errore tra il setpoint e il Current
-
-    RescaledErrore = __builtin_mulss((int) PID->Errore, rescaleFact);
+    PID->Errore = (PID->Rampa - Processo); // calcolo errore tra il setpoint e il Current
 
     //    PID->ComponenteFeedForward = RescaledErrore * 2;
     //    if (PID->ComponenteFeedForward >  2045 )
@@ -272,30 +226,30 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
     // Y[n] = Y[n-1] + P*(X[n] - X[n-1] ) + I*X[n] + D*(X[n] - 2*X[n-1] + X[n-2])
 
     // CONTRIBUTO PROPORZIONALE
-    PID->ContributoProporzionale = PID->Kp * (RescaledErrore - PID->OldError1);
+    PID->ContributoProporzionale = PID->Kp * (PID->Errore - PID->OldError1);
 
     // CONTRIBUTO INTEGRALE
     if (saturazione == 1 || // Controllo saturo -> Anti-WindUp
             PID->Ki == 0) // Nessun contributo integrale
         PID->ContributoIntegrale = 0;
     else
-        PID->ContributoIntegrale = PID->Ki * RescaledErrore;
+        PID->ContributoIntegrale = PID->Ki * PID->Errore;
 
     // CONTRIBUTO DERIVATIVO
     if (PID->Kd == 0) // Nessun contributo derivativo
         PID->ContributoDerivativo = 0;
     else
-        PID->ContributoDerivativo = PID->Kd * (RescaledErrore - 2 * PID->OldError1 + PID->OldError2);
+        PID->ContributoDerivativo = PID->Kd * (PID->Errore - 2 * PID->OldError1 + PID->OldError2);
 
     // Aggiornamento errori
     PID->OldError2 = PID->OldError1;
-    PID->OldError1 = RescaledErrore;
+    PID->OldError1 = PID->Errore;
 
     // Ora che è differenziale ci va il "+=" by Walt
     PID->Sommatoria += (PID->ContributoProporzionale + PID->ContributoIntegrale + PID->ContributoDerivativo); // sommatoria errori
 
     if (PID->Sommatoria > (LONG_MAX - 1000))
-        PID->Sommatoria = LONG_MAX; // limiti pwm
+        PID->Sommatoria = LONG_MAX;
 
     if (PID->Sommatoria < (LONG_MIN + 1000))
         PID->Sommatoria = LONG_MIN;
@@ -308,8 +262,7 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
     }
     else
     { // sommatore per il calcolo del reale PWM da inviare al motore
-        //_OUT = 2048 + (PID->ComponenteFeedForward + _SOMMATORIA/1000);
-        PID->OutPid = 2048 + PID->Sommatoria / (100 * rescaleFact);
+        PID->OutPid = 2048 + PID->Sommatoria;
     }
 
     if (PID->OutPid > 4095) PID->OutPid = 4095;

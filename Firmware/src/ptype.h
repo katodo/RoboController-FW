@@ -110,9 +110,9 @@ typedef struct
      *  => T_FattoreConversioneRPM_1 = (60000000000 * IC_PRESCALER_1) / ( ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_XXX] * T_Prescaler_TIMER )
      *
      */
-    volatile long   T_FattoreConversioneRPM_1;
-    volatile long   T_FattoreConversioneRPM_2;
-    volatile long   T_FattoreConversioneRPM_3;
+//    volatile long   T_FattoreConversioneRPM_1;
+//    volatile long   T_FattoreConversioneRPM_2;
+//    volatile long   T_FattoreConversioneRPM_3;
 
     /*  Variabili usate per le conversioni delle unità di misura*/
     volatile float  FL_Costante_Conversione_Vlin_to_Vang;
@@ -124,18 +124,14 @@ typedef struct
     volatile int    ErrorCounter;
 } InputCapture_t;
 
-typedef struct
-{   volatile unsigned int  Anomalie;    // Numero "Anomalie" registrate
-    volatile long   LogginArea[1000][2];
-//    volatile unsigned int Pointer;
-//    volatile long int PosizioneAnomalia[10][10];    // Posizione - Valore
-}   Debugger_t;
+//typedef struct
+//{   volatile unsigned int  Anomalie;    // Numero "Anomalie" registrate
+//    volatile long   LogginArea[1000][2];
+//}   Debugger_t;
 
 
 typedef struct
-{   //volatile unsigned char  UC_PidSpeed;       // 0 = Pid a 1mSec, 1 = Pid a 10mSec
-    //volatile unsigned char  UC_PidCounter;
-    volatile long       Kp;
+{   volatile long       Kp;
     volatile long       Ki;
     volatile long       Kd;
 
@@ -145,8 +141,6 @@ typedef struct
 
     volatile long       OldContrValue;  // Valore di controllo all'istante precedente
 
-//    volatile long       Current;        // Dato corrente di velocità del motore... velocità che deve essere nello stesso
-                                        //  tipo e ordine di grandezza del Setpoint
     volatile long       Setpoint;       // Dato di velocità da raggiungere e mantenere.
     volatile long       Rampa;          // Dato di velocità in regolazione per raggiungere il Setpoint in base alla Rampa.
     volatile long       RampaStep;      // Incremento ( ad ogni ciclo PID ) del dato di regolazione Rampa per raggiungere il SetPoint.
