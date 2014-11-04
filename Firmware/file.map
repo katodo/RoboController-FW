@@ -139,14 +139,13 @@ section                    address   length (PC units)   length (bytes) (dec)
 .text                        0x200               0xa26           0xf39  (3897)
 .const                       0xc26                0x2c            0x42  (66)
 .text                        0xc52               0x34a           0x4ef  (1263)
-.text                        0xf9c                0x58            0x84  (132)
-_0x563bc0b854587b47         0x1000              0x1800          0x2400  (9216)
+.dinit                       0xf9c                0x58            0x84  (132)
+_0x563bc0b854594d04         0x1000              0x1800          0x2400  (9216)
 .text                       0x2800              0x3254          0x4b7e  (19326)
-.text                       0x5a54               0x3f2           0x5eb  (1515)
-.dinit                      0x5e46                0x58            0x84  (132)
-.text                       0x5e9e                0xca           0x12f  (303)
+.text                       0x5a54               0x718           0xaa4  (2724)
+.text                       0x616c                0xca           0x12f  (303)
 
-                     Total program memory used (bytes):         0x8c0a  (35850) 27%
+                     Total program memory used (bytes):         0x903f  (36927) 28%
 
 
 Data Memory  [Origin = 0x800, Length = 0x4000]
@@ -154,25 +153,25 @@ Data Memory  [Origin = 0x800, Length = 0x4000]
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
 .nbss                        0x800                   0             0x2  (2)
-.bss                         0x802                   0           0x48c  (1164)
-.heap                        0xc8e                   0           0x200  (512)
-_0x564752e054587b46         0x4600                   0            0x40  (64)
+.bss                         0x802                   0           0x484  (1156)
+.heap                        0xc86                   0           0x200  (512)
+_0x564742e054594d04         0x4600                   0            0x40  (64)
 .data                       0x4640                   0            0x2c  (44)
 .bss                        0x466c                   0             0x2  (2)
-_0x5647533c54587b46         0x4700                   0            0x80  (128)
-_0x5647539854587b46         0x4780                   0            0x80  (128)
+_0x5647433c54594d04         0x4700                   0            0x80  (128)
+_0x5647439854594d04         0x4780                   0            0x80  (128)
 
-                        Total data memory used (bytes):          0x7fc  (2044) 12%
+                        Total data memory used (bytes):          0x7f4  (2036) 12%
 
 
 Dynamic Memory Usage
 
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
-heap                         0xc8e                               0x200  (512)
-stack                        0xe8e                              0x3772  (14194)
+heap                         0xc86                               0x200  (512)
+stack                        0xe86                              0x377a  (14202)
 
-                        Maximum dynamic memory (bytes):         0x3972  (14706)
+                        Maximum dynamic memory (bytes):         0x397a  (14714)
 
 
 External Symbols in Data Memory (by address):
@@ -184,41 +183,41 @@ External Symbols in Data Memory (by address):
                     0x0810                  _CostanteTaraturaAN3
                     0x0814                  _CostanteTaraturaAN4
                     0x0818                  _PID1
-                    0x085c                  _PID2
-                    0x08a0                  _SampleICSwitcher
-                    0x08a2                  _Timer10mSec
-                    0x08a8                  _Timer1mSec
-                    0x08ae                  _Motore1
-                    0x08cc                  _Motore2
-                    0x08ea                  _InputCapture1
-                    0x08f0                  _InputCapture2
-                    0x08f6                  _Led1Segnalazione
-                    0x0904                  _Led2Segnalazione
-                    0x0912                  _VOLbits1
-                    0x0914                  _Old_Indice_Status_Bit1
-                    0x0916                  _ParametriEEPROM
-                    0x0984                  _IngressiAnalogici
-                    0x098e                  _ComunicationWatchDogTimer
-                    0x0990                  _Uart1RxStatus
-                    0x0992                  _ChkSum1
-                    0x0994                  _Uart2RxStatus
-                    0x0996                  _ChkSum2
-                    0x0997                  _TxNByte_UART2
-                    0x0998                  _TxPointer_UART2
-                    0x099a                  _TmpSplitLongToWord
-                    0x099e                  _VarModbus
-                    0x09f2                  _StatoSeriale
-                    0x09f6                  _RxNByte
-                    0x09f8                  _RxPointer
-                    0x09fc                  _TxPointer
-                    0x0a00                  _TimerOutRxModbus
-                    0x0a02                  _TimerRitardoModbus
-                    0x0a04                  _TxComplete
-                    0x0a06                  _ModbusTxBuff
-                    0x0b06                  _ModbusRxBuff
-                    0x0c06                  _UartRxBuff
-                    0x0c86                  _E1
-                    0x0c8a                  _E2
+                    0x0858                  _PID2
+                    0x0898                  _SampleICSwitcher
+                    0x089a                  _Timer10mSec
+                    0x08a0                  _Timer1mSec
+                    0x08a6                  _Motore1
+                    0x08c4                  _Motore2
+                    0x08e2                  _InputCapture1
+                    0x08e8                  _InputCapture2
+                    0x08ee                  _Led1Segnalazione
+                    0x08fc                  _Led2Segnalazione
+                    0x090a                  _VOLbits1
+                    0x090c                  _Old_Indice_Status_Bit1
+                    0x090e                  _ParametriEEPROM
+                    0x097c                  _IngressiAnalogici
+                    0x0986                  _ComunicationWatchDogTimer
+                    0x0988                  _Uart1RxStatus
+                    0x098a                  _ChkSum1
+                    0x098c                  _Uart2RxStatus
+                    0x098e                  _ChkSum2
+                    0x098f                  _TxNByte_UART2
+                    0x0990                  _TxPointer_UART2
+                    0x0992                  _TmpSplitLongToWord
+                    0x0996                  _VarModbus
+                    0x09ea                  _StatoSeriale
+                    0x09ee                  _RxNByte
+                    0x09f0                  _RxPointer
+                    0x09f4                  _TxPointer
+                    0x09f8                  _TimerOutRxModbus
+                    0x09fa                  _TimerRitardoModbus
+                    0x09fc                  _TxComplete
+                    0x09fe                  _ModbusTxBuff
+                    0x0afe                  _ModbusRxBuff
+                    0x0bfe                  _UartRxBuff
+                    0x0c7e                  _E1
+                    0x0c82                  _E2
                     0x4600                  _Uart1TxBuff
                     0x4640                  _Ver
                     0x466c                  _dataEEFlags
@@ -227,9 +226,9 @@ External Symbols in Data Memory (by address):
 
 External Symbols in Data Memory (by name):
 
-                    0x0992                  _ChkSum1
-                    0x0996                  _ChkSum2
-                    0x098e                  _ComunicationWatchDogTimer
+                    0x098a                  _ChkSum1
+                    0x098e                  _ChkSum2
+                    0x0986                  _ComunicationWatchDogTimer
                     0x0804                  _CostanteTaraturaAN0
                     0x0808                  _CostanteTaraturaAN1
                     0x080c                  _CostanteTaraturaAN2
@@ -238,40 +237,40 @@ External Symbols in Data Memory (by name):
                     0x4700                  _DmaAdc_A
                     0x4780                  _DmaAdc_B
                     0x0802                  _DmaBuffer
-                    0x0c86                  _E1
-                    0x0c8a                  _E2
-                    0x0984                  _IngressiAnalogici
-                    0x08ea                  _InputCapture1
-                    0x08f0                  _InputCapture2
-                    0x08f6                  _Led1Segnalazione
-                    0x0904                  _Led2Segnalazione
-                    0x0b06                  _ModbusRxBuff
-                    0x0a06                  _ModbusTxBuff
-                    0x08ae                  _Motore1
-                    0x08cc                  _Motore2
-                    0x0914                  _Old_Indice_Status_Bit1
+                    0x0c7e                  _E1
+                    0x0c82                  _E2
+                    0x097c                  _IngressiAnalogici
+                    0x08e2                  _InputCapture1
+                    0x08e8                  _InputCapture2
+                    0x08ee                  _Led1Segnalazione
+                    0x08fc                  _Led2Segnalazione
+                    0x0afe                  _ModbusRxBuff
+                    0x09fe                  _ModbusTxBuff
+                    0x08a6                  _Motore1
+                    0x08c4                  _Motore2
+                    0x090c                  _Old_Indice_Status_Bit1
                     0x0818                  _PID1
-                    0x085c                  _PID2
-                    0x0916                  _ParametriEEPROM
-                    0x09f6                  _RxNByte
-                    0x09f8                  _RxPointer
-                    0x08a0                  _SampleICSwitcher
-                    0x09f2                  _StatoSeriale
-                    0x08a2                  _Timer10mSec
-                    0x08a8                  _Timer1mSec
-                    0x0a00                  _TimerOutRxModbus
-                    0x0a02                  _TimerRitardoModbus
-                    0x099a                  _TmpSplitLongToWord
-                    0x0a04                  _TxComplete
-                    0x0997                  _TxNByte_UART2
-                    0x09fc                  _TxPointer
-                    0x0998                  _TxPointer_UART2
-                    0x0990                  _Uart1RxStatus
+                    0x0858                  _PID2
+                    0x090e                  _ParametriEEPROM
+                    0x09ee                  _RxNByte
+                    0x09f0                  _RxPointer
+                    0x0898                  _SampleICSwitcher
+                    0x09ea                  _StatoSeriale
+                    0x089a                  _Timer10mSec
+                    0x08a0                  _Timer1mSec
+                    0x09f8                  _TimerOutRxModbus
+                    0x09fa                  _TimerRitardoModbus
+                    0x0992                  _TmpSplitLongToWord
+                    0x09fc                  _TxComplete
+                    0x098f                  _TxNByte_UART2
+                    0x09f4                  _TxPointer
+                    0x0990                  _TxPointer_UART2
+                    0x0988                  _Uart1RxStatus
                     0x4600                  _Uart1TxBuff
-                    0x0994                  _Uart2RxStatus
-                    0x0c06                  _UartRxBuff
-                    0x0912                  _VOLbits1
-                    0x099e                  _VarModbus
+                    0x098c                  _Uart2RxStatus
+                    0x0bfe                  _UartRxBuff
+                    0x090a                  _VOLbits1
+                    0x0996                  _VarModbus
                     0x4640                  _Ver
                     0x466c                  _dataEEFlags
 
@@ -324,10 +323,6 @@ External Symbols in Program Memory (by address):
                   0x000e6e                  __U1RXInterrupt
                   0x000ede                  __U2RXInterrupt
                   0x000f50                  __U2TXInterrupt
-                  0x000f9c                  _GestioneAllarmi
-                  0x000fa2                  _SetLedErrorCode
-                  0x000fe4                  _GestioneLed1ErrorCode
-                  0x000fec                  _GestioneLed2ErrorCode
                   0x001000                  _emulationPages
                   0x002800                  _LeggiWord
                   0x002b30                  _ScriviWord
@@ -376,22 +371,26 @@ External Symbols in Program Memory (by address):
                   0x00572c                  _MediaADC
                   0x0057d4                  _TaraturaAnalogiche
                   0x005a16                  __DMA7Interrupt
-                  0x005a54                  _Settings
-                  0x005cd4                  _ISR_Settings
-                  0x005d4c                  _InitMotorStructure
-                  0x005d9c                  _UpdateMotorStructure
-                  0x005db6                  _GestioneSicurezzaMotore
-                  0x005de8                  _MotorControlEnable
-                  0x005e9e                  _GestioneWatchdog
-                  0x005ef0                  _GestioneTimerSW
-                  0x005f26                  _ReloadTimerSW
-                  0x005f36                  _ReadPMHigh
-                  0x005f3a                  _ReadPMLow
-                  0x005f3e                  _UnlockPM
-                  0x005f58                  _WritePMHigh
-                  0x005f5c                  _WritePMHighB
-                  0x005f60                  _WritePMLow
-                  0x005f64                  _WritePMLowB
+                  0x005a54                  _GestioneAllarmi
+                  0x005aec                  _SetLedErrorCode
+                  0x005b2e                  _GestioneLed1ErrorCode
+                  0x005c54                  _GestioneLed2ErrorCode
+                  0x005d7a                  _Settings
+                  0x005ffa                  _ISR_Settings
+                  0x006072                  _InitMotorStructure
+                  0x0060c2                  _UpdateMotorStructure
+                  0x0060dc                  _GestioneSicurezzaMotore
+                  0x00610e                  _MotorControlEnable
+                  0x00616c                  _GestioneWatchdog
+                  0x0061be                  _GestioneTimerSW
+                  0x0061f4                  _ReloadTimerSW
+                  0x006204                  _ReadPMHigh
+                  0x006208                  _ReadPMLow
+                  0x00620c                  _UnlockPM
+                  0x006226                  _WritePMHigh
+                  0x00622a                  _WritePMHighB
+                  0x00622e                  _WritePMLow
+                  0x006232                  _WritePMLowB
                   0xf80004                  __FGS.sec
 
 External Symbols in Program Memory (by name):
@@ -403,18 +402,18 @@ External Symbols in Program Memory (by name):
                   0x0043a8                  _DataEEWrite
                   0x003c4c                  _ErasePage
                   0x003b00                  _FreeRxBuffer
-                  0x000f9c                  _GestioneAllarmi
-                  0x000fe4                  _GestioneLed1ErrorCode
-                  0x000fec                  _GestioneLed2ErrorCode
+                  0x005a54                  _GestioneAllarmi
+                  0x005b2e                  _GestioneLed1ErrorCode
+                  0x005c54                  _GestioneLed2ErrorCode
                   0x004c5c                  _GestioneSetpoint
-                  0x005db6                  _GestioneSicurezzaMotore
-                  0x005ef0                  _GestioneTimerSW
-                  0x005e9e                  _GestioneWatchdog
+                  0x0060dc                  _GestioneSicurezzaMotore
+                  0x0061be                  _GestioneTimerSW
+                  0x00616c                  _GestioneWatchdog
                   0x003cba                  _GetNextAvailCount
                   0x003ba2                  _GetPageStatus
-                  0x005cd4                  _ISR_Settings
+                  0x005ffa                  _ISR_Settings
                   0x0055a6                  _InitADC
-                  0x005d4c                  _InitMotorStructure
+                  0x006072                  _InitMotorStructure
                   0x0050ac                  _InitializationEEPROM
                   0x003b28                  _InizializzaSeriale
                   0x005664                  _LeggiADC
@@ -431,7 +430,7 @@ External Symbols in Program Memory (by name):
                   0x0038b8                  _ModbusWriteMultipleWords
                   0x00365c                  _ModbusWriteSingleBit
                   0x0036fa                  _ModbusWriteSingleWord
-                  0x005de8                  _MotorControlEnable
+                  0x00610e                  _MotorControlEnable
                   0x000bd4                  _OpenMCPWM1
                   0x000bfa                  _OpenTimer1
                   0x003d6a                  _PackEE
@@ -439,32 +438,32 @@ External Symbols in Program Memory (by name):
                   0x00457e                  _Pid1
                   0x004644                  _Pid2
                   0x004ab8                  _PidReset
-                  0x005f36                  _ReadPMHigh
-                  0x005f3a                  _ReadPMLow
+                  0x006204                  _ReadPMHigh
+                  0x006208                  _ReadPMLow
                   0x000c02                  _ReadUART1
                   0x000c14                  _ReadUART2
-                  0x005f26                  _ReloadTimerSW
+                  0x0061f4                  _ReloadTimerSW
                   0x0050bc                  _RestoreEEPROMData
                   0x0030fe                  _ScriviBit
                   0x002b30                  _ScriviWord
                   0x000be0                  _SetDCMCPWM1
-                  0x000fa2                  _SetLedErrorCode
+                  0x005aec                  _SetLedErrorCode
                   0x000bf6                  _SetMCPWM1DeadTimeGeneration
-                  0x005a54                  _Settings
+                  0x005d7a                  _Settings
                   0x000c32                  _TabMaskBitIO
                   0x000c2a                  _TabMaskBitModbus
                   0x0057d4                  _TaraturaAnalogiche
                   0x000c26                  _Tcy
                   0x000d98                  _TxString
-                  0x005f3e                  _UnlockPM
+                  0x00620c                  _UnlockPM
                   0x003b58                  _UnlockWrite
-                  0x005d9c                  _UpdateMotorStructure
+                  0x0060c2                  _UpdateMotorStructure
                   0x000c52                  _Usart1Setting
                   0x000ce2                  _Usart2Setting
-                  0x005f58                  _WritePMHigh
-                  0x005f5c                  _WritePMHighB
-                  0x005f60                  _WritePMLow
-                  0x005f64                  _WritePMLowB
+                  0x006226                  _WritePMHigh
+                  0x00622a                  _WritePMHighB
+                  0x00622e                  _WritePMLow
+                  0x006232                  _WritePMLowB
                   0x000e24                  __DMA6Interrupt
                   0x005a16                  __DMA7Interrupt
                   0x00509e                  __DMACError
@@ -710,40 +709,40 @@ __FUID3
 .comment
  *(.comment)
 
-.debug_info       0x000000       0xb0ad
+.debug_info       0x000000       0xb25a
  *(.debug_info)
- .debug_info      0x000000       0x1569 build/Max_xxv/production/src/adc.o
- .debug_info      0x001569       0x1aa6 build/Max_xxv/production/src/main.o
- .debug_info      0x00300f        0xb6a build/Max_xxv/production/src/modbus.o
- .debug_info      0x003b79        0x9ef build/Max_xxv/production/src/pid.o
- .debug_info      0x004568       0x346c build/Max_xxv/production/src/settings.o
- .debug_info      0x0079d4        0x1e4 build/Max_xxv/production/src/sw_timer.o
- .debug_info      0x007bb8       0x1878 build/Max_xxv/production/src/uart.o
- .debug_info      0x009430        0x584 build/Max_xxv/production/src/Eeprom.o
- .debug_info      0x0099b4        0x55e build/Max_xxv/production/src/Alarm.o
- .debug_info      0x009f12        0x32e build/Max_xxv/production/src/Led.o
- .debug_info      0x00a240        0x519 build/Max_xxv/production/src/motor.o
- .debug_info      0x00a759        0x8b4 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
- .debug_info      0x00b00d         0xa0 build/Max_xxv/production/src/Flash_Operations.o
+ .debug_info      0x000000       0x1574 build/Max_xxv/production/src/adc.o
+ .debug_info      0x001574       0x1a5f build/Max_xxv/production/src/main.o
+ .debug_info      0x002fd3        0xb31 build/Max_xxv/production/src/modbus.o
+ .debug_info      0x003b04        0x9a2 build/Max_xxv/production/src/pid.o
+ .debug_info      0x0044a6       0x344e build/Max_xxv/production/src/settings.o
+ .debug_info      0x0078f4        0x1e4 build/Max_xxv/production/src/sw_timer.o
+ .debug_info      0x007ad8       0x1878 build/Max_xxv/production/src/uart.o
+ .debug_info      0x009350        0x556 build/Max_xxv/production/src/Eeprom.o
+ .debug_info      0x0098a6        0x507 build/Max_xxv/production/src/Alarm.o
+ .debug_info      0x009dad        0x65e build/Max_xxv/production/src/Led.o
+ .debug_info      0x00a40b        0x4fb build/Max_xxv/production/src/motor.o
+ .debug_info      0x00a906        0x8b4 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+ .debug_info      0x00b1ba         0xa0 build/Max_xxv/production/src/Flash_Operations.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0xf53
+.debug_abbrev     0x000000        0xf9d
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x18a build/Max_xxv/production/src/adc.o
- .debug_abbrev    0x00018a        0x22e build/Max_xxv/production/src/main.o
- .debug_abbrev    0x0003b8        0x17d build/Max_xxv/production/src/modbus.o
- .debug_abbrev    0x000535        0x1aa build/Max_xxv/production/src/pid.o
- .debug_abbrev    0x0006df        0x169 build/Max_xxv/production/src/settings.o
- .debug_abbrev    0x000848         0xa8 build/Max_xxv/production/src/sw_timer.o
- .debug_abbrev    0x0008f0        0x165 build/Max_xxv/production/src/uart.o
- .debug_abbrev    0x000a55         0xd7 build/Max_xxv/production/src/Eeprom.o
- .debug_abbrev    0x000b2c         0x98 build/Max_xxv/production/src/Alarm.o
- .debug_abbrev    0x000bc4         0xa6 build/Max_xxv/production/src/Led.o
- .debug_abbrev    0x000c6a        0x113 build/Max_xxv/production/src/motor.o
- .debug_abbrev    0x000d7d        0x1c2 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
- .debug_abbrev    0x000f3f         0x14 build/Max_xxv/production/src/Flash_Operations.o
+ .debug_abbrev    0x000000        0x199 build/Max_xxv/production/src/adc.o
+ .debug_abbrev    0x000199        0x22e build/Max_xxv/production/src/main.o
+ .debug_abbrev    0x0003c7        0x17f build/Max_xxv/production/src/modbus.o
+ .debug_abbrev    0x000546        0x17f build/Max_xxv/production/src/pid.o
+ .debug_abbrev    0x0006c5        0x169 build/Max_xxv/production/src/settings.o
+ .debug_abbrev    0x00082e         0xa8 build/Max_xxv/production/src/sw_timer.o
+ .debug_abbrev    0x0008d6        0x165 build/Max_xxv/production/src/uart.o
+ .debug_abbrev    0x000a3b         0xe6 build/Max_xxv/production/src/Eeprom.o
+ .debug_abbrev    0x000b21         0x9a build/Max_xxv/production/src/Alarm.o
+ .debug_abbrev    0x000bbb         0xf7 build/Max_xxv/production/src/Led.o
+ .debug_abbrev    0x000cb2        0x115 build/Max_xxv/production/src/motor.o
+ .debug_abbrev    0x000dc7        0x1c2 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+ .debug_abbrev    0x000f89         0x14 build/Max_xxv/production/src/Flash_Operations.o
 
-.debug_line       0x000000       0x411b
+.debug_line       0x000000       0x449e
  *(.debug_line)
  .debug_line      0x000000        0x540 build/Max_xxv/production/src/adc.o
  .debug_line      0x000540        0x762 build/Max_xxv/production/src/main.o
@@ -754,10 +753,10 @@ __FUID3
  .debug_line      0x0026e3        0x5bd build/Max_xxv/production/src/uart.o
  .debug_line      0x002ca0        0x656 build/Max_xxv/production/src/Eeprom.o
  .debug_line      0x0032f6         0xc1 build/Max_xxv/production/src/Alarm.o
- .debug_line      0x0033b7         0xe4 build/Max_xxv/production/src/Led.o
- .debug_line      0x00349b        0x215 build/Max_xxv/production/src/motor.o
- .debug_line      0x0036b0        0xa10 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
- .debug_line      0x0040c0         0x5b build/Max_xxv/production/src/Flash_Operations.o
+ .debug_line      0x0033b7        0x467 build/Max_xxv/production/src/Led.o
+ .debug_line      0x00381e        0x215 build/Max_xxv/production/src/motor.o
+ .debug_line      0x003a33        0xa10 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+ .debug_line      0x004443         0x5b build/Max_xxv/production/src/Flash_Operations.o
 
 .debug_frame      0x000000        0x540
  *(.debug_frame)
@@ -774,18 +773,19 @@ __FUID3
  .debug_frame     0x000458         0x54 build/Max_xxv/production/src/motor.o
  .debug_frame     0x0004ac         0x94 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
 
-.debug_str        0x000000        0x745
+.debug_str        0x000000        0x781
  *(.debug_str)
  .debug_str       0x000000        0x143 build/Max_xxv/production/src/adc.o
  .debug_str       0x000143        0x110 build/Max_xxv/production/src/main.o
  .debug_str       0x000253         0xda build/Max_xxv/production/src/modbus.o
- .debug_str       0x00032d         0x32 build/Max_xxv/production/src/pid.o
- .debug_str       0x00035f        0x17b build/Max_xxv/production/src/settings.o
- .debug_str       0x0004da        0x122 build/Max_xxv/production/src/uart.o
- .debug_str       0x0005fc         0x9a build/Max_xxv/production/src/Eeprom.o
- .debug_str       0x000696         0x24 build/Max_xxv/production/src/Alarm.o
- .debug_str       0x0006ba         0x19 build/Max_xxv/production/src/motor.o
- .debug_str       0x0006d3         0x72 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+ .debug_str       0x00032d         0x29 build/Max_xxv/production/src/pid.o
+ .debug_str       0x000356        0x17b build/Max_xxv/production/src/settings.o
+ .debug_str       0x0004d1        0x122 build/Max_xxv/production/src/uart.o
+ .debug_str       0x0005f3         0x9a build/Max_xxv/production/src/Eeprom.o
+ .debug_str       0x00068d         0x24 build/Max_xxv/production/src/Alarm.o
+ .debug_str       0x0006b1         0x45 build/Max_xxv/production/src/Led.o
+ .debug_str       0x0006f6         0x19 build/Max_xxv/production/src/motor.o
+ .debug_str       0x00070f         0x72 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
 
 .debug_loc
  *(.debug_loc)
@@ -2227,108 +2227,108 @@ LOAD heap
 LOAD data_init
 
 .debug_pubtypes
-                  0x000138        0xa8c
+                  0x000138        0xbae
  .debug_pubtypes
-                  0x000138        0x1ab build/Max_xxv/production/src/adc.o
+                  0x000138        0x1ba build/Max_xxv/production/src/adc.o
  .debug_pubtypes
-                  0x0002e3        0x132 build/Max_xxv/production/src/main.o
+                  0x0002f2        0x18b build/Max_xxv/production/src/main.o
  .debug_pubtypes
-                  0x000415         0x39 build/Max_xxv/production/src/modbus.o
+                  0x00047d         0x45 build/Max_xxv/production/src/modbus.o
  .debug_pubtypes
-                  0x00044e         0x73 build/Max_xxv/production/src/pid.o
+                  0x0004c2         0x8d build/Max_xxv/production/src/pid.o
  .debug_pubtypes
-                  0x0004c1        0x46a build/Max_xxv/production/src/settings.o
+                  0x00054f        0x478 build/Max_xxv/production/src/settings.o
  .debug_pubtypes
-                  0x00092b         0x1e build/Max_xxv/production/src/sw_timer.o
+                  0x0009c7         0x1e build/Max_xxv/production/src/sw_timer.o
  .debug_pubtypes
-                  0x000949        0x186 build/Max_xxv/production/src/uart.o
+                  0x0009e5        0x186 build/Max_xxv/production/src/uart.o
  .debug_pubtypes
-                  0x000acf         0x39 build/Max_xxv/production/src/Eeprom.o
+                  0x000b6b         0x54 build/Max_xxv/production/src/Eeprom.o
  .debug_pubtypes
-                  0x000b08         0x28 build/Max_xxv/production/src/Alarm.o
+                  0x000bbf         0x42 build/Max_xxv/production/src/Alarm.o
  .debug_pubtypes
-                  0x000b30         0x1c build/Max_xxv/production/src/Led.o
+                  0x000c01         0x5f build/Max_xxv/production/src/Led.o
  .debug_pubtypes
-                  0x000b4c         0x3b build/Max_xxv/production/src/motor.o
+                  0x000c60         0x49 build/Max_xxv/production/src/motor.o
  .debug_pubtypes
-                  0x000b87         0x3d build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+                  0x000ca9         0x3d build/Max_xxv/production/src/DEE_Emulation_16-bit.o
 
 __c30_signature
-                  0x000bc4         0xae
+                  0x000ce6         0xae
  __c30_signature
-                  0x000bc4          0x6 build/Max_xxv/production/src/adc.o
+                  0x000ce6          0x6 build/Max_xxv/production/src/adc.o
  __c30_signature
-                  0x000bca          0x6 build/Max_xxv/production/src/main.o
+                  0x000cec          0x6 build/Max_xxv/production/src/main.o
  __c30_signature
-                  0x000bd0          0x6 build/Max_xxv/production/src/modbus.o
+                  0x000cf2          0x6 build/Max_xxv/production/src/modbus.o
  __c30_signature
-                  0x000bd6          0x6 build/Max_xxv/production/src/pid.o
+                  0x000cf8          0x6 build/Max_xxv/production/src/pid.o
  __c30_signature
-                  0x000bdc          0x6 build/Max_xxv/production/src/settings.o
+                  0x000cfe          0x6 build/Max_xxv/production/src/settings.o
  __c30_signature
-                  0x000be2          0x6 build/Max_xxv/production/src/sw_timer.o
+                  0x000d04          0x6 build/Max_xxv/production/src/sw_timer.o
  __c30_signature
-                  0x000be8          0x6 build/Max_xxv/production/src/uart.o
+                  0x000d0a          0x6 build/Max_xxv/production/src/uart.o
  __c30_signature
-                  0x000bee          0x6 build/Max_xxv/production/src/Eeprom.o
+                  0x000d10          0x6 build/Max_xxv/production/src/Eeprom.o
  __c30_signature
-                  0x000bf4          0x6 build/Max_xxv/production/src/Alarm.o
+                  0x000d16          0x6 build/Max_xxv/production/src/Alarm.o
  __c30_signature
-                  0x000bfa          0x6 build/Max_xxv/production/src/Led.o
+                  0x000d1c          0x6 build/Max_xxv/production/src/Led.o
  __c30_signature
-                  0x000c00          0x6 build/Max_xxv/production/src/motor.o
+                  0x000d22          0x6 build/Max_xxv/production/src/motor.o
  __c30_signature
-                  0x000c06          0x6 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
+                  0x000d28          0x6 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
  __c30_signature
-                  0x000c0c          0x6 lib/libfastm-elf.a(divsi3.eo)
+                  0x000d2e          0x6 lib/libfastm-elf.a(divsi3.eo)
  __c30_signature
-                  0x000c12          0x6 lib/libfastm-elf.a(fixsfsi.eo)
+                  0x000d34          0x6 lib/libfastm-elf.a(fixsfsi.eo)
  __c30_signature
-                  0x000c18          0x6 lib/libfastm-elf.a(fixunssfsi.eo)
+                  0x000d3a          0x6 lib/libfastm-elf.a(fixunssfsi.eo)
  __c30_signature
-                  0x000c1e          0x6 lib/libfastm-elf.a(floatunsisf.eo)
+                  0x000d40          0x6 lib/libfastm-elf.a(floatunsisf.eo)
  __c30_signature
-                  0x000c24          0x6 lib/libfastm-elf.a(funpack.eo)
+                  0x000d46          0x6 lib/libfastm-elf.a(funpack.eo)
  __c30_signature
-                  0x000c2a          0x6 lib/libfastm-elf.a(errno.eo)
+                  0x000d4c          0x6 lib/libfastm-elf.a(errno.eo)
  __c30_signature
-                  0x000c30          0x6 lib/libfastm-elf.a(floatundisf.eo)
+                  0x000d52          0x6 lib/libfastm-elf.a(floatundisf.eo)
  __c30_signature
-                  0x000c36          0x6 lib/libfastm-elf.a(fpack.eo)
+                  0x000d58          0x6 lib/libfastm-elf.a(fpack.eo)
  __c30_signature
-                  0x000c3c          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ConfigIntMCPWM1.o)
+                  0x000d5e          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ConfigIntMCPWM1.o)
  __c30_signature
-                  0x000c42          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenMCPWM1.o)
+                  0x000d64          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenMCPWM1.o)
  __c30_signature
-                  0x000c48          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetDutyCycleMCPWM1.o)
+                  0x000d6a          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetDutyCycleMCPWM1.o)
  __c30_signature
-                  0x000c4e          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetMCPWM1DeadTimeGeneration.o)
+                  0x000d70          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(SetMCPWM1DeadTimeGeneration.o)
  __c30_signature
-                  0x000c54          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenTimer1.o)
+                  0x000d76          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(OpenTimer1.o)
  __c30_signature
-                  0x000c5a          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART1.o)
+                  0x000d7c          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART1.o)
  __c30_signature
-                  0x000c60          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART2.o)
+                  0x000d82          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/dsPIC33F/libp33FJ128MC804-elf.a(ReadUART2.o)
  __c30_signature
-                  0x000c66          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
+                  0x000d88          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x000c6c          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
+                  0x000d8e          0x6 /opt/microchip/xc16/v1.22/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
 
-_0x5647533c54587b46
+_0x5647433c54594d04
                     0x4700         0x80
- _0x5647533c54587b46
+ _0x5647433c54594d04
                     0x4700         0x80 build/Max_xxv/production/src/main.o
                     0x4700                  _DmaAdc_A
 
-_0x5647539854587b46
+_0x5647439854594d04
                     0x4780         0x80
- _0x5647539854587b46
+ _0x5647439854594d04
                     0x4780         0x80 build/Max_xxv/production/src/main.o
                     0x4780                  _DmaAdc_B
 
-_0x564752e054587b46
+_0x564742e054594d04
                     0x4600         0x40
- _0x564752e054587b46
+ _0x564742e054594d04
                     0x4600         0x40 build/Max_xxv/production/src/main.o
                     0x4600                  _Uart1TxBuff
 
@@ -2336,8 +2336,8 @@ _0x564752e054587b46
  .nbss              0x0800          0x2 lib/libfastm-elf.a(errno.eo)
                     0x0800                  _errno
 
-.bss                0x0802        0x48c
- .bss               0x0802        0x48c build/Max_xxv/production/src/main.o
+.bss                0x0802        0x484
+ .bss               0x0802        0x484 build/Max_xxv/production/src/main.o
                     0x0802                  _DmaBuffer
                     0x0804                  _CostanteTaraturaAN0
                     0x0808                  _CostanteTaraturaAN1
@@ -2345,41 +2345,41 @@ _0x564752e054587b46
                     0x0810                  _CostanteTaraturaAN3
                     0x0814                  _CostanteTaraturaAN4
                     0x0818                  _PID1
-                    0x085c                  _PID2
-                    0x08a0                  _SampleICSwitcher
-                    0x08a2                  _Timer10mSec
-                    0x08a8                  _Timer1mSec
-                    0x08ae                  _Motore1
-                    0x08cc                  _Motore2
-                    0x08ea                  _InputCapture1
-                    0x08f0                  _InputCapture2
-                    0x08f6                  _Led1Segnalazione
-                    0x0904                  _Led2Segnalazione
-                    0x0912                  _VOLbits1
-                    0x0914                  _Old_Indice_Status_Bit1
-                    0x0916                  _ParametriEEPROM
-                    0x0984                  _IngressiAnalogici
-                    0x098e                  _ComunicationWatchDogTimer
-                    0x0990                  _Uart1RxStatus
-                    0x0992                  _ChkSum1
-                    0x0994                  _Uart2RxStatus
-                    0x0996                  _ChkSum2
-                    0x0997                  _TxNByte_UART2
-                    0x0998                  _TxPointer_UART2
-                    0x099a                  _TmpSplitLongToWord
-                    0x099e                  _VarModbus
-                    0x09f2                  _StatoSeriale
-                    0x09f6                  _RxNByte
-                    0x09f8                  _RxPointer
-                    0x09fc                  _TxPointer
-                    0x0a00                  _TimerOutRxModbus
-                    0x0a02                  _TimerRitardoModbus
-                    0x0a04                  _TxComplete
-                    0x0a06                  _ModbusTxBuff
-                    0x0b06                  _ModbusRxBuff
-                    0x0c06                  _UartRxBuff
-                    0x0c86                  _E1
-                    0x0c8a                  _E2
+                    0x0858                  _PID2
+                    0x0898                  _SampleICSwitcher
+                    0x089a                  _Timer10mSec
+                    0x08a0                  _Timer1mSec
+                    0x08a6                  _Motore1
+                    0x08c4                  _Motore2
+                    0x08e2                  _InputCapture1
+                    0x08e8                  _InputCapture2
+                    0x08ee                  _Led1Segnalazione
+                    0x08fc                  _Led2Segnalazione
+                    0x090a                  _VOLbits1
+                    0x090c                  _Old_Indice_Status_Bit1
+                    0x090e                  _ParametriEEPROM
+                    0x097c                  _IngressiAnalogici
+                    0x0986                  _ComunicationWatchDogTimer
+                    0x0988                  _Uart1RxStatus
+                    0x098a                  _ChkSum1
+                    0x098c                  _Uart2RxStatus
+                    0x098e                  _ChkSum2
+                    0x098f                  _TxNByte_UART2
+                    0x0990                  _TxPointer_UART2
+                    0x0992                  _TmpSplitLongToWord
+                    0x0996                  _VarModbus
+                    0x09ea                  _StatoSeriale
+                    0x09ee                  _RxNByte
+                    0x09f0                  _RxPointer
+                    0x09f4                  _TxPointer
+                    0x09f8                  _TimerOutRxModbus
+                    0x09fa                  _TimerRitardoModbus
+                    0x09fc                  _TxComplete
+                    0x09fe                  _ModbusTxBuff
+                    0x0afe                  _ModbusRxBuff
+                    0x0bfe                  _UartRxBuff
+                    0x0c7e                  _E1
+                    0x0c82                  _E2
 
 .data               0x4640         0x2c
  .data              0x4640         0x2c build/Max_xxv/production/src/main.o
@@ -2389,12 +2389,12 @@ _0x564752e054587b46
  .bss               0x466c          0x2 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
                     0x466c                  _dataEEFlags
 
-.heap               0x0c8e        0x200
- .heap              0x0c8e        0x200 heap
+.heap               0x0c86        0x200
+ .heap              0x0c86        0x200 heap
 
-_0x563bc0b854587b47
+_0x563bc0b854594d04
                     0x9000       0x1800 indirizzo di caricamento 0x001000  
- _0x563bc0b854587b47
+ _0x563bc0b854594d04
                     0x9000       0x1800 build/Max_xxv/production/src/DEE_Emulation_16-bit.o
                     0x9000                  _emulationPages
 
@@ -2471,40 +2471,38 @@ _0x563bc0b854587b47
                   0x000ede                  __U2RXInterrupt
                   0x000f50                  __U2TXInterrupt
 
-.text             0x005a54        0x3f2
- .text            0x005a54        0x2f8 build/Max_xxv/production/src/settings.o
-                  0x005a54                  _Settings
-                  0x005cd4                  _ISR_Settings
- .text            0x005d4c         0xfa build/Max_xxv/production/src/motor.o
-                  0x005d4c                  _InitMotorStructure
-                  0x005d9c                  _UpdateMotorStructure
-                  0x005db6                  _GestioneSicurezzaMotore
-                  0x005de8                  _MotorControlEnable
+.text             0x005a54        0x718
+ .text            0x005a54        0x326 build/Max_xxv/production/src/Led.o
+                  0x005a54                  _GestioneAllarmi
+                  0x005aec                  _SetLedErrorCode
+                  0x005b2e                  _GestioneLed1ErrorCode
+                  0x005c54                  _GestioneLed2ErrorCode
+ .text            0x005d7a        0x2f8 build/Max_xxv/production/src/settings.o
+                  0x005d7a                  _Settings
+                  0x005ffa                  _ISR_Settings
+ .text            0x006072         0xfa build/Max_xxv/production/src/motor.o
+                  0x006072                  _InitMotorStructure
+                  0x0060c2                  _UpdateMotorStructure
+                  0x0060dc                  _GestioneSicurezzaMotore
+                  0x00610e                  _MotorControlEnable
 
-.text             0x000f9c         0x58
- .text            0x000f9c         0x58 build/Max_xxv/production/src/Led.o
-                  0x000f9c                  _GestioneAllarmi
-                  0x000fa2                  _SetLedErrorCode
-                  0x000fe4                  _GestioneLed1ErrorCode
-                  0x000fec                  _GestioneLed2ErrorCode
+.dinit            0x000f9c         0x58
+ .dinit           0x000f9c         0x58 data_init
 
-.dinit            0x005e46         0x58
- .dinit           0x005e46         0x58 data_init
-
-.text             0x005e9e         0xca
- .text            0x005e9e         0x52 build/Max_xxv/production/src/Alarm.o
-                  0x005e9e                  _GestioneWatchdog
- .text            0x005ef0         0x46 build/Max_xxv/production/src/sw_timer.o
-                  0x005ef0                  _GestioneTimerSW
-                  0x005f26                  _ReloadTimerSW
- .text            0x005f36         0x32 build/Max_xxv/production/src/Flash_Operations.o
-                  0x005f36                  _ReadPMHigh
-                  0x005f3a                  _ReadPMLow
-                  0x005f3e                  _UnlockPM
-                  0x005f58                  _WritePMHigh
-                  0x005f5c                  _WritePMHighB
-                  0x005f60                  _WritePMLow
-                  0x005f64                  _WritePMLowB
+.text             0x00616c         0xca
+ .text            0x00616c         0x52 build/Max_xxv/production/src/Alarm.o
+                  0x00616c                  _GestioneWatchdog
+ .text            0x0061be         0x46 build/Max_xxv/production/src/sw_timer.o
+                  0x0061be                  _GestioneTimerSW
+                  0x0061f4                  _ReloadTimerSW
+ .text            0x006204         0x32 build/Max_xxv/production/src/Flash_Operations.o
+                  0x006204                  _ReadPMHigh
+                  0x006208                  _ReadPMLow
+                  0x00620c                  _UnlockPM
+                  0x006226                  _WritePMHigh
+                  0x00622a                  _WritePMHighB
+                  0x00622e                  _WritePMLow
+                  0x006232                  _WritePMLowB
 
 Tabella dei riferimenti incrociati
 
@@ -2535,6 +2533,7 @@ _ChkSum1                                          build/Max_xxv/production/src/m
 _ChkSum2                                          build/Max_xxv/production/src/main.o
                                                   build/Max_xxv/production/src/uart.o
 _ComunicationWatchDogTimer                        build/Max_xxv/production/src/main.o
+                                                  build/Max_xxv/production/src/Led.o
                                                   build/Max_xxv/production/src/Alarm.o
                                                   build/Max_xxv/production/src/Eeprom.o
                                                   build/Max_xxv/production/src/modbus.o
@@ -2654,10 +2653,13 @@ _InizializzaSeriale                               build/Max_xxv/production/src/m
 _InputCapture1                                    build/Max_xxv/production/src/main.o
 _InputCapture2                                    build/Max_xxv/production/src/main.o
 _LATAbits                                         build/Max_xxv/production/src/motor.o
+                                                  build/Max_xxv/production/src/Led.o
                                                   build/Max_xxv/production/src/modbus.o
                                                   build/Max_xxv/production/src/main.o
 _Led1Segnalazione                                 build/Max_xxv/production/src/main.o
+                                                  build/Max_xxv/production/src/Led.o
 _Led2Segnalazione                                 build/Max_xxv/production/src/main.o
+                                                  build/Max_xxv/production/src/Led.o
 _LeggiADC                                         build/Max_xxv/production/src/adc.o
                                                   build/Max_xxv/production/src/main.o
 _LeggiBit                                         build/Max_xxv/production/src/modbus.o
@@ -2685,11 +2687,13 @@ _MotorControlEnable                               build/Max_xxv/production/src/m
                                                   build/Max_xxv/production/src/main.o
 _Motore1                                          build/Max_xxv/production/src/main.o
                                                   build/Max_xxv/production/src/motor.o
+                                                  build/Max_xxv/production/src/Led.o
                                                   build/Max_xxv/production/src/Alarm.o
                                                   build/Max_xxv/production/src/settings.o
                                                   build/Max_xxv/production/src/pid.o
 _Motore2                                          build/Max_xxv/production/src/main.o
                                                   build/Max_xxv/production/src/motor.o
+                                                  build/Max_xxv/production/src/Led.o
                                                   build/Max_xxv/production/src/Alarm.o
                                                   build/Max_xxv/production/src/settings.o
                                                   build/Max_xxv/production/src/pid.o

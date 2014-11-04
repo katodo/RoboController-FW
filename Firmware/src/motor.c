@@ -26,21 +26,21 @@ void InitMotorStructure()
     //Motore1.L_RpmConversion = Motore1.T_FattoreConversioneRPM_1;
     //Motore2.L_RpmConversion = Motore2.T_FattoreConversioneRPM_1;
 
-    Motore1.UC_OverFlowCounter = 1;
-    Motore2.UC_OverFlowCounter = 1;
+    Motore1.overFlowCounter = 1;
+    Motore2.overFlowCounter = 1;
 
-    Motore1.UC_First_IC_Interrupt_Done = 0;
-    Motore2.UC_First_IC_Interrupt_Done = 0;
-    Motore1.UC_IC_idx = 0;
-    Motore2.UC_IC_idx = 0;
-    Motore1.UC_ICM_Restart_Value = 3;
-    Motore2.UC_ICM_Restart_Value = 3;
+    Motore1.first_IC_Interrupt_Done = 0;
+    Motore2.first_IC_Interrupt_Done = 0;
+    Motore1.IC_idx = 0;
+    Motore2.IC_idx = 0;
+    Motore1.ICM_Restart_Value = 3;
+    Motore2.ICM_Restart_Value = 3;
 
-    Motore1.UC_MotorNumber = 1;     // Mi serve nelle funzioni a cui passo la struttura come argomento per
-    Motore2.UC_MotorNumber = 2;     // sapere su che struttura sto lavorando
+    Motore1.motorNumber = 1;     // Mi serve nelle funzioni a cui passo la struttura come argomento per
+    Motore2.motorNumber = 2;     // sapere su che struttura sto lavorando
 
-    Motore1.UC_Fail = 0;    //  I motori non sono in errore.
-    Motore2.UC_Fail = 0;
+    Motore1.fail = 0;    //  I motori non sono in errore.
+    Motore2.fail = 0;
 
     UpdateMotorStructure();
 }
@@ -96,11 +96,11 @@ void UpdateMotorStructure()
 //    Motore2.T_FattoreConversioneRPM_3 = (60000000000 * IC_PRESCALER_16) /
 //                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
     
-    Motore1.I_MotorRpmMax = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT];
-    Motore1.I_MotorRpmMin = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT] * -1;
+    Motore1.motorRpmMax = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT];
+    Motore1.motorRpmMin = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT] * -1;
 
-    Motore2.I_MotorRpmMax = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT];
-    Motore2.I_MotorRpmMin = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT] * -1;
+    Motore2.motorRpmMax = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT];
+    Motore2.motorRpmMin = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT] * -1;
     
 //    Motore1.FL_Costante_Conversione_Vlin_to_Vang = Costante_Conversione_Vlin_to_Vang(  ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_LEFT],
 //                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT],
@@ -127,8 +127,8 @@ void UpdateMotorStructure()
  */
 void GestioneSicurezzaMotore(void) //volatile Motor_t *MOTORE)
 {
-    Motore1.UC_Fail ? MotorControlEnable(MOTORE1,MOTOR_DEACTIVE) : MotorControlEnable(MOTORE1,MOTOR_ACTIVE);
-    Motore2.UC_Fail ? MotorControlEnable(MOTORE2,MOTOR_DEACTIVE) : MotorControlEnable(MOTORE2,MOTOR_ACTIVE);
+    Motore1.fail ? MotorControlEnable(MOTORE1,MOTOR_DEACTIVE) : MotorControlEnable(MOTORE1,MOTOR_ACTIVE);
+    Motore2.fail ? MotorControlEnable(MOTORE2,MOTOR_DEACTIVE) : MotorControlEnable(MOTORE2,MOTOR_ACTIVE);
 }
 
 /*! \brief Questa funzione abilita/disabilita il driver motori tenendo conto del flag modbus FLG_EEPROM_OUTPUT_DRIVER_ENABLE_POLARITY

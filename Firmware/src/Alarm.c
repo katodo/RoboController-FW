@@ -43,20 +43,20 @@ void GestioneWatchdog(void)
         if( ComunicationWatchDogTimer > 0 )
         {
             ComunicationWatchDogTimer--;
-            Motore1.UC_Fail = 0;    //  I motori non sono in errore.
-            Motore2.UC_Fail = 0;
+            Motore1.fail = 0;    //  I motori non sono in errore.
+            Motore2.fail = 0;
         }
         else
         {
-            Motore1.UC_Fail = 1;    //  I motori non sono in errore.
-            Motore2.UC_Fail = 1;
+            Motore1.fail = 1;    //  I motori non sono in errore.
+            Motore2.fail = 1;
 
             /* Azzero il setopoint */
-            PID1.Setpoint = 0;      /* Non scrivo nella variabile modbus relativa tanto non aggiorna il dato */
-            PID2.Setpoint = 0;      /* fino alla prossima comunicazione.                                     */
+            PID1.setpoint = 0;      /* Non scrivo nella variabile modbus relativa tanto non aggiorna il dato */
+            PID2.setpoint = 0;      /* fino alla prossima comunicazione.                                     */
 
-            PID1.Sommatoria = 0; // Non solo il setpoint, anche lo storico deve essere azzerato
-            PID2.Sommatoria = 0; // Non solo il setpoint, anche lo storico deve essere azzerato
+            PID1.sum = 0; // Non solo il setpoint, anche lo storico deve essere azzerato
+            PID2.sum = 0; // Non solo il setpoint, anche lo storico deve essere azzerato
         }
      }
      else

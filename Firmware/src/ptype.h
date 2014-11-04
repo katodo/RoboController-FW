@@ -34,95 +34,31 @@ typedef struct
 
 //! Struttura usata per i motori, contiene tutte le informazioni di controllo relative al motore e
 //! al relativo encoder.
-typedef struct
-{   /* VARIABILI USATE PER INTERFACCIARSI CON L'ESTERNO */
-//    volatile int            I_GearAxelSpeed;        //!< Velocità asse riduttore in RPM x100
-//    volatile int            I_MotorAxelSpeed;           // contengono la velocità attuale
-//    volatile long           L_WheelSpeed;           // Velocità in mm/Sec della ruota
-    
+typedef struct _motor_t_
+{   
     /* VARIABILI INTERNE ALLA ROBOCONTROLLER            */
-    volatile unsigned char  UC_Fail;                // Se a "1" il motore è in Fail, azzero il PID e fermo i ponti.
-    volatile unsigned char  UC_MotorNumber;         // Indica a quale motore fa riferimento la struttura in uso ( vedi in funzione PID )
-    volatile unsigned char  UC_OverFlowCounter;         // contatori overflow Timer 2, uno per ogni input capture
-    volatile unsigned char  UC_OverFlowErrorCounter;         // contatori overflow Timer 2, uno per ogni input capture
-    volatile unsigned char  UC_ICM_Restart_Value;       //  Valore di ICM con cui riattivare l'interrupt
-    volatile unsigned char  UC_First_IC_Interrupt_Done; // indici per arry e controllo primo interrupt
-    volatile unsigned char  UC_IC_idx;
-
-    //volatile unsigned int   UI_MediaIC[10];             // array per la media
-    volatile unsigned int   UI_Old_Capture;             // variabili per il primo interrupt
-    //volatile unsigned int   UI_Period;                   // contengono la velocità attuale
-    //volatile unsigned int   UI_TimeBase;
-
-    volatile int            I_MotorRpmMax;
-    volatile int            I_MotorRpmMin;
-    //volatile int            I_Prescaler_IC;             // Prescaler usato per la misura del tempo tramite l'InputCapture
-
-    volatile int            I_Prescaler_TIMER;      // Prescaler usato dal TIMER2/3, mi serve a calcolare la base tempi
-    volatile unsigned char  UC_CaptureEventDivisor; // Value: 1,4,16 , see IC2CONbits.ICM bit status
-    volatile long           L_EncoderTimeBase;
-    volatile long           L_Period;               // nSec vale of time from 2 tick of encoder
-
-
-    //volatile long           L_RpmConversion;
-
-/*
-    NOTE:
-    MotoreX.I_MotorAxelSpeed :	RPM asse motore, un motore "standard" ruota nel range 0-10000RPM, il dato è un intero.
-
-    MotoreX.I_GearAxelSpeed  :	RPM uscita riduttore, considerando un rapporto riduzione minimo di 1:100 per motori da 						10000RPM e di 1:10 per motori sotto i 3000RPM il dato varierà al max nel range 0-300
-				**** Il dato GearAxelSpeed è un intero moltiplicato per un fattore 100		******
-				**** Range 0-30000 con due cifre decimali in visualizzazione			******
-
-
-
-*/
-    /*  T_FattoreConversioneRPM_1...T_FattoreConversioneRPM_3 :
-     *  Sono dei dati calcolati quando vengono modificati i parametri del robot e servono a determinare 
-     *  il valore di conversione per ottenere gli RPM dal dato del Timer.
-     *  Si calcolano in questo modo:
-     *                         60 / (Er/Pr  * Tr)  * 10^9
-     *  Er è la risoluzione dell'encoder, ovvero uno dei parametri:
-     *          ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT]
-     *          ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT]
-     * 
-     *  Pr è il valore del prescaler moltiplicato per 10 (5-10-40-160), ovvero i define:
-     *          #define IC_PRESCALER_1     1
-     *          #define IC_PRESCALER_4     4
-     *          #define IC_PRESCALER_16    16
-     *         
-     *  Tr è il periodo di un singolo count del Input Capture in ns, ovvero:
-     *          T_Prescaler_TIMER
-     * 
-     *  10^9 è per la scala temporale visto che lavoriamo in ns  e vogliamo fare il calcolo tramite 
-     *          long int senza usare i float.
-     * 
-     *  Con encoder a 256cpr i tre valori sono:
-     *  60/(256*25) * 10^9 = 9375000 // 1:1
-     *  60/(64*25) * 10^9 = 37500000 // 1:4
-     *  60/(16*25) * 10^9 = 150000000 // 1:16.
-     *  
-     *  Semplificando il calcolo ottengo:
-     *  (60 * 10^9 * Pr) / (Er*Tr)
-     *
-     *  60 * 10^9 = 60000000000
-     *
-     *  => T_FattoreConversioneRPM_1 = (60000000000 * IC_PRESCALER_1) / ( ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_XXX] * T_Prescaler_TIMER )
-     *
-     */
-//    volatile long   T_FattoreConversioneRPM_1;
-//    volatile long   T_FattoreConversioneRPM_2;
-//    volatile long   T_FattoreConversioneRPM_3;
-
-    /*  Variabili usate per le conversioni delle unità di misura*/
-    volatile float  FL_Costante_Conversione_Vlin_to_Vang;
+    volatile unsigned char  fail;                // Se a "1" il motore è in Fail, azzero il PID e fermo i ponti.
+    volatile unsigned char  motorNumber;         // Indica a quale motore fa riferimento la struttura in uso ( vedi in funzione PID )
+    volatile unsigned char  overFlowCounter;         // contatori overflow Timer 2, uno per ogni input capture
+    volatile unsigned char  overFlowErrorCounter;         // contatori overflow Timer 2, uno per ogni input capture
+    volatile unsigned char  ICM_Restart_Value;       //  Valore di ICM con cui riattivare l'interrupt
+    volatile unsigned char  first_IC_Interrupt_Done; // indici per arry e controllo primo interrupt
+    volatile unsigned char  IC_idx;
+    volatile unsigned int   old_Capture;             // variabili per il primo interrupt
+    volatile int            motorRpmMax;
+    volatile int            motorRpmMin;
+    volatile int            prescaler_TIMER;      // Prescaler usato dal TIMER2/3, mi serve a calcolare la base tempi
+    volatile unsigned char  captureEventDivisor; // Value: 1,4,16 , see IC2CONbits.ICM bit status
+    volatile long           encoderTimeBase;
+    volatile long           period;               // nSec vale of time from 2 tick of encoder
+    volatile float          costante_Conversione_Vlin_to_Vang;
 } Motor_t;
 
-//! Struttura usata per la gestione dell'InputCapture e le misure di velocità
-typedef struct
-{   volatile long   OldMeasure;
-    volatile int    ErrorCounter;
-} InputCapture_t;
+    //! Struttura usata per la gestione dell'InputCapture e le misure di velocità
+    typedef struct _inputCapture_t_
+    {   volatile long   oldMeasure;
+        volatile int    errorCounter;
+    } InputCapture_t;
 
 //typedef struct
 //{   volatile unsigned int  Anomalie;    // Numero "Anomalie" registrate
@@ -130,33 +66,23 @@ typedef struct
 //}   Debugger_t;
 
 
-typedef struct
+typedef struct _pid_t_
 {   volatile long       Kp;
     volatile long       Ki;
     volatile long       Kd;
-
-    volatile long       Integrale;
-    
-    volatile long       Sommatoria;     // Sommatoria di errore Proporzionale, Integrale, Derivativo
-
-    volatile long       OldContrValue;  // Valore di controllo all'istante precedente
-
-    volatile long       Setpoint;       // Dato di velocità da raggiungere e mantenere.
-    volatile long       Rampa;          // Dato di velocità in regolazione per raggiungere il Setpoint in base alla Rampa.
-    volatile long       RampaStep;      // Incremento ( ad ogni ciclo PID ) del dato di regolazione Rampa per raggiungere il SetPoint.
-
-    volatile long       Errore;         // Errore Corrente
-    volatile long       OldError1;      // Errore al T-1
-    volatile long       OldError2;      // Errore al T-2
-
-
-    volatile long int   ContributoProporzionale;
-    volatile long int   ContributoIntegrale;
-    volatile long int   ContributoDerivativo;
-
-    volatile long       ComponenteFeedForward;
-
-    volatile long       OutPid;
+    volatile long       integral;       // ??????????????
+    volatile long       sum;            // error sum
+    volatile long       oldContrValue;  // Last control value
+    volatile long       setpoint;       // setpoint :)
+    volatile long       ramp;           // ramp setpoint
+    volatile long       rampStep;       // step of the ramp
+    volatile long       error_T_0;      // current error
+    volatile long       error_T_1;      // error at T-1
+    volatile long       error_T_2;      // error at T-2
+    volatile long int   propContrib;    // proportional contribution
+    volatile long int   integrContrib;  // integral contribution
+    volatile long int   derivContrib;   // derivative contribution
+    volatile long       outPid;          // LAst output value
 } Pid_t;
 
 
@@ -164,17 +90,17 @@ typedef struct
 
 //! Struttura usata per gestire la segnalazione del codice di errore tramite i LED
 //!
-typedef struct
-{   volatile unsigned char  UC_Busy;            // Se a "1" significa che è in corso una sequenza di segnalazione
-    volatile unsigned char  UC_ErrorCode;
-    volatile unsigned char  UC_Fase;            //Mi indica in che fase della segnalazione sono ( Pausa, LedOn, LedOff, FineSequenza )
-    volatile unsigned char  UC_BlinkDoned;    // Conta il numero di blink eseguiti (Led On- Led Off )
-    volatile unsigned char  UC_Repetition;  // Numero Ripetizioni, 0 = Infinito
-    volatile unsigned char  UC_RepetitionDoned;   // Numero Ripetizioni eseguite
-    volatile unsigned int   UI_Ton;
-    volatile unsigned int   UI_Toff;
-    volatile unsigned int   UI_Tpausa;
-    volatile unsigned int   UI_Timer;
+typedef struct _led_t_
+{   volatile unsigned char  busy;               // If "1" there is a signal sequence
+    volatile unsigned char  errorCode;
+    volatile unsigned char  phase;              // Indicates the signal phase (Pause, LedOn, LedOff, EndSequence )
+    volatile unsigned char  blinkDone;          // Counts the number of blinks (Led On - Led Off )
+    volatile unsigned char  repetition;         // Repetition counter, 0 = infinite
+    volatile unsigned char  repetitionDone;     // Repetition done
+    volatile unsigned int   ton;
+    volatile unsigned int   toff;
+    volatile unsigned int   tpause;
+    volatile unsigned int   timer;
 } Led_t;
 
 
@@ -198,7 +124,7 @@ struct Bits{
 };
 
 //Struttura per accedere ad un dato o come Float o come due Integer ( per salvare il float in EEPROM )
-typedef struct
+typedef struct _fvalue_t_
 {   union
     {   struct
         {   unsigned int high_part;
@@ -209,7 +135,7 @@ typedef struct
 } fvalue;
 
 //Struttura per accedere ad un dato o come Long o come due Integer ( per inviare il dato via Modbus )
-typedef struct
+typedef struct _lvalue_t_
 {   union
     {   struct
         {   unsigned int high_part;

@@ -743,7 +743,7 @@ void Settings(void)
     IC1CONbits.ICM = 0b011;		//  bit2-0:     1X   mode : Generate capture event on every 1st rising
     //IC1CONbits.ICM = 0b100;		//  bit2-0:     1/4X mode : Generate capture event on every 4th rising
     //IC1CONbits.ICM = 0b101;		//  bit2-0:     1/16X mode : Generate capture event on every 16th rising
-    Motore1.UC_CaptureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
+    Motore1.captureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
     //Motore1.UC_CaptureEventDivisor = 4; // con IC1CONbits.ICM = 0b100;
     //Motore1.UC_CaptureEventDivisor = 16; // con IC1CONbits.ICM = 0b101;
 
@@ -776,7 +776,7 @@ void Settings(void)
     IC2CONbits.ICM = 0b011;		//  bit2-0:     1X   mode : Generate capture event on every 1st rising
     //IC2CONbits.ICM = 0b100;		//  bit2-0:     1/4X mode : Generate capture event on every 4th rising
     //IC2CONbits.ICM = 0b101;		//  bit2-0:     1/16X mode : Generate capture event on every 16th rising
-    Motore2.UC_CaptureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
+    Motore2.captureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
     //Motore2.UC_CaptureEventDivisor = 4; // con IC1CONbits.ICM = 0b100;
     //Motore2.UC_CaptureEventDivisor = 16; // con IC1CONbits.ICM = 0b101;
 
@@ -835,15 +835,15 @@ void Settings(void)
     //  La variabile T_Prescaler_TIMER2 contiene il valore del prescaler moltiplicato 
     //  per 25 che è la base tempi in nSec
     //  Il dato è moltiplicato per 10 per coerenza con T_Prescaler_X10_IC
-    if(T2CONbits.TCKPS == 0b00 )   Motore1.I_Prescaler_TIMER = 25; // Prescaler 1:1 * 25nSec
-    if(T2CONbits.TCKPS == 0b01 )   Motore1.I_Prescaler_TIMER = 200; // Prescaler 1:8 * 25nSec
-    if(T2CONbits.TCKPS == 0b10 )   Motore1.I_Prescaler_TIMER = 1600; // Prescaler 1:64 * 25nSec
-    if(T2CONbits.TCKPS == 0b11 )   Motore1.I_Prescaler_TIMER = 6400; // Prescaler 1:256 * 25nSec
+    if(T2CONbits.TCKPS == 0b00 )   Motore1.prescaler_TIMER = 25; // Prescaler 1:1 * 25nSec
+    if(T2CONbits.TCKPS == 0b01 )   Motore1.prescaler_TIMER = 200; // Prescaler 1:8 * 25nSec
+    if(T2CONbits.TCKPS == 0b10 )   Motore1.prescaler_TIMER = 1600; // Prescaler 1:64 * 25nSec
+    if(T2CONbits.TCKPS == 0b11 )   Motore1.prescaler_TIMER = 6400; // Prescaler 1:256 * 25nSec
 
-    if(T3CONbits.TCKPS == 0b00 )   Motore2.I_Prescaler_TIMER = 25; // Prescaler 1:1 * 25nSec
-    if(T3CONbits.TCKPS == 0b01 )   Motore2.I_Prescaler_TIMER = 200; // Prescaler 1:8 * 25nSec
-    if(T3CONbits.TCKPS == 0b10 )   Motore2.I_Prescaler_TIMER = 1600; // Prescaler 1:64 * 25nSec
-    if(T3CONbits.TCKPS == 0b11 )   Motore2.I_Prescaler_TIMER = 6400; // Prescaler 1:256 * 25nSec
+    if(T3CONbits.TCKPS == 0b00 )   Motore2.prescaler_TIMER = 25; // Prescaler 1:1 * 25nSec
+    if(T3CONbits.TCKPS == 0b01 )   Motore2.prescaler_TIMER = 200; // Prescaler 1:8 * 25nSec
+    if(T3CONbits.TCKPS == 0b10 )   Motore2.prescaler_TIMER = 1600; // Prescaler 1:64 * 25nSec
+    if(T3CONbits.TCKPS == 0b11 )   Motore2.prescaler_TIMER = 6400; // Prescaler 1:256 * 25nSec
 
 //
 /*...................................................................Timer 2 */

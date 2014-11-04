@@ -280,10 +280,10 @@ void GestioneSetpoint(void)
 
     // A prescindere che sia in modalità PID o PWM chiamo sempre le funzioni PID
     // che mi servono in ogni caso per il calcolo dei dati di velocità.
-    if (!Motore1.UC_Fail)
-        PID1.Setpoint = (long) (Setpoint_M1);
-    if (!Motore2.UC_Fail)
-        PID2.Setpoint = (long) (Setpoint_M2);
+    if (!Motore1.fail)
+        PID1.setpoint = (long) (Setpoint_M1);
+    if (!Motore2.fail)
+        PID2.setpoint = (long) (Setpoint_M2);
 
 }
 
@@ -337,11 +337,11 @@ void __attribute__((interrupt, auto_psv, shadow)) _T2Interrupt(void)
 
     IFS0bits.T2IF = 0;
 
-    Motore1.UC_OverFlowCounter++;
+    Motore1.overFlowCounter++;
     // reset Vel M1
-    if (Motore1.UC_OverFlowCounter > 4)
+    if (Motore1.overFlowCounter > 4)
     {
-        Motore1.UC_OverFlowCounter = 4;
+        Motore1.overFlowCounter = 4;
         //Motore1.I_MotorAxelSpeed = 0;
 
     }
@@ -355,12 +355,12 @@ void __attribute__((interrupt, auto_psv, shadow)) _T3Interrupt(void)
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
     //InterruptTest2++;
     IFS0bits.T3IF = 0;
-    Motore2.UC_OverFlowCounter++;
+    Motore2.overFlowCounter++;
 
     //reset Vel M2
-    if (Motore2.UC_OverFlowCounter > 4)
+    if (Motore2.overFlowCounter > 4)
     {
-        Motore2.UC_OverFlowCounter = 4;
+        Motore2.overFlowCounter = 4;
         //Motore2.I_MotorAxelSpeed = 0;
     }
     DISICNT = 0; //re-enable interrupts
@@ -384,25 +384,25 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC1Interrupt(void)
 
     ActualIC1BUF = IC1BUF;
 
-    if (Motore1.UC_First_IC_Interrupt_Done == 0)
+    if (Motore1.first_IC_Interrupt_Done == 0)
     {
-        Motore1.UI_Old_Capture = ActualIC1BUF; // 1st interrupt, acquire start time
-        Motore1.UC_OverFlowCounter = 0; // reset overflow
-        Motore1.UC_First_IC_Interrupt_Done = 1; // next interrupt valid acquire
-        Motore1.UC_OverFlowCounter = 0; // reset overflow
+        Motore1.old_Capture = ActualIC1BUF; // 1st interrupt, acquire start time
+        Motore1.overFlowCounter = 0; // reset overflow
+        Motore1.first_IC_Interrupt_Done = 1; // next interrupt valid acquire
+        Motore1.overFlowCounter = 0; // reset overflow
     }
     else
     { // 2nd interrupt
         tmp = TMR2_VALUE;
-        tmp *= Motore1.UC_OverFlowCounter; // overflow offset
+        tmp *= Motore1.overFlowCounter; // overflow offset
         tmp += ActualIC1BUF; // capture
-        tmp -= Motore1.UI_Old_Capture; // click period
+        tmp -= Motore1.old_Capture; // click period
 
         //Motore1.UI_Period = tmp << Motore1.UC_PrescalerDivisor;
-        Motore1.L_Period = tmp * Motore1.L_EncoderTimeBase;
+        Motore1.period = tmp * Motore1.encoderTimeBase;
         if (!QEI1CONbits.UPDN)
         {
-            Motore1.L_Period *= -1;
+            Motore1.period *= -1;
         }
 
 
@@ -413,13 +413,13 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC1Interrupt(void)
 //        {
 //            Motore1.I_MotorAxelSpeed *= -1;
 //        }
-        Motore1.UC_First_IC_Interrupt_Done = 0;
+        Motore1.first_IC_Interrupt_Done = 0;
         IC1CONbits.ICM = 0; // Disable Input Capture 1 module,
         // re-enabled after PID computation on 1mSec Interrupt Timer
     }
 
     DISICNT = 0; //re-enable interrupts
-    Motore1.UC_OverFlowCounter = 0; // reset overflow
+    Motore1.overFlowCounter = 0; // reset overflow
 }
 
 void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
@@ -431,26 +431,26 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
 
     ActualIC2BUF = IC2BUF;
 
-    if (Motore2.UC_First_IC_Interrupt_Done == 0)
+    if (Motore2.first_IC_Interrupt_Done == 0)
     {
-        Motore2.UI_Old_Capture = ActualIC2BUF; // 1st interrupt, acquire start time
-        Motore2.UC_OverFlowCounter = 0; // reset overflow
-        Motore2.UC_First_IC_Interrupt_Done = 1; // next interrupt valid acquire
+        Motore2.old_Capture = ActualIC2BUF; // 1st interrupt, acquire start time
+        Motore2.overFlowCounter = 0; // reset overflow
+        Motore2.first_IC_Interrupt_Done = 1; // next interrupt valid acquire
     }
     else
     {
         // 2nd interrupt
 
         tmp = TMR2_VALUE;
-        tmp *= Motore2.UC_OverFlowCounter; // overflow offset
+        tmp *= Motore2.overFlowCounter; // overflow offset
         tmp += ActualIC2BUF; // capture
-        tmp -= Motore2.UI_Old_Capture; // click period
+        tmp -= Motore2.old_Capture; // click period
 
         //Motore1.UI_Period = tmp << Motore1.UC_PrescalerDivisor;
-        Motore2.L_Period = tmp * Motore2.L_EncoderTimeBase;
+        Motore2.period = tmp * Motore2.encoderTimeBase;
         if (!QEI2CONbits.UPDN)
         {
-            Motore2.L_Period *= -1;
+            Motore2.period *= -1;
         }
 
 
@@ -467,12 +467,12 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
 //            Motore2.I_MotorAxelSpeed *= -1;
 //        }
 
-        Motore2.UC_First_IC_Interrupt_Done = 0;
+        Motore2.first_IC_Interrupt_Done = 0;
         IC2CONbits.ICM = 0; // Disable Input Capture 1 module,
         // re-enabled after PID computation on 1mSec Interrupt Timer
     }
     DISICNT = 0; //re-enable interrupts
-    Motore1.UC_OverFlowCounter = 0; // reset overflow
+    Motore1.overFlowCounter = 0; // reset overflow
 }
 
 void AggiornaVariabiliModbus(void)
@@ -497,8 +497,8 @@ void AggiornaVariabiliModbus(void)
      *     TIMER3 <=> IC2 <=> QEI2 <=> RIGHT <=> 0
      */
 
-    VarModbus[INDICE_PID_ERROR_RIGHT] = (int) PID1.Errore;
-    VarModbus[INDICE_PID_ERROR_LEFT] = (int) PID2.Errore;
+    VarModbus[INDICE_PID_ERROR_RIGHT] = (int) PID1.error_T_0;
+    VarModbus[INDICE_PID_ERROR_LEFT] = (int) PID2.error_T_0;
 
 
 
@@ -520,14 +520,14 @@ void AggiornaVariabiliModbus(void)
     TmpSplitLongToWord.LongVal = 0;
     TmpSplitLongToWord.high_part = 0;
     TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = Motore1.L_Period;
+    TmpSplitLongToWord.LongVal = Motore1.period;
     VarModbus[INDICE_DEBUG_00] = TmpSplitLongToWord.low_part;
     VarModbus[INDICE_DEBUG_01] = TmpSplitLongToWord.high_part;
 
     TmpSplitLongToWord.LongVal = 0;
     TmpSplitLongToWord.high_part = 0;
     TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = Motore2.L_Period;
+    TmpSplitLongToWord.LongVal = Motore2.period;
     VarModbus[INDICE_DEBUG_02] = TmpSplitLongToWord.low_part;
     VarModbus[INDICE_DEBUG_03] = TmpSplitLongToWord.high_part;
 
@@ -535,14 +535,14 @@ void AggiornaVariabiliModbus(void)
     TmpSplitLongToWord.LongVal = 0;
     TmpSplitLongToWord.high_part = 0;
     TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = PID1.Setpoint;
+    TmpSplitLongToWord.LongVal = PID1.setpoint;
     VarModbus[INDICE_DEBUG_04] = TmpSplitLongToWord.low_part;
     VarModbus[INDICE_DEBUG_05] = TmpSplitLongToWord.high_part;
 
     TmpSplitLongToWord.LongVal = 0;
     TmpSplitLongToWord.high_part = 0;
     TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = PID1.Setpoint;
+    TmpSplitLongToWord.LongVal = PID1.setpoint;
     VarModbus[INDICE_DEBUG_06] = TmpSplitLongToWord.low_part;
     VarModbus[INDICE_DEBUG_07] = TmpSplitLongToWord.high_part;
 }

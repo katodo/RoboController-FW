@@ -36,17 +36,17 @@ void Pid1(void)
      * di 25nSec tenendomi però un certo lasco per evitare falsi cambi.
      *
      * La condizione di if è la condizione di "Ritorno in quel valore di prescaler".
-     * if(Motore1.L_Period < 1600000 )
-     * if(Motore1.L_Period > 1630000 && Motore1.L_Period < 6500000)
-     * if (Motore1.L_Period > 6550000)
+     * if(Motore1.period < 1600000 )
+     * if(Motore1.period > 1630000 && Motore1.period < 6500000)
+     * if (Motore1.period > 6550000)
     */
 
     //if (Motore1.I_MotorAxelSpeed < 1800) // UI_Period
-    if(Motore1.L_Period < 1600000 )
+    if(Motore1.period < 1600000 )
     {   //PRESCALER x1  : used from 0 to 1600000nSec period ( 0  1,6mSec )
         // return in this situation with Period below 1,6mSec
-        Motore1.UC_ICM_Restart_Value = 0b011;
-        Motore1.UC_CaptureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
+        Motore1.ICM_Restart_Value = 0b011;
+        Motore1.captureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
         //Motore1.UC_CaptureEventDivisor = 4; // con IC1CONbits.ICM = 0b100;
         //Motore1.UC_CaptureEventDivisor = 16; // con IC1CONbits.ICM = 0b101;
 
@@ -54,72 +54,72 @@ void Pid1(void)
         //Motore1.L_RpmConversion = Motore1.T_FattoreConversioneRPM_1; // every rising edge
     }
     //if (Motore1.I_MotorAxelSpeed > 2200 && Motore1.I_MotorAxelSpeed < 3800)
-    if (Motore1.L_Period > 1630000 && Motore1.L_Period < 6500000)
+    if (Motore1.period > 1630000 && Motore1.period < 6500000)
     {   //PRESCALER x4   : used from 1630000nSec to 6500000nSec period ( 1,63 to 6,5mSec )
         // return in this situation with Period greater than 1,63mSec and lower than 6,5mSec
-        Motore1.UC_ICM_Restart_Value = 0b100;
+        Motore1.ICM_Restart_Value = 0b100;
         //Motore1.UC_CaptureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
-        Motore1.UC_CaptureEventDivisor = 4; // con IC1CONbits.ICM = 0b100;
+        Motore1.captureEventDivisor = 4; // con IC1CONbits.ICM = 0b100;
         //Motore1.UC_CaptureEventDivisor = 16; // con IC1CONbits.ICM = 0b101;
 
         //Motore1.I_Prescaler_IC = 4; //  bit2-0:     Generate capture event on every 4th rising
         //Motore1.L_RpmConversion = Motore1.T_FattoreConversioneRPM_2; // every 4th rising edge
     }
     //if (Motore1.I_MotorAxelSpeed > 4200)
-    if (Motore1.L_Period > 6550000)
+    if (Motore1.period > 6550000)
     {   // PRESCALER x16 :used from 6550000nSec and 26214000nSec period ( 6,55mSec to 26,214000mSec )
-        Motore1.UC_ICM_Restart_Value = 0b101;
+        Motore1.ICM_Restart_Value = 0b101;
         //Motore1.UC_CaptureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
         //Motore1.UC_CaptureEventDivisor = 4; // con IC1CONbits.ICM = 0b100;
-        Motore1.UC_CaptureEventDivisor = 16; // con IC1CONbits.ICM = 0b101;
+        Motore1.captureEventDivisor = 16; // con IC1CONbits.ICM = 0b101;
 
         //Motore1.I_Prescaler_IC = 16; //  bit2-0:     Generate capture event on every 16th rising
         //Motore1.L_RpmConversion = Motore1.T_FattoreConversioneRPM_3; // every 16th rising edge
     }
-    Motore1.L_EncoderTimeBase = (long)Motore1.I_Prescaler_TIMER * (long)Motore1.UC_CaptureEventDivisor;
+    Motore1.encoderTimeBase = (long)Motore1.prescaler_TIMER * (long)Motore1.captureEventDivisor;
     /*  *************************************************************************** */
 
     if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN)
     { // In modalità PID calcolo il PID altrimenti sono in modalità PWM e chiamo questa funzione solo per i calcoli della velocità.
         Pid(&PID1, &Motore1); // T = 6.9uSec MEDI misurati (5.8 typ )
-        SetDCMCPWM1(1, PID1.OutPid, 0); // setta il PWM  del motore
-        VarModbus[INDICE_RD_PWM_CH1] = PID1.OutPid; // aggiorno PWM in lettura
+        SetDCMCPWM1(1, PID1.outPid, 0); // setta il PWM  del motore
+        VarModbus[INDICE_RD_PWM_CH1] = PID1.outPid; // aggiorno PWM in lettura
     }
-    IC1CONbits.ICM = Motore1.UC_ICM_Restart_Value;
+    IC1CONbits.ICM = Motore1.ICM_Restart_Value;
 }
 
 void Pid2(void)
 {
     PID2_CALC_FLAG = 0; // Attivato sotto interrupt ogni 1mSec
     /*  *************************************************************************** */
-    if(Motore2.L_Period < 1600000 )
-    {   Motore2.UC_ICM_Restart_Value = 0b011;
-        Motore2.UC_CaptureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
+    if(Motore2.period < 1600000 )
+    {   Motore2.ICM_Restart_Value = 0b011;
+        Motore2.captureEventDivisor = 1; // con IC1CONbits.ICM = 0b011;
     }
-    if(Motore2.L_Period > 1630000 && Motore2.L_Period < 6500000)
-    {   Motore2.UC_ICM_Restart_Value = 0b100;
-        Motore2.UC_CaptureEventDivisor = 4; // con IC1CONbits.ICM = 0b100;
+    if(Motore2.period > 1630000 && Motore2.period < 6500000)
+    {   Motore2.ICM_Restart_Value = 0b100;
+        Motore2.captureEventDivisor = 4; // con IC1CONbits.ICM = 0b100;
     }
-    if(Motore2.L_Period > 6550000)
-    {   Motore2.UC_ICM_Restart_Value = 0b101;
-        Motore2.UC_CaptureEventDivisor = 16; // con IC1CONbits.ICM = 0b101;
+    if(Motore2.period > 6550000)
+    {   Motore2.ICM_Restart_Value = 0b101;
+        Motore2.captureEventDivisor = 16; // con IC1CONbits.ICM = 0b101;
     }
-    Motore2.L_EncoderTimeBase = (long)Motore2.I_Prescaler_TIMER * (long)Motore2.UC_CaptureEventDivisor;
+    Motore2.encoderTimeBase = (long)Motore2.prescaler_TIMER * (long)Motore2.captureEventDivisor;
     /*  *************************************************************************** */
 
     if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN)
     { // In modalità PID calcolo il PID altrimenti sono in modalità PWM e chiamo questa funzione solo per i calcoli della velocità.
         Pid(&PID2, &Motore2); // T = 6.9uSec MEDI misurati (5.8 typ )
-        SetDCMCPWM1(2, PID2.OutPid, 0); // setta il PWM  del motore
-        VarModbus[INDICE_RD_PWM_CH2] = PID2.OutPid; // aggiorno PWM in lettura
+        SetDCMCPWM1(2, PID2.outPid, 0); // setta il PWM  del motore
+        VarModbus[INDICE_RD_PWM_CH2] = PID2.outPid; // aggiorno PWM in lettura
     }
-    IC2CONbits.ICM = Motore2.UC_ICM_Restart_Value;
+    IC2CONbits.ICM = Motore2.ICM_Restart_Value;
 }
 
 void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
 {
-    long Setpoint = PID->Setpoint; // Dato da mantenere/raggiungere ( velocità di crociera )
-    long Processo = MOTORE->L_Period;
+    long Setpoint = PID->setpoint; // Dato da mantenere/raggiungere ( velocità di crociera )
+    long Processo = MOTORE->period;
 
     //    __builtin_disi(0x3FFF); /* disable interrupts, vedere pg 181 di MPLAB_XC16_C_Compiler_UG_52081.pdf */
 
@@ -152,7 +152,7 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
     int saturazione; // Indica se il controllo è in saturazione.
     // Da usare per l'anti-windup
 
-    if ((PID->OldContrValue == 4095) || PID->OldContrValue == 1) // Il controllo è saturo
+    if ((PID->oldContrValue == 4095) || PID->oldContrValue == 1) // Il controllo è saturo
         saturazione = 1;
     else
         saturazione = 0;
@@ -161,46 +161,46 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
     // Tende a raggiungere il valore di SetPoint in base all'ampiezza dello Step.
     if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_RAMP_EN)
     { //  Modalità rampa
-        if (PID->Rampa < Setpoint)
+        if (PID->ramp < Setpoint)
         { // Rampa in salita
 
-            if ((PID->Rampa > -DEAD_ZONE) && (PID->Rampa < DEAD_ZONE))
+            if ((PID->ramp > -DEAD_ZONE) && (PID->ramp < DEAD_ZONE))
             { //  Se _RAMPA cade nell'interno di +/- DEAD_ZONE
                 //  Salto all'esterno.
-                PID->Rampa = DEAD_ZONE;
+                PID->ramp = DEAD_ZONE;
             }
 
-            PID->Rampa += PID->RampaStep;
-            if (PID->Rampa > Setpoint)
-                PID->Rampa = Setpoint;
-            if (PID->Rampa > MOTORE->I_MotorRpmMax)
-                PID->Rampa = MOTORE->I_MotorRpmMax;
+            PID->ramp += PID->rampStep;
+            if (PID->ramp > Setpoint)
+                PID->ramp = Setpoint;
+            if (PID->ramp > MOTORE->motorRpmMax)
+                PID->ramp = MOTORE->motorRpmMax;
         }
 
 
-        if (PID->Rampa > Setpoint)
+        if (PID->ramp > Setpoint)
         { //  Rampa in discesa
 
 
-            if ((PID->Rampa > -DEAD_ZONE) && (PID->Rampa < 0))
+            if ((PID->ramp > -DEAD_ZONE) && (PID->ramp < 0))
             {
-                PID->Rampa = -DEAD_ZONE;
+                PID->ramp = -DEAD_ZONE;
             }
-            else if ((PID->Rampa >= 0) && (PID->Rampa < DEAD_ZONE))
+            else if ((PID->ramp >= 0) && (PID->ramp < DEAD_ZONE))
             {
-                PID->Rampa = DEAD_ZONE;
+                PID->ramp = DEAD_ZONE;
             }
-            else if ((PID->Rampa > -DEAD_ZONE) && (PID->Rampa < DEAD_ZONE))
+            else if ((PID->ramp > -DEAD_ZONE) && (PID->ramp < DEAD_ZONE))
             {
                 PidReset(PID, MOTORE);
             }
 
 
-            PID->Rampa -= PID->RampaStep;
-            if (PID->Rampa < Setpoint)
-                PID->Rampa = Setpoint;
-            if (PID->Rampa < MOTORE->I_MotorRpmMin)
-                PID->Rampa = MOTORE->I_MotorRpmMin;
+            PID->ramp -= PID->rampStep;
+            if (PID->ramp < Setpoint)
+                PID->ramp = Setpoint;
+            if (PID->ramp < MOTORE->motorRpmMin)
+                PID->ramp = MOTORE->motorRpmMin;
         }
     }
     else
@@ -211,10 +211,10 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
             PidReset(PID, MOTORE); // All'interno della banda morta resetto il PID
         }
 
-        PID->Rampa = Setpoint;
+        PID->ramp = Setpoint;
     }
 
-    PID->Errore = (PID->Rampa - Processo); // calcolo errore tra il setpoint e il Current
+    PID->error_T_0 = (PID->ramp - Processo); // calcolo errore tra il setpoint e il Current
 
     //    PID->ComponenteFeedForward = RescaledErrore * 2;
     //    if (PID->ComponenteFeedForward >  2045 )
@@ -226,67 +226,67 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
     // Y[n] = Y[n-1] + P*(X[n] - X[n-1] ) + I*X[n] + D*(X[n] - 2*X[n-1] + X[n-2])
 
     // CONTRIBUTO PROPORZIONALE
-    PID->ContributoProporzionale = PID->Kp * (PID->Errore - PID->OldError1);
+    PID->propContrib = PID->Kp * (PID->error_T_0 - PID->error_T_1);
 
     // CONTRIBUTO INTEGRALE
     if (saturazione == 1 || // Controllo saturo -> Anti-WindUp
             PID->Ki == 0) // Nessun contributo integrale
-        PID->ContributoIntegrale = 0;
+        PID->integrContrib = 0;
     else
-        PID->ContributoIntegrale = PID->Ki * PID->Errore;
+        PID->integrContrib = PID->Ki * PID->error_T_0;
 
     // CONTRIBUTO DERIVATIVO
     if (PID->Kd == 0) // Nessun contributo derivativo
-        PID->ContributoDerivativo = 0;
+        PID->derivContrib = 0;
     else
-        PID->ContributoDerivativo = PID->Kd * (PID->Errore - 2 * PID->OldError1 + PID->OldError2);
+        PID->derivContrib = PID->Kd * (PID->error_T_0 - 2 * PID->error_T_1 + PID->error_T_2);
 
     // Aggiornamento errori
-    PID->OldError2 = PID->OldError1;
-    PID->OldError1 = PID->Errore;
+    PID->error_T_2 = PID->error_T_1;
+    PID->error_T_1 = PID->error_T_0;
 
     // Ora che è differenziale ci va il "+=" by Walt
-    PID->Sommatoria += (PID->ContributoProporzionale + PID->ContributoIntegrale + PID->ContributoDerivativo); // sommatoria errori
+    PID->sum += (PID->propContrib + PID->integrContrib + PID->derivContrib); // sommatoria errori
 
-    if (PID->Sommatoria > (LONG_MAX - 1000))
-        PID->Sommatoria = LONG_MAX;
+    if (PID->sum > (LONG_MAX - 1000))
+        PID->sum = LONG_MAX;
 
-    if (PID->Sommatoria < (LONG_MIN + 1000))
-        PID->Sommatoria = LONG_MIN;
+    if (PID->sum < (LONG_MIN + 1000))
+        PID->sum = LONG_MIN;
 
-    if (PID->Rampa == 0)
+    if (PID->ramp == 0)
     {
-        PID->OutPid = 2048;
-        PID->Integrale = 0;
-        PID->Rampa = 0;
+        PID->outPid = 2048;
+        PID->integral = 0;
+        PID->ramp = 0;
     }
     else
     { // sommatore per il calcolo del reale PWM da inviare al motore
-        PID->OutPid = 2048 + PID->Sommatoria;
+        PID->outPid = 2048 + PID->sum;
     }
 
-    if (PID->OutPid > 4095) PID->OutPid = 4095;
-    if (PID->OutPid < 1) PID->OutPid = 1;
+    if (PID->outPid > 4095) PID->outPid = 4095;
+    if (PID->outPid < 1) PID->outPid = 1;
 
-    PID->OldContrValue = PID->OutPid;
+    PID->oldContrValue = PID->outPid;
 
     //    __builtin_disi(0x0000); /* enable interrupts, vedere pg 181 di MPLAB_XC16_C_Compiler_UG_52081.pdf */
 }
 
 void PidReset(volatile Pid_t *PID, volatile Motor_t *MOTORE)
 {
-    PID->RampaStep = 0;
-    PID->Integrale = 0;
-    PID->ContributoIntegrale = 0;
-    PID->ContributoProporzionale = 0;
-    PID->ContributoDerivativo = 0;
+    PID->rampStep = 0;
+    PID->integral = 0;
+    PID->integrContrib = 0;
+    PID->propContrib = 0;
+    PID->derivContrib = 0;
 
-    PID->Errore = 0;
-    PID->OldError1 = 0;
-    PID->OldError2 = 0;
+    PID->error_T_0 = 0;
+    PID->error_T_1 = 0;
+    PID->error_T_2 = 0;
 
-    PID->Sommatoria = 0;
-    PID->OldContrValue = 0;
+    PID->sum = 0;
+    PID->oldContrValue = 0;
 
-    PID->OutPid = 0;
+    PID->outPid = 0;
 }

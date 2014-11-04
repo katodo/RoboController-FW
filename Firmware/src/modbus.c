@@ -348,13 +348,13 @@ unsigned char ScriviWord(unsigned int Address,unsigned int Word)
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN)
                                                         {   DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_PID_RAMP_LEFT], EEPROM_MODBUS_PID_RAMP_LEFT);
                                                         }
-                                                        PID1.RampaStep = ParametriEEPROM[EEPROM_MODBUS_PID_RAMP_LEFT];
+                                                        PID1.rampStep = ParametriEEPROM[EEPROM_MODBUS_PID_RAMP_LEFT];
                                                         break;
         case WORD_PID_RAMP_RIGHT                        :   ParametriEEPROM[EEPROM_MODBUS_PID_RAMP_RIGHT] = Word;
                                                         if(VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_EEPROM_SAVE_EN)
                                                         {   DataEEWrite(ParametriEEPROM[EEPROM_MODBUS_PID_RAMP_RIGHT], EEPROM_MODBUS_PID_RAMP_RIGHT);
                                                         }
-                                                        PID2.RampaStep = ParametriEEPROM[EEPROM_MODBUS_PID_RAMP_RIGHT];
+                                                        PID2.rampStep = ParametriEEPROM[EEPROM_MODBUS_PID_RAMP_RIGHT];
                                                         break;
 
 

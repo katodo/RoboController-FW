@@ -41,7 +41,7 @@ void GestioneAllarmi()
 
 
     // Gli errori sono gestiti con priorità, LED_ERRORCODE_00_NOERROR ha priorità minima, LED_ERRORCODE_01_WATCHDOG ha priorità massima
-    if(!Led1Segnalazione.UC_Busy)
+    if(!Led1Segnalazione.busy)
     {
 //        if(!ComunicationWatchDogTimer)
 //        {   //Priorità massima...
@@ -49,15 +49,15 @@ void GestioneAllarmi()
 //        }
 //        else
 //        {
-            if(Motore1.UC_Fail && Motore2.UC_Fail)
+            if(Motore1.fail && Motore2.fail)
             { SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_04_FAILMOTORI, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
             }
             else
-            {   if(Motore1.UC_Fail)
+            {   if(Motore1.fail)
                 { SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_02_FAILMOTOR1, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
                 }
                 else
-                {   if(Motore2.UC_Fail)
+                {   if(Motore2.fail)
                     { SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_03_FAILMOTOR2, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
                     }
                     else
@@ -76,7 +76,7 @@ void GestioneAllarmi()
 //    #define LED_STATUSCODE_01_NORMAL_RUN    1
 //    #define LED_STATUSCODE_02_WATCHDOGFAIL  2
 
-    if(!Led2Segnalazione.UC_Busy)
+    if(!Led2Segnalazione.busy)
     {   if(!ComunicationWatchDogTimer)
         {   //Priorità massima...
             SetLedErrorCode( &Led2Segnalazione, LED_STATUSCODE_02_WATCHDOGFAIL, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
@@ -130,14 +130,14 @@ void SetLedErrorCode(   volatile Led_t *LED,
                         unsigned int Ton, unsigned int Toff, unsigned int Tpausa )
 {   //Inizializzo la segnalazione dell'errore, interrompe eventuali segnalazioni precedenti
     
-    LED->UI_Ton             = Ton; //SEGNALAZIONELED_TON;
-    LED->UI_Toff            = Toff; //SEGNALAZIONELED_TOFF;
-    LED->UI_Tpausa          = Tpausa; //SEGNALAZIONELED_TPAUSE;
-    LED->UC_ErrorCode       = ErrorCode;
-    LED->UC_Fase            = 0;
-    LED->UC_Repetition      = Ripetizioni;
-    LED->UC_RepetitionDoned = 0;
-    LED->UC_Busy            = 1;
+    LED->ton          = Ton; //SEGNALAZIONELED_TON;
+    LED->toff         = Toff; //SEGNALAZIONELED_TOFF;
+    LED->tpause       = Tpausa; //SEGNALAZIONELED_TPAUSE;
+    LED->errorCode       = ErrorCode;
+    LED->phase           = 0;
+    LED->repetition      = Ripetizioni;
+    LED->repetitionDone  = 0;
+    LED->busy            = 1;
 }
 
 /*
@@ -146,75 +146,75 @@ void SetLedErrorCode(   volatile Led_t *LED,
 void GestioneLed1ErrorCode(volatile Led_t *LED)
 {
 #ifndef DEBUG
-    switch(LED->UC_Fase)
+    switch(LED->phase)
     {   case 0  :   //Inizio Sequenza Inizializzo il timer
-                    LED->UI_Timer   = LED->UI_Ton;
-                    LED->UC_Fase = 1;
-                    LED->UC_BlinkDoned = 0;
-                    if(LED->UC_ErrorCode == 0)
+                    LED->timer   = LED->ton;
+                    LED->phase = 1;
+                    LED->blinkDone = 0;
+                    if(LED->errorCode == 0)
                     {   // Nel caso di codice 0 non gestisco nemmeno un lampeggio,
                         // Spengo il led ed esco.
                         LED1 = LED_OFF;
-                        LED->UC_Fase = 4;
+                        LED->phase = 4;
                     }
                     break;
         case 1  :   LED1 = LED_ON;
 
-                    if(LED->UI_Timer > 0)
-                    {   LED->UI_Timer--;
+                    if(LED->timer > 0)
+                    {   LED->timer--;
                     }
                     else
-                    {   LED->UI_Timer   = LED->UI_Toff;
-                        LED->UC_Fase = 2;
+                    {   LED->timer   = LED->toff;
+                        LED->phase = 2;
                     }
                     break;
 
         case 2  :   LED1 = LED_OFF; 
-                    if(LED->UI_Timer > 0)
-                    {   LED->UI_Timer--;
+                    if(LED->timer > 0)
+                    {   LED->timer--;
                     }
                     else
-                    {   LED->UI_Timer   = LED->UI_Toff;
-                        LED->UC_BlinkDoned++;   // Ciclo completo
+                    {   LED->timer   = LED->toff;
+                        LED->blinkDone++;   // Ciclo completo
 
-                        if( LED->UC_BlinkDoned < LED->UC_ErrorCode)
+                        if( LED->blinkDone < LED->errorCode)
                         {   // Devo eseguire ancora dei blink
-                            LED->UI_Timer   = LED->UI_Ton;
-                            LED->UC_Fase = 1;
+                            LED->timer   = LED->ton;
+                            LED->phase = 1;
                         }
                         else
                         {   // Ho completato i lampeggi, salto nella pausa
-                            LED->UI_Timer   = LED->UI_Tpausa;
-                            LED->UC_Fase = 3;
+                            LED->timer   = LED->tpause;
+                            LED->phase = 3;
                         }
                     }
                     break;
 
         case 3  :   LED1 = LED_OFF;                    
-                    if(LED->UI_Timer > 0)
-                    {   LED->UI_Timer--;
+                    if(LED->timer > 0)
+                    {   LED->timer--;
                     }
-                    else    //    if(LED->UI_Timer == 0)
+                    else    //    if(LED->timer == 0)
                     {   //Pausa terminata
-                        LED->UC_RepetitionDoned++;
+                        LED->repetitionDone++;
                         // Verifico se devo ripetere ancora la sequenza
-                        if( (LED->UC_RepetitionDoned < LED->UC_Repetition) || (LED->UC_Repetition == 0) )
-                        {   LED->UC_Fase = 0;
-                            if(LED->UC_Repetition == 0)
+                        if( (LED->repetitionDone < LED->repetition) || (LED->repetition == 0) )
+                        {   LED->phase = 0;
+                            if(LED->repetition == 0)
                             {   // In loop infinito esco dallo stato di busy appena è stata
                                 // completata una sequenza di segnalazione
-                                LED->UC_Busy = 0;  // Posso gestire una nuova sequenza di segnalazione
+                                LED->busy = 0;  // Posso gestire una nuova sequenza di segnalazione
                             }
 
                         }
                         else
-                        {   LED->UC_Fase = 4;
+                        {   LED->phase = 4;
                         }
                     }
                     break;
                     
           case 4  : // Attendo all'infinito...
-                    LED->UC_Busy = 0;  // Posso gestire una nuova sequenza di segnalazione
+                    LED->busy = 0;  // Posso gestire una nuova sequenza di segnalazione
                     break;
     }
 #endif
@@ -225,74 +225,74 @@ void GestioneLed2ErrorCode(volatile Led_t *LED)
 
 #ifndef DEBUG
 
-    switch(LED->UC_Fase)
+    switch(LED->phase)
     {   case 0  :   //Inizio Sequenza Inizializzo il timer
-                    LED->UI_Timer   = LED->UI_Ton;
-                    LED->UC_Fase = 1;
-                    LED->UC_BlinkDoned = 0;
-                    if(LED->UC_ErrorCode == 0)
+                    LED->timer   = LED->ton;
+                    LED->phase = 1;
+                    LED->blinkDone = 0;
+                    if(LED->errorCode == 0)
                     {   // Nel caso di codice 0 non gestisco nemmeno un lampeggio,
                         // Spengo il led ed esco.
                         LED2 = LED_OFF;
-                        LED->UC_Fase = 4;
+                        LED->phase = 4;
                     }
                     break;
         case 1  :   LED2 = LED_ON;
-                    if(LED->UI_Timer > 0)
-                    {   LED->UI_Timer--;
+                    if(LED->timer > 0)
+                    {   LED->timer--;
                     }
                     else
-                    {   LED->UI_Timer   = LED->UI_Toff;
-                        LED->UC_Fase = 2;
+                    {   LED->timer   = LED->toff;
+                        LED->phase = 2;
                     }
                     break;
 
         case 2  :   LED2 = LED_OFF;
-                    if(LED->UI_Timer > 0)
-                    {   LED->UI_Timer--;
+                    if(LED->timer > 0)
+                    {   LED->timer--;
                     }
                     else
-                    {   LED->UI_Timer   = LED->UI_Toff;
-                        LED->UC_BlinkDoned++;   // Ciclo completo
+                    {   LED->timer   = LED->toff;
+                        LED->blinkDone++;   // Ciclo completo
 
-                        if( LED->UC_BlinkDoned < LED->UC_ErrorCode)
+                        if( LED->blinkDone < LED->errorCode)
                         {   // Devo eseguire ancora dei blink
-                            LED->UI_Timer   = LED->UI_Ton;
-                            LED->UC_Fase = 1;
+                            LED->timer   = LED->ton;
+                            LED->phase = 1;
                         }
                         else
                         {   // Ho completato i lampeggi, salto nella pausa
-                            LED->UI_Timer   = LED->UI_Tpausa;
-                            LED->UC_Fase = 3;
+                            LED->timer   = LED->tpause;
+                            LED->phase = 3;
                         }
                     }
                     break;
 
         case 3  :   LED2 = LED_OFF;
-                    if(LED->UI_Timer > 0)
-                    {   LED->UI_Timer--;
+                    if(LED->timer > 0)
+                    {   LED->timer--;
                     }
                     else
                     {   //Pausa terminata
-                        LED->UC_RepetitionDoned++;
+                        LED->repetitionDone++;
                         // Verifico se devo ripetere ancora la sequenza
-                        if( (LED->UC_RepetitionDoned < LED->UC_Repetition) || (LED->UC_Repetition == 0) )
-                        {   LED->UC_Fase = 0;
-                            if(LED->UC_Repetition == 0)
+                        if( (LED->repetitionDone < LED->repetition) || (LED->repetition == 0) )
+                        {   LED->phase = 0;
+                            if(LED->repetition == 0)
                             {   // In loop infinito esco dallo stato di busy appena è stata
                                 // completata una sequenza di segnalazione
-                                LED->UC_Busy = 0;  // Posso gestire una nuova sequenza di segnalazione
+                                LED->busy = 0;  // Posso gestire una nuova sequenza di segnalazione
                             }
 
                         }
                         else
-                        {   LED->UC_Fase = 4;
+                        {   LED->phase = 4;
                         }
                     }
                     break;
 
           case 4  : // Attendo all'infinito...
-                    LED->UC_Busy = 0;  // Posso gestire una nuova sequenza di segnalazione
+                    LED->busy = 0;  // Posso gestire una nuova sequenza di segnalazione
                     break;
     }
 #endif
