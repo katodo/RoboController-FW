@@ -18,7 +18,7 @@
 #include "ptype.h"
 #include "var.h"
 
-unsigned int LeggiWord(unsigned int Address)
+unsigned int WordRead(unsigned int Address)
 {   //unsigned int Valore;
     //  In lettura mi ritorna il dato associato all'indirizzo modbus, se l'indirizzo
     //  non è implementato mi ritorna il valore dell'indirizzo stesso.
@@ -457,7 +457,7 @@ void ModbusRoutine(unsigned char Port)
                                                     //o a quello di broadcast.
                                                     TimerRitardoModbus[Port] = RITARDO_RISPOSTA_SERIALE;
                                                     ComunicationWatchDogTimer = ParametriEEPROM[EEPROM_MODBUS_COMWATCHDOG_TIME]; //VarModbus[INDICE_COMWATCHDOG_TIME];
-                                                    LED2 = PIN_ON;
+                                                    //LED2 = PIN_ON;
                                                     
                                                     // Salto all'elaborazione del pacchetto ricevuto.
                                                     StatoSeriale[Port] = WAIT_TX;
@@ -482,7 +482,7 @@ void ModbusRoutine(unsigned char Port)
 					break;
 
         case	INIT_COM	:   // Riinizializzo la seriale.
-                                    InizializzaSeriale(Port);
+                                    ModbusSerialInit(Port);
                                     break;
     }
 }
@@ -555,7 +555,7 @@ void ModbusReadWord(unsigned char Port)
             ModbusTxBuff[Port][1] = ModbusRxBuff[Port][1];
             ModbusTxBuff[Port][2] = NWord << 1;
             for(i=0; i<NWord; i++)
-            {	Word = LeggiWord(StartAddress + i);
+            {	Word = WordRead(StartAddress + i);
             	ModbusTxBuff[Port][3+(i*2)] = Word >> 8;
 		ModbusTxBuff[Port][4+(i*2)] = Word;
             }
@@ -706,7 +706,7 @@ void FreeRxBuffer(unsigned char Port)
     RxNByte[Port] = 0;				/*	e il numero di byte ricevuti		*/
 }
 
-void InizializzaSeriale(unsigned char Port)
+void ModbusSerialInit(unsigned char Port)
 {   if(Port == PORT_COM1)
     {
         Usart1Setting();

@@ -23,9 +23,6 @@
 */
 void InitMotorStructure()
 {
-    //Motore1.L_RpmConversion = Motore1.T_FattoreConversioneRPM_1;
-    //Motore2.L_RpmConversion = Motore2.T_FattoreConversioneRPM_1;
-
     Motore1.overFlowCounter = 1;
     Motore2.overFlowCounter = 1;
 
@@ -48,69 +45,12 @@ void InitMotorStructure()
 /* FUNZIONE DA RICHIAMARE OGNI VOLTA CHE VENGONO MODIFICATI DEI PARAMETRI STRUTTURALI DEL ROBOT
 */
 void UpdateMotorStructure()
-{
-    /*  T_FattoreConversioneRPM_1...T_FattoreConversioneRPM_3 :
-     *  Sono dei dati calcolati quando vengono modificati i parametri del robot e servono a determinare
-     *  il valore di conversione per ottenere gli RPM dal dato del Timer.
-     *  Si calcolano in questo modo:
-     *                         60 / (Er/Pr  * Tr)  * 10^9
-     *  Er è la risoluzione dell'encoder, ovvero uno dei parametri:
-     *          ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT]
-     *          ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT]
-     *
-     *  Pr è il valore del prescaler moltiplicato per 10 (5-10-40-160), ovvero i define:
-     *          #define IC_PRESCALER_1     1
-     *          #define IC_PRESCALER_4     4
-     *          #define IC_PRESCALER_16    16
-     *
-     *  Tr è il periodo di un singolo count del Input Capture in ns, ovvero:
-     *          T_Prescaler_TIMER
-     *
-     *  10^9 è per la scala temporale visto che lavoriamo in ns  e vogliamo fare il calcolo tramite
-     *          long int senza usare i float.
-     *
-     *  Con encoder a 256cpr i tre valori sono:
-     *  60/(256*25) * 10^9 = 9375000 // 1:1
-     *  60/(64*25) * 10^9 = 37500000 // 1:4
-     *  60/(16*25) * 10^9 = 150000000 // 1:16.
-     *
-     *  Semplificando il calcolo ottengo:
-     *  (60 * 10^9 * Pr) / (Er*Tr)
-     *
-     *  60 * 10^9 = 60000000000
-     *
-     *  => T_FattoreConversioneRPM_1 = (60000000000 * IC_PRESCALER_1) / ( ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_XXX] * T_Prescaler_TIMER )
-     *
-     */
-//    Motore1.T_FattoreConversioneRPM_1 = (60000000000 * IC_PRESCALER_1) /
-//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT] * Motore1.I_Prescaler_TIMER);
-//    Motore1.T_FattoreConversioneRPM_2 = (60000000000 * IC_PRESCALER_4) /
-//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT] * Motore1.I_Prescaler_TIMER);
-//    Motore1.T_FattoreConversioneRPM_3 = (60000000000 * IC_PRESCALER_16) /
-//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT] * Motore1.I_Prescaler_TIMER);
-//
-//    Motore2.T_FattoreConversioneRPM_1 = (60000000000 * IC_PRESCALER_1) /
-//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
-//    Motore2.T_FattoreConversioneRPM_2 = (60000000000 * IC_PRESCALER_4) /
-//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
-//    Motore2.T_FattoreConversioneRPM_3 = (60000000000 * IC_PRESCALER_16) /
-//                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
-
+{  
     #warning: Value not used in current software revision for internal calculation but can be used by ROS...
     Motore1.motorRpmMax = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT];
     Motore1.motorRpmMin = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT] * -1;
     Motore2.motorRpmMax = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT];
     Motore2.motorRpmMin = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT] * -1;
-    
-//    Motore1.FL_Costante_Conversione_Vlin_to_Vang = Costante_Conversione_Vlin_to_Vang(  ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_LEFT],
-//                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_LEFT],
-//                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_LEFT]
-//                                                                                 );
-//    Motore2.FL_Costante_Conversione_Vlin_to_Vang = Costante_Conversione_Vlin_to_Vang(  ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_AXE_RIGHT],
-//                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_GEARBOX_RATIO_MOTOR_RIGHT],
-//                                                                                    ParametriEEPROM[EEPROM_MODBUS_ROBOT_WHEEL_RADIUS_RIGHT]
-//                                                                                 );
-
 }
 
 
@@ -125,7 +65,7 @@ void UpdateMotorStructure()
  * - attivare/disattivare il driver del motore
  *
  */
-void GestioneSicurezzaMotore(void) //volatile Motor_t *MOTORE)
+void MotorAlarmRoutine(void) //volatile Motor_t *MOTORE)
 {
     Motore1.fail ? MotorControlEnable(MOTORE1,MOTOR_DEACTIVE) : MotorControlEnable(MOTORE1,MOTOR_ACTIVE);
     Motore2.fail ? MotorControlEnable(MOTORE2,MOTOR_DEACTIVE) : MotorControlEnable(MOTORE2,MOTOR_ACTIVE);

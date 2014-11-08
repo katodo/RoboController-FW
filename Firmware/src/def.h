@@ -143,12 +143,11 @@ Fcy = Fosc / 2 = 39.6288
 #define RAMP_FLAG2          VARbits1.bit1	// acc/dec-eleration flag
 #define RAMP_T_FLAG2        VARbits1.bit15	// acc/dec-eleration direction
 
-
 #define PID1_CALC_FLAG      VOLbits1.bit0	  // PID and speed elaboration flag
 #define PID2_CALC_FLAG      VOLbits1.bit1	  // PID and speed elaboration flag
 
-#define IC1_CALC      VOLbits1.bit2
-#define IC2_CALC      VOLbits1.bit3
+#define IC1_CALC            VOLbits1.bit2
+#define IC2_CALC            VOLbits1.bit3
 #define R 0							// right index
 #define L 1							// right index
 //#define KP1 kCoeffs1[0]
@@ -245,9 +244,13 @@ Fcy = Fosc / 2 = 39.6288
 
 
 // Gestione LED
-#define SEGNALAZIONELED_TON         25         // Tempo Ton ( decine di mSec ) della segnalazione led
+#define SEGNALAZIONELED_TON         50         // Tempo Ton ( decine di mSec ) della segnalazione led
 #define SEGNALAZIONELED_TOFF        50         // Tempo Toff ( decine di mSec ) della segnalazione led
-#define SEGNALAZIONELED_TPAUSE      150         // Tempo di pausa ( decine di mSec ) tra due sequenze di lampeggi
+#define SEGNALAZIONELED_TPAUSE      200         // Tempo di pausa ( decine di mSec ) tra due sequenze di lampeggi
+
+#define SEGNALAZIONELED_TON_FAST     20         // Tempo Ton ( decine di mSec ) della segnalazione led
+#define SEGNALAZIONELED_TOFF_FAST    20         // Tempo Toff ( decine di mSec ) della segnalazione led
+
 
 // Codici di errore gestiti dal LED 1 : ERROR
 #define LED_ERRORCODE_00_NOERROR    0   // Nessun errore da gestire
@@ -258,10 +261,12 @@ Fcy = Fosc / 2 = 39.6288
 #define LED_ERRORCODE_05_CHECKERRORIOK 5   // Usato all'accensione per segnalare che non vi sono errori di sistema( EEPROM E SIMILI )
 
 // Modalità di funzionamento gestite dal LED 2 : STATUS
-#define LED_POWERON_05_POWERTEST    5   // Segnalazioni con LED in accensione
-//Segnalazioni di funzionamento gestite sempre "come allarmi"
-#define LED_STATUSCODE_01_NORMAL_RUN    1
-#define LED_STATUSCODE_02_WATCHDOGFAIL  2
 
+//Segnalazioni di funzionamento gestite sempre "come allarmi"
+#define LED_STATUSCODE_01_NORMAL_RUN            1
+#define LED_STATUSCODE_02_WATCHDOGFAIL          2
+#define LED_STATUSCODE_03_ENTER_IN_PIDMODE      3   // PID mode signal
+#define LED_STATUSCODE_04_ENTER_IN_PWMMODE      4   // PWM mode signal
+#define LED_POWERON_05_POWERTEST                5   // Segnalazioni con LED in accensione
 
 

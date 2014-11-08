@@ -27,7 +27,7 @@
  *  - Azzera il Setpoint del PID per "ripartire da fermo" se ritorna la comunicazione
  *  -
  */
-void GestioneWatchdog(void)
+void WatchdogRoutine(void)
 {
      /* GESTIONE WATCHDOG COMUNICAZIONE */
      /*

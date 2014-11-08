@@ -25,7 +25,7 @@
  *
  *
  */
-void GestioneAllarmi()
+void AlarmRoutine()
 {
     // Se compilo in debug i LED li uso in giro per il programma per test e non
     // li muovo da questa funzione
@@ -43,33 +43,24 @@ void GestioneAllarmi()
     // Gli errori sono gestiti con priorità, LED_ERRORCODE_00_NOERROR ha priorità minima, LED_ERRORCODE_01_WATCHDOG ha priorità massima
     if(!Led1Segnalazione.busy)
     {
-//        if(!ComunicationWatchDogTimer)
-//        {   //Priorità massima...
-//            SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_01_WATCHDOG, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
-//        }
-//        else
-//        {
-            if(Motore1.fail && Motore2.fail)
-            { SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_04_FAILMOTORI, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
-            }
-            else
-            {   if(Motore1.fail)
-                { SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_02_FAILMOTOR1, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
-                }
-                else
-                {   if(Motore2.fail)
-                    { SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_03_FAILMOTOR2, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
-                    }
-                    else
-                    {   // Nessun allarme... priorità minima
-                        //SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_00_NOERROR, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
-                        SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_00_NOERROR, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, 0);
-
-                    }
-                }
-
-            }
-//        }
+        if(!ComunicationWatchDogTimer)
+        {   //Priorità massima...
+            SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_01_WATCHDOG, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
+        }
+        else if (Motore1.fail && Motore2.fail)
+        { SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_04_FAILMOTORI, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
+        }
+        else if (Motore1.fail)
+        { SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_02_FAILMOTOR1, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
+        }
+        else if (Motore2.fail)
+        { SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_03_FAILMOTOR2, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
+        }
+        else
+        {   // Nessun allarme... priorità minima
+            //SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_00_NOERROR, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
+            SetLedErrorCode( &Led1Segnalazione, LED_ERRORCODE_00_NOERROR, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, 0);
+        }
     }
     
 // Segnalazioni su LED2 : STATUS
@@ -77,33 +68,31 @@ void GestioneAllarmi()
 //    #define LED_STATUSCODE_02_WATCHDOGFAIL  2
 
     if(!Led2Segnalazione.busy)
-    {   if(!ComunicationWatchDogTimer)
+    {
+        if (!ComunicationWatchDogTimer)
         {   //Priorità massima...
-            SetLedErrorCode( &Led2Segnalazione, LED_STATUSCODE_02_WATCHDOGFAIL, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
+            SetLedErrorCode(    &Led2Segnalazione, LED_STATUSCODE_02_WATCHDOGFAIL, 0,
+                                SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
+        }
+        else if (LedStatusSignal.bit0)
+        {   // Entro in modalità PID
+            SetLedErrorCode(    &Led2Segnalazione, LED_STATUSCODE_03_ENTER_IN_PIDMODE, 2,
+                                SEGNALAZIONELED_TON_FAST, SEGNALAZIONELED_TOFF_FAST, SEGNALAZIONELED_TPAUSE );
+            LedStatusSignal.bit0 = 0;
+        }
+        else if (LedStatusSignal.bit1)
+        {   // Entro in modalità PWM
+            SetLedErrorCode(    &Led2Segnalazione, LED_STATUSCODE_04_ENTER_IN_PWMMODE, 2,  // Infinite Loop
+                                SEGNALAZIONELED_TON_FAST, SEGNALAZIONELED_TOFF_FAST, SEGNALAZIONELED_TPAUSE );
+            LedStatusSignal.bit1 = 0;
         }
         else
         {   //SetLedErrorCode( &Led2Segnalazione, LED_STATUSCODE_01_NORMAL_RUN, 0, 20, 20, 0);
-            SetLedErrorCode( &Led2Segnalazione, LED_STATUSCODE_01_NORMAL_RUN, 0, SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
+            SetLedErrorCode(    &Led2Segnalazione, LED_STATUSCODE_01_NORMAL_RUN, 0,
+                                SEGNALAZIONELED_TON, SEGNALAZIONELED_TOFF, SEGNALAZIONELED_TPAUSE);
         }
 
     }
-
-
-//    // LED2 acceso fisso in caso di errore WatchDog
-//    if(!ComunicationWatchDogTimer)
-//    {   LED2 = PIN_ON;
-//    }
-//    else
-//    {   LED2 = PIN_OFF;
-//    }
-//
-//    if(Motore1.UC_Fail || Motore2.UC_Fail)
-//    {   LED1 = PIN_ON;
-//    }
-//    else
-//    {   LED1 = PIN_OFF;
-//    }
-//    //
 #endif
 }
 
@@ -143,7 +132,7 @@ void SetLedErrorCode(   volatile Led_t *LED,
 /*
  * Chiamata ciclicamente ogni 10mSec
  */
-void GestioneLed1ErrorCode(volatile Led_t *LED)
+void ErrorCodeRoutine_Led1(volatile Led_t *LED)
 {
 #ifndef DEBUG
     switch(LED->phase)
@@ -220,7 +209,7 @@ void GestioneLed1ErrorCode(volatile Led_t *LED)
 #endif
 }
 
-void GestioneLed2ErrorCode(volatile Led_t *LED)
+void ErrorCodeRoutine_Led2(volatile Led_t *LED)
 {
 
 #ifndef DEBUG

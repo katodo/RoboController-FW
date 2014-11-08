@@ -19,9 +19,16 @@ you can redistribute it and/or modify it under the terms of ......
 unsigned char Ver[] = "RoboController Test V1.0 Mauro Soligo 2011"; // 42+1 char
 
 // standard include
-#define VAR_INC     // Solo nel Main per definire le 
+#define VAR_INC     // Solo nel Main per definire le
+
+//#include "def.h"
+//#include "var.h"
+//#include "ptype.h"
+//#include "macro.h"
 
 #include "p33Fxxxx.h"
+
+
 #include <stdio.h>
 #include <dsp.h>
 #include <pwm12.h>
@@ -92,6 +99,8 @@ int main(int argc, char** argv)
     //VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_JOYMODE);     // Al reset disattivo la modalità JoyStick
     //VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_PID_EN);      // Al reset disattivo la modalità PID
     VarModbus[INDICE_STATUSBIT1] |= FLG_STATUSBI1_PID_EN; // Al reset attivo la modalità PID
+    LedStatusSignal.bit0 = 1;       // Led Signal Code => PID MODE
+
     VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_EEPROM_RAMP_EN); // Al reset disattivo RAMPE
 
     OLD_INDICE_STATUSBIT1 = 0; // Se parto con il PID abilitato deve valere 0.
@@ -123,8 +132,8 @@ int main(int argc, char** argv)
     Timer10mSec.T_count_time = Timer10mSec.T_initial_value;
 
     /* Inizializzazione porte seriali */
-    InizializzaSeriale(PORT_COM1);
-    InizializzaSeriale(PORT_COM2);
+    ModbusSerialInit(PORT_COM1);
+    ModbusSerialInit(PORT_COM2);
 
     InitADC();
 
@@ -151,12 +160,13 @@ int main(int argc, char** argv)
     /* test */
     //E1, E2; // ( 2π * 10^9 ) / EncoderResolution
     // TWOPINSEC  = 6283185307.2	// 360° ( 2 Pigreco * 10^9  per la conversione da nSec a rad/Sec )
-    /*
-
-     */
+#warning : This is only a test, this opperation must me moved in appropriate section.argc
     E1 = TWOPI_decNSEC / ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_LEFT];
     E2 = TWOPI_decNSEC / ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT];
     /* **** */
+
+
+    
 
     while (1)
     { // ----------------------  Gestione protocollo ModBus ---------------------- //
@@ -171,34 +181,76 @@ int main(int argc, char** argv)
         if (Timer1mSec.T_flag)
         {
             Timer1mSec.T_flag = FALSE;
-//            GestioneWatchdog(); //  GESTIONE WATCHDOG COMUNICAZIONE
-            GestioneSicurezzaMotore(); //  Gestisco situazioni di FAIL dei motori
+            WatchdogRoutine(); //  GESTIONE WATCHDOG COMUNICAZIONE
+            MotorAlarmRoutine(); //  Gestisco situazioni di FAIL dei motori
         }
 
         // ----------------------  Task eseguito ogni 10mSec  ---------------------- //
         if (Timer10mSec.T_flag)
         {
             Timer10mSec.T_flag = FALSE;
-            //            GestioneWatchdog();             //  GESTIONE WATCHDOG COMUNICAZIONE
+            //            WatchdogRoutine();             //  GESTIONE WATCHDOG COMUNICAZIONE
             //            GestioneSicurezzaMotore();      //  Gestisco situazioni di FAIL dei motori
-            GestioneLed1ErrorCode(&Led1Segnalazione);
-            GestioneLed2ErrorCode(&Led2Segnalazione);
+            ErrorCodeRoutine_Led1(&Led1Segnalazione);
+            ErrorCodeRoutine_Led2(&Led2Segnalazione);
         }
 
-        GestioneAllarmi();
-        GestioneSetpoint();
+        AlarmRoutine();
+        PidPwmSwitchRoutine();
+        SetpointUpdate();
         //AggiornaDatiVelocita();
-        AggiornaVariabiliModbus();
+        UpdateModbusVar();
     }
     return (EXIT_SUCCESS);
 }
 
-/*! \brief Questa funzione prende il dato presente nei registri WORD_PWM_CH1 e WORD_PWM_CH2
- * e lo interpreta in relazione allo stato del bit FLG_STATUSBI1_PID_EN.
- *
+
+void PidPwmSwitchRoutine(void)
+{
+    if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN)
+    {   //Funzionamento in modalità PID
+        if (OLD_INDICE_STATUSBIT1 == 1)
+        {   // Esco dalla modalità PWM e passo a quella PID
+            OLD_INDICE_STATUSBIT1 = 0;
+
+            LedStatusSignal.bit0    = 1;
+
+            // Disattivo il PID
+            PidReset(&PID1, &Motore1);
+            PidReset(&PID2, &Motore2);
+        }
+     }
+    else
+    {
+        if (OLD_INDICE_STATUSBIT1 == 0)
+        {   // Esco dalla modalità PID e passo a quella PWM
+
+            OLD_INDICE_STATUSBIT1 = 1;
+
+            LedStatusSignal.bit1 = 1;
+            
+
+            // Disattivo il PID
+            PidReset(&PID1, &Motore1);
+            PidReset(&PID2, &Motore2);
+        }
+
+    }
+
+}
+
+
+
+/*! \brief
+ * This function convert VarModbus[INDICE_PWM_CH1] e VarModbus[INDICE_PWM_CH2] in relation of
+ * FLG_STATUSBI1_PID_EN bit value.
+ * 
  * FLG_STATUSBI1_PID_EN = 0    :
- * Il dato passato alla robocontroller è un puro PWM, con 2048 il relativo motore
- * è fermo, con 0 il motore gira a massima velocità in un senso e con 4096 nel senso opposto.
+ * VarModbus[INDICE_PWM_CH1] and VarModbus[INDICE_PWM_CH2] value containe real PWM value
+ * 4096 = Max motor speed in a direction.
+ * 2048 = Motor Stop
+ * 0    = Max motor speed in opposite direction of 4096 value.
+ *
  *
  * FLG_STATUSBI1_PID_EN = 1    :
  * Nelle word WORD_PWM_CH1 e WORD_PWM_CH2 passo un dato espresso come velocità in mm/Sec.
@@ -212,34 +264,17 @@ int main(int argc, char** argv)
   \param void
   \return void
  */
-void GestioneSetpoint(void)
+void SetpointUpdate(void)
 {
-    //float Setpoint_M1, Setpoint_M2;
     long Setpoint_M1, Setpoint_M2;
 
-
-
-    if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN)
-    {
-        LED2 = LED_ON;
-    }
-    else
-    {
-        LED2 = LED_OFF;
-    }
-
+//    if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN)
+//        LED2 = LED_ON;
+//    else
+//        LED2 = LED_OFF;
 
     if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN)
-    { //Funzionamento in modalità PID
-
-        if (OLD_INDICE_STATUSBIT1 == 1) // Esco dalla modalità PWM e passo a quella PID
-        {
-            OLD_INDICE_STATUSBIT1 = 0;
-            // Disattivo il PID
-            PidReset(&PID1, &Motore1);
-            PidReset(&PID2, &Motore2);
-        }
-
+    { 
         /* **************************************************************** */
         /* ************ SONO IN MODALITA' PID, ROUTINE "MAIN"  ************ */
         /* **************************************************************** */
@@ -261,14 +296,6 @@ void GestioneSetpoint(void)
         /* **************************************************************** */
         /* ************ SONO IN MODALITA' PWM, ROUTINE "MAIN"  ************ */
         /* **************************************************************** */
-
-        if (OLD_INDICE_STATUSBIT1 == 0) // Esco dalla modalità PID e passo a quella PWM
-        {
-            OLD_INDICE_STATUSBIT1 = 1;
-            // Disattivo il PID
-            PidReset(&PID1, &Motore1);
-            PidReset(&PID2, &Motore2);
-        }
 
         // In modalità PWM il dato delle word INDICE_PWM_CHx lo mando direttamente 
         // al modulo PWM del micro perchè rappresenta già un PWM.
@@ -314,8 +341,8 @@ void _ISR_PSV _T1Interrupt(void)
     //    Pid2(); // di lettura dell'IC e esegue il PID sul dato prec.
 
     /* **************************** TIMER SOFTWARE ******************************/
-    GestioneTimerSW(&Timer1mSec);
-    GestioneTimerSW(&Timer10mSec);
+    TimerSW_Routine(&Timer1mSec);
+    TimerSW_Routine(&Timer10mSec);
     /* **************************************************************************/
 
     /* ******************************** MODBUS **********************************/
@@ -475,7 +502,7 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
     Motore1.overFlowCounter = 0; // reset overflow
 }
 
-void AggiornaVariabiliModbus(void)
+void UpdateModbusVar(void)
 {
     /* **************************************************************** */
     /* Aggiorno tutte le variabili per il protocollo modbus, le variabili
@@ -517,32 +544,32 @@ void AggiornaVariabiliModbus(void)
     //      extern volatile lvalue TmpSplitLongToWord;
 
 
-    TmpSplitLongToWord.LongVal = 0;
-    TmpSplitLongToWord.high_part = 0;
-    TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = Motore1.period;
+//    TmpSplitLongToWord.LongVal = 0;
+//    TmpSplitLongToWord.high_part = 0;
+//    TmpSplitLongToWord.low_part = 0;
+    TmpSplitLongToWord.LongVal = (long)Motore1.period;
     VarModbus[INDICE_DEBUG_00] = TmpSplitLongToWord.low_part;
     VarModbus[INDICE_DEBUG_01] = TmpSplitLongToWord.high_part;
 
-    TmpSplitLongToWord.LongVal = 0;
-    TmpSplitLongToWord.high_part = 0;
-    TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = Motore2.period;
+//    TmpSplitLongToWord.LongVal = 0;
+//    TmpSplitLongToWord.high_part = 0;
+//    TmpSplitLongToWord.low_part = 0;
+    TmpSplitLongToWord.LongVal = (long)Motore2.period;
     VarModbus[INDICE_DEBUG_02] = TmpSplitLongToWord.low_part;
     VarModbus[INDICE_DEBUG_03] = TmpSplitLongToWord.high_part;
 
 
-    TmpSplitLongToWord.LongVal = 0;
-    TmpSplitLongToWord.high_part = 0;
-    TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = PID1.setpoint;
+//    TmpSplitLongToWord.LongVal = 0;
+//    TmpSplitLongToWord.high_part = 0;
+//    TmpSplitLongToWord.low_part = 0;
+    TmpSplitLongToWord.LongVal = (long)PID1.setpoint;
     VarModbus[INDICE_DEBUG_04] = TmpSplitLongToWord.low_part;
     VarModbus[INDICE_DEBUG_05] = TmpSplitLongToWord.high_part;
 
-    TmpSplitLongToWord.LongVal = 0;
-    TmpSplitLongToWord.high_part = 0;
-    TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = PID1.setpoint;
+//    TmpSplitLongToWord.LongVal = 0;
+//    TmpSplitLongToWord.high_part = 0;
+//    TmpSplitLongToWord.low_part = 0;
+    TmpSplitLongToWord.LongVal = (long)PID1.setpoint;
     VarModbus[INDICE_DEBUG_06] = TmpSplitLongToWord.low_part;
     VarModbus[INDICE_DEBUG_07] = TmpSplitLongToWord.high_part;
 }

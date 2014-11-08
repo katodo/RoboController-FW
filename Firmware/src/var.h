@@ -1,16 +1,13 @@
 #ifdef VAR_INC
-//#define VAR_INC
-
 
 /*
- *          NOTA RELAZIONI PERIFERICHE e VARIABILI
+ *     NOTE: Relation Scheme from LogicName ( LEFT/RIGHT ) and peripherical
+ *           name "1" or "2"
  *
  *     TIMER2 <=> IC1 <=> QEI1 <=> LEFT
  *     TIMER3 <=> IC2 <=> QEI2 <=> RIGHT
  *
  */
-
-
 
 const long              Tcy = 1000000/(float)(FCY)* 100000000;
 
@@ -26,17 +23,6 @@ volatile fvalue CostanteTaraturaAN4;
 volatile Pid_t   PID1;
 volatile Pid_t   PID2;
 
-//    // PID [19d]
-//    tPID PIDstruct1;
-//    fractional abcCoefficient1[3] __attribute__ ((section (".xbss, bss, xmemory")));
-//    fractional controlHistory1[3] __attribute__ ((section (".ybss, bss, ymemory")));
-//    fractional kCoeffs1[] = {0,0,0};
-//
-//    tPID PIDstruct2;
-//    fractional abcCoefficient2[3] __attribute__ ((section (".xbss, bss, xmemory")));
-//    fractional controlHistory2[3] __attribute__ ((section (".ybss, bss, ymemory")));
-//    fractional kCoeffs2[] = {0,0,0};
-
 unsigned char SampleICSwitcher;
 
 // Timer software
@@ -46,26 +32,19 @@ volatile Timer_t        Timer1mSec;
 volatile Motor_t        Motore1;
 volatile Motor_t        Motore2;
 
-//volatile Debugger_t     Debug;
-
 //! Struttura usata per la gestione dell'InputCapture e le misure di velocità
 volatile InputCapture_t InputCapture1;
 volatile InputCapture_t InputCapture2;
-//volatile Debugger_t TestInputCapture1;
-//volatile Debugger_t TestInputCapture2;
-
-
 
 /* LED SEGNALAZIONE ERRORI*/
 volatile Led_t  Led1Segnalazione;
 volatile Led_t  Led2Segnalazione;
-
-//volatile int Ic1Indx = 0;	// samples buffer index for IC1
-//volatile int Ic2Indx = 0;	// samples buffer index for IC2
+volatile Bit_t  LedStatusSignal;
 
 // Strutture
-volatile struct Bits VOLbits1;
-struct Bits Old_Indice_Status_Bit1;
+volatile Bit_t VOLbits1;
+Bit_t Old_Indice_Status_Bit1;
+Bit_t VARbits1;
 
 // Configurazioni/tarature
 unsigned int ParametriEEPROM[NUMERO_PARAMETRI_EEPROM];
@@ -77,7 +56,6 @@ volatile int Uart1RxStatus =0;			//!< index for command decoding status
 unsigned char ChkSum1=0;			//!< checksum
 volatile int Uart2RxStatus =0;			//!< index for command decoding status
 unsigned char ChkSum2=0;                        //!< checksum
-// unsigned char TxCount;                          //!< Contatore byte trasmessi
 volatile unsigned char TxNByte_UART2 = 0;                  // Trasmissione byte senza DMA
 unsigned char *TxPointer_UART2;
 
@@ -107,28 +85,9 @@ unsigned char ModbusTxBuff[NUMERO_PORT_SERIALI][MODBUS_N_BYTE_TX];  //!< TX Buff
 unsigned char ModbusRxBuff[NUMERO_PORT_SERIALI][MODBUS_N_BYTE_RX];  //!< RX Buffer for modbus packet
 volatile unsigned char UartRxBuff[MAX_RX_BUFF][2];//serial communication buffer
 
-
-//// debug
-//volatile unsigned char IC1_nc=0, IC2_nc=0;  // indici per arry e controllo primo interrupt
-//volatile unsigned char IC1_idx=0,IC2_idx=0;
-//volatile unsigned char OVF1 = 1, OVF2 = 1;  // contatori overflow Timer 2, uno per ogni input capture
-
-//volatile unsigned int InterruptTest0 = 0;
-//volatile unsigned int InterruptTest1 = 0;
-//volatile unsigned int InterruptTest2 = 0;
-//volatile unsigned int InterruptTest3 = 0;
-//volatile unsigned int InterruptTest4 = 0;
-//volatile unsigned int InterruptTest5 = 0;
-//volatile unsigned int InterruptTest6 = 0;
-//volatile unsigned int InterruptTest7 = 0;
-//volatile unsigned int InterruptTest8 = 0;
-//volatile unsigned int InterruptTest9 = 0;
-//volatile unsigned int InterruptTest10 = 0;
-//volatile unsigned int InterruptTest11 = 0;
-//volatile unsigned int InterruptTest12 = 0;
-
-
+// Rad to nSec conversion
 long E1, E2; // E = [( 2π * 10^9 ) / EncoderResolution]
+
 
 #else
     // ridefinisco le variabili come extern
@@ -145,17 +104,6 @@ extern volatile fvalue CostanteTaraturaAN4;
 extern volatile Pid_t   PID1;
 extern volatile Pid_t   PID2;
 
-//// PID [19d]
-//extern tPID PIDstruct1;
-//extern fractional abcCoefficient1[3] __attribute__ ((section (".xbss, bss, xmemory")));
-//extern fractional controlHistory1[3] __attribute__ ((section (".ybss, bss, ymemory")));
-//extern fractional kCoeffs1[];
-//
-//extern tPID PIDstruct2;
-//extern fractional abcCoefficient2[3] __attribute__ ((section (".xbss, bss, xmemory")));
-//extern fractional controlHistory2[3] __attribute__ ((section (".ybss, bss, ymemory")));
-//extern fractional kCoeffs2[];
-
 extern unsigned char SampleICSwitcher;
 // Timer software
 extern volatile Timer_t    Timer10mSec;
@@ -166,13 +114,12 @@ extern volatile Motor_t        Motore2;
 
 extern volatile Led_t  Led1Segnalazione;
 extern volatile Led_t  Led2Segnalazione;
-
-//extern volatile int Ic1Indx;	// samples buffer index for IC1
-//extern volatile int Ic2Indx;	// samples buffer index for IC2
+extern volatile Bit_t  LedStatusSignal;
 
 // Strutture
-extern volatile struct Bits VOLbits1;
-extern struct Bits Old_Indice_Status_Bit1;
+extern volatile Bit_t VOLbits1;
+extern Bit_t Old_Indice_Status_Bit1;
+extern Bit_t VARbits1;
 
 // Configurazioni/tarature
 extern unsigned int ParametriEEPROM[NUMERO_PARAMETRI_EEPROM];
@@ -214,27 +161,6 @@ extern unsigned char ModbusTxBuff[NUMERO_PORT_SERIALI][MODBUS_N_BYTE_TX];  //!< 
 extern unsigned char ModbusRxBuff[NUMERO_PORT_SERIALI][MODBUS_N_BYTE_RX];  //!< RX Buffer for modbus packet
 extern volatile unsigned char UartRxBuff[MAX_RX_BUFF][2];//serial communication buffer
 
-//// debug
-//extern volatile unsigned char IC1_nc, IC2_nc;  // indici per arry e controllo primo interrupt
-//extern volatile unsigned char IC1_idx,IC2_idx;
-//extern volatile unsigned char OVF1, OVF2;  // contatori overflow Timer 2, uno per ogni input capture
-
-//extern volatile unsigned int InterruptTest0;
-//extern volatile unsigned int InterruptTest1;
-//extern volatile unsigned int InterruptTest2;
-//extern volatile unsigned int InterruptTest3;
-//extern volatile unsigned int InterruptTest4;
-//extern volatile unsigned int InterruptTest5;
-//extern volatile unsigned int InterruptTest6;
-//extern volatile unsigned int InterruptTest7;
-//extern volatile unsigned int InterruptTest8;
-//extern volatile unsigned int InterruptTest9;
-//extern volatile unsigned int InterruptTest10;
-//extern volatile unsigned int InterruptTest11;
-//extern volatile unsigned int InterruptTest12;
-
-
 extern long E1, E2; // E = [( 2π * 10^9 ) / EncoderResolution]
-
 #endif
 

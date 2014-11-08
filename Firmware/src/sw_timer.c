@@ -38,7 +38,7 @@ Timer->T_flag : Diventa True dopo Timer->T_initial_value, deve essere resettato 
 
 \sa Timer_t
 */
-void GestioneTimerSW(volatile Timer_t *Timer)
+void TimerSW_Routine(volatile Timer_t *Timer)
 {   
     if( Timer->T_count_time && !Timer->T_flag )
     {    Timer->T_count_time--;
@@ -52,7 +52,7 @@ void GestioneTimerSW(volatile Timer_t *Timer)
 //! Ricaricamento timer
 //! Funzione per ricaricare il timer e evitare di finire il conteggio...
 //! da usarsi in casi particolari dove sia necessario allungare il tempo del timer
-void ReloadTimerSW(volatile Timer_t *Timer)
+void TimerSW_Reload(volatile Timer_t *Timer)
 {
     Timer->T_count_time = Timer->T_initial_value;
 }
