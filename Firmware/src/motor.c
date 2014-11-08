@@ -95,10 +95,10 @@ void UpdateMotorStructure()
 //                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
 //    Motore2.T_FattoreConversioneRPM_3 = (60000000000 * IC_PRESCALER_16) /
 //                                        (ParametriEEPROM[EEPROM_MODBUS_ROBOT_ENCODER_CPR_RIGHT] * Motore2.I_Prescaler_TIMER);
-    
+
+    #warning: Value not used in current software revision for internal calculation but can be used by ROS...
     Motore1.motorRpmMax = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT];
     Motore1.motorRpmMin = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_LEFT] * -1;
-
     Motore2.motorRpmMax = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT];
     Motore2.motorRpmMin = ParametriEEPROM[EEPROM_MODBUS_ROBOT_MOTOR_RPMMAX_RIGHT] * -1;
     

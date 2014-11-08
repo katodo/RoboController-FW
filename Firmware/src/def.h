@@ -238,7 +238,7 @@ Fcy = Fosc / 2 = 39.6288
 #define MOTORE_STOP_PID                 0
 
 
-#define DEAD_ZONE           50
+#define DEAD_ZONE          500  // nSec value
 #define IC_PRESCALER_1     1
 #define IC_PRESCALER_4     4
 #define IC_PRESCALER_16    16
