@@ -53,6 +53,8 @@ unsigned char Ver[] = "RoboController Test V1.0 Mauro Soligo 2011"; // 42+1 char
 //long int Valori[1000];
 //unsigned int IndiceValori = 0;
 
+long Setpoint_M1, Setpoint_M2;
+
 int main(int argc, char** argv)
 {
     unsigned int test;
@@ -96,19 +98,21 @@ int main(int argc, char** argv)
     //Motore2.L_WheelSpeed = 0;
 
     VarModbus[INDICE_STATUSBIT1] = 0;
-    //VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_JOYMODE);     // Al reset disattivo la modalità JoyStick
-    //VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_PID_EN);      // Al reset disattivo la modalità PID
-    VarModbus[INDICE_STATUSBIT1] |= FLG_STATUSBI1_PID_EN; // Al reset attivo la modalità PID
+    VarModbus[INDICE_STATUSBIT1] |= FLG_STATUSBI1_PID_EN;           // BIT0: Pid mode is default at startup
+    VarModbus[INDICE_STATUSBIT1] |= FLG_STATUSBI1_COMWATCHDOG;      // BIT1: Watchdog Enabled at startup
+    VarModbus[INDICE_STATUSBIT1] |= FLG_STATUSBI1_EEPROM_SAVE_EN;   // BIT2: Automatic parameter EEPROM saving
+    //VarModbus[INDICE_STATUSBIT1] |= FLG_STATUSBI1_EEPROM_RAMP_EN; // BIT3: Ramp mode enabling bit
+
     LedStatusSignal.bit0 = 1;       // Led Signal Code => PID MODE
+    OLD_INDICE_STATUSBIT1 = VarModbus[INDICE_STATUSBIT1];           // Must be equal at Startup value of STATUSBIT1 flag
+                                                                    // It is used to intercept change on STATUSBIT1 value.
 
-    VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_EEPROM_RAMP_EN); // Al reset disattivo RAMPE
 
-    OLD_INDICE_STATUSBIT1 = 0; // Se parto con il PID abilitato deve valere 0.
+
     //OLD_INDICE_STATUSBIT1 = 1;  // Se parto con il PWM abilitato deve valere 1.
 
-    VarModbus[INDICE_STATUSBIT1] |= FLG_STATUSBI1_COMWATCHDOG; // Al reset attivo il WatchDog sulla comunicazione
+    
     //VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_COMWATCHDOG); // Al reset disattivo il WatchDog sulla comunicazione
-    VarModbus[INDICE_STATUSBIT1] |= FLG_STATUSBI1_EEPROM_SAVE_EN; // Al reset attivo il Salvataggio automatico dei parametri in EEPROM
     //VarModbus[INDICE_STATUSBIT1] &= ~(FLG_STATUSBI1_EEPROM_SAVE_EN);   // Al reset disattivo il Salvataggio automatico dei parametri in EEPROM
 
     
@@ -198,39 +202,44 @@ int main(int argc, char** argv)
         AlarmRoutine();
         PidPwmSwitchRoutine();
         SetpointUpdate();
-        //AggiornaDatiVelocita();
         UpdateModbusVar();
     }
     return (EXIT_SUCCESS);
 }
 
-
+/** @brief Intercept switch from PID and PWM mode
+ *
+ *  This function must me called on main of program.
+ *  if there is a change on FLG_STATUSBI1_PID_EN this function
+ *  re-set all parameter of software ( rest pid, set led etc... )
+ *
+ *  @param none
+ *  @return none
+ */
 void PidPwmSwitchRoutine(void)
-{
-    if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN)
-    {   //Funzionamento in modalità PID
-        if (OLD_INDICE_STATUSBIT1 == 1)
-        {   // Esco dalla modalità PWM e passo a quella PID
-            OLD_INDICE_STATUSBIT1 = 0;
+{   if( (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN) == 1 )    // IF bit == 1
+    {   // Now I'm in PID mode
+
+        if( (OLD_INDICE_STATUSBIT1 & FLG_STATUSBI1_PID_EN) == 0 ) // IF bit == 0
+        {   // I was in NON PID mode ( PWM ) but mode is changed.
+            OLD_INDICE_STATUSBIT1 |= FLG_STATUSBI1_PID_EN;   // Set bit to "1"
 
             LedStatusSignal.bit0    = 1;
 
-            // Disattivo il PID
+            // PID Reset
             PidReset(&PID1, &Motore1);
             PidReset(&PID2, &Motore2);
         }
      }
     else
     {
-        if (OLD_INDICE_STATUSBIT1 == 0)
-        {   // Esco dalla modalità PID e passo a quella PWM
-
-            OLD_INDICE_STATUSBIT1 = 1;
+        if( (OLD_INDICE_STATUSBIT1 & FLG_STATUSBI1_PID_EN) == 1 ) // IF bit == 1
+        {   // I was in PID mode but mode is changed.
+            OLD_INDICE_STATUSBIT1 &= ~(FLG_STATUSBI1_PID_EN);   // Set bit to "0"
 
             LedStatusSignal.bit1 = 1;
-            
 
-            // Disattivo il PID
+            // PID Reset
             PidReset(&PID1, &Motore1);
             PidReset(&PID2, &Motore2);
         }
@@ -266,7 +275,7 @@ void PidPwmSwitchRoutine(void)
  */
 void SetpointUpdate(void)
 {
-    long Setpoint_M1, Setpoint_M2;
+//    long Setpoint_M1, Setpoint_M2;
 
 //    if (VarModbus[INDICE_STATUSBIT1] & FLG_STATUSBI1_PID_EN)
 //        LED2 = LED_ON;
@@ -319,9 +328,8 @@ void SetpointUpdate(void)
 /*---------------------------------------------------------------------------*/
 #ifndef TIMER_OFF
 
-void _ISR_PSV _T1Interrupt(void)
-{
-    //InterruptTest4++;
+void _ISR_PSV _T1Interrupt(void) {
+
     // Timer 1	1ms
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
     IFS0bits.T1IF = 0; // interrupt flag reset
@@ -353,46 +361,31 @@ void _ISR_PSV _T1Interrupt(void)
     /* ************************************************************************* */
 
     DISICNT = 0; //re-enable interrupts
-    //InterruptTest4--;
-
 }
 
-void __attribute__((interrupt, auto_psv, shadow)) _T2Interrupt(void)
-{
-    //InterruptTest3++;
+void __attribute__((interrupt, auto_psv, shadow)) _T2Interrupt(void) {
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
-
     IFS0bits.T2IF = 0;
-
     Motore1.overFlowCounter++;
+
     // reset Vel M1
     if (Motore1.overFlowCounter > 4)
-    {
-        Motore1.overFlowCounter = 4;
-        //Motore1.I_MotorAxelSpeed = 0;
-
+    {   Motore1.overFlowCounter = 4;
     }
-    //InterruptTest3--;
     DISICNT = 0; //re-enable interrupts
     return;
 }
 
-void __attribute__((interrupt, auto_psv, shadow)) _T3Interrupt(void)
-{
+void __attribute__((interrupt, auto_psv, shadow)) _T3Interrupt(void) {
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
-    //InterruptTest2++;
     IFS0bits.T3IF = 0;
     Motore2.overFlowCounter++;
 
     //reset Vel M2
     if (Motore2.overFlowCounter > 4)
-    {
-        Motore2.overFlowCounter = 4;
-        //Motore2.I_MotorAxelSpeed = 0;
+    {   Motore2.overFlowCounter = 4;
     }
     DISICNT = 0; //re-enable interrupts
-
-    //InterruptTest2--;
 }
 
 
@@ -402,8 +395,7 @@ void __attribute__((interrupt, auto_psv, shadow)) _T3Interrupt(void)
  *  ***************************************************************************
  *  ***************************************************************************
  */
-void __attribute__((interrupt, auto_psv, shadow)) _IC1Interrupt(void)
-{
+void __attribute__((interrupt, auto_psv, shadow)) _IC1Interrupt(void) {
     long tmp = 0;
     unsigned int ActualIC1BUF;
     __builtin_disi(0x3FFF); //disable interrupts up to priority 6 for n cycles
@@ -432,14 +424,6 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC1Interrupt(void)
             Motore1.period *= -1;
         }
 
-
-//        Motore1.UI_Period = (unsigned int) ((long) Motore1.L_RpmConversion / tmp);
-//        Motore1.I_MotorAxelSpeed = Motore1.UI_Period;
-//        // CCW or CW
-//        if (!QEI1CONbits.UPDN)
-//        {
-//            Motore1.I_MotorAxelSpeed *= -1;
-//        }
         Motore1.first_IC_Interrupt_Done = 0;
         IC1CONbits.ICM = 0; // Disable Input Capture 1 module,
         // re-enabled after PID computation on 1mSec Interrupt Timer
@@ -467,111 +451,114 @@ void __attribute__((interrupt, auto_psv, shadow)) _IC2Interrupt(void)
     else
     {
         // 2nd interrupt
-
         tmp = TMR2_VALUE;
         tmp *= Motore2.overFlowCounter; // overflow offset
         tmp += ActualIC2BUF; // capture
         tmp -= Motore2.old_Capture; // click period
 
-        //Motore1.UI_Period = tmp << Motore1.UC_PrescalerDivisor;
+        //Motore2.UI_Period = tmp << Motore1.UC_PrescalerDivisor;
         Motore2.period = tmp * Motore2.encoderTimeBase;
         if (!QEI2CONbits.UPDN)
         {
             Motore2.period *= -1;
         }
-
-
-//        tmp = TMR2_VALUE;
-//        tmp *= Motore2.UC_OverFlowCounter; // overflow offset
-//        tmp += ActualIC2BUF; // capture
-//        tmp -= Motore2.UI_Old_Capture; // click period
-//        Motore2.UI_Period = (unsigned int) ((long) Motore2.L_RpmConversion / tmp); // Valore istantaneo di periodo.
-//        Motore2.I_MotorAxelSpeed = Motore2.UI_Period;
-//
-//        // CCW or CW
-//        if (!QEI2CONbits.UPDN)
-//        {
-//            Motore2.I_MotorAxelSpeed *= -1;
-//        }
-
         Motore2.first_IC_Interrupt_Done = 0;
         IC2CONbits.ICM = 0; // Disable Input Capture 1 module,
         // re-enabled after PID computation on 1mSec Interrupt Timer
     }
     DISICNT = 0; //re-enable interrupts
-    Motore1.overFlowCounter = 0; // reset overflow
+    Motore2.overFlowCounter = 0; // reset overflow
 }
 
 void UpdateModbusVar(void)
 {
-    /* **************************************************************** */
-    /* Aggiorno tutte le variabili per il protocollo modbus, le variabili
-     * modbus vengono lette al max ogni 10mSec e quindi posso aggiornarle
-     * con calma
-     *                                                                  */
-    /* **************************************************************** */
+//                /* **************************************************************** */
+//                /* Aggiorno tutte le variabili per il protocollo modbus, le variabili
+//                 * modbus vengono lette al max ogni 10mSec e quindi posso aggiornarle
+//                 * con calma
+//                 *                                                                  */
+//                /* **************************************************************** */
+//
+//                // ----------------------  ADC value average calculus ----------------------//
+//                VarModbus[INDICE_TENSIONE_ALIM] = LeggiADC(PIC_AN0); // AN0 del micro = VMOT
+//                VarModbus[INDICE_AN1] = LeggiADC(PIC_AN1); // AN1 del PCB; AN5 del micro
+//                VarModbus[INDICE_AN2] = LeggiADC(PIC_AN2); // AN2 del PCB; AN5 del micro
+//                VarModbus[INDICE_AN3] = LeggiADC(PIC_AN3); // AN3 del PCB; AN6 del micro
+//                VarModbus[INDICE_AN4] = LeggiADC(PIC_AN4); // AN4 del PCB; AN7 del micro
+//
+//                /*
+//                 *     NOTA RELAZIONI PERIFERICHE e VARIABILI
+//                 *     TIMER2 <=> IC1 <=> QEI1 <=> LEFT <=> 1
+//                 *     TIMER3 <=> IC2 <=> QEI2 <=> RIGHT <=> 0
+//                 */
+//
+//                VarModbus[INDICE_PID_ERROR_RIGHT] = (int) PID1.error_T_0;
+//                VarModbus[INDICE_PID_ERROR_LEFT] = (int) PID2.error_T_0;
+//
+//
+//
+//
+//                /* */
+//                //Struttura per accedere ad un dato o come Long o come due Integer ( per inviare il dato via Modbus )
+//                //    typedef struct
+//                //    {   union
+//                //        {   struct
+//                //            {   unsigned int high_part;
+//                //                unsigned int low_part;
+//                //            };
+//                //            long LongVal;
+//                //       };
+//                //    } lvalue;
+//                //      extern volatile lvalue TmpSplitLongToWord;
+//
+//
+//            //    TmpSplitLongToWord.LongVal = 0;
+//            //    TmpSplitLongToWord.high_part = 0;
+//            //    TmpSplitLongToWord.low_part = 0;
+//                TmpSplitLongToWord.LongVal = (long)Motore1.period;
+//                VarModbus[INDICE_DEBUG_00] = TmpSplitLongToWord.low_part;
+//                VarModbus[INDICE_DEBUG_01] = TmpSplitLongToWord.high_part;
+//
+//            //    TmpSplitLongToWord.LongVal = 0;
+//            //    TmpSplitLongToWord.high_part = 0;
+//            //    TmpSplitLongToWord.low_part = 0;
+//                TmpSplitLongToWord.LongVal = (long)Motore2.period;
+//                VarModbus[INDICE_DEBUG_02] = TmpSplitLongToWord.low_part;
+//                VarModbus[INDICE_DEBUG_03] = TmpSplitLongToWord.high_part;
+//
+//                VarModbus[INDICE_DEBUG_04] = Motore1.captureEventDivisor;
+//                VarModbus[INDICE_DEBUG_05] = Motore2.captureEventDivisor;
+//
+//            //    TmpSplitLongToWord.LongVal = 0;
+//            //    TmpSplitLongToWord.high_part = 0;
+//            //    TmpSplitLongToWord.low_part = 0;
+//                TmpSplitLongToWord.LongVal = (long)Setpoint_M1; //PID1.setpoint;
+//                VarModbus[INDICE_DEBUG_06] = TmpSplitLongToWord.low_part;
+//                VarModbus[INDICE_DEBUG_07] = TmpSplitLongToWord.high_part;
+//
+//            //    TmpSplitLongToWord.LongVal = 0;
+//            //    TmpSplitLongToWord.high_part = 0;
+//            //    TmpSplitLongToWord.low_part = 0;
+//                TmpSplitLongToWord.LongVal = (long)Setpoint_M2; //PID2.setpoint;
+//                VarModbus[INDICE_DEBUG_08] = TmpSplitLongToWord.low_part;
+//                VarModbus[INDICE_DEBUG_09] = TmpSplitLongToWord.high_part;
 
-    // ----------------------  ADC value average calculus ----------------------//
-    VarModbus[INDICE_TENSIONE_ALIM] = LeggiADC(PIC_AN0); // AN0 del micro = VMOT
-    VarModbus[INDICE_AN1] = LeggiADC(PIC_AN1); // AN1 del PCB; AN5 del micro
-    VarModbus[INDICE_AN2] = LeggiADC(PIC_AN2); // AN2 del PCB; AN5 del micro
-    VarModbus[INDICE_AN3] = LeggiADC(PIC_AN3); // AN3 del PCB; AN6 del micro
-    VarModbus[INDICE_AN4] = LeggiADC(PIC_AN4); // AN4 del PCB; AN7 del micro
-
-    /*
-     *     NOTA RELAZIONI PERIFERICHE e VARIABILI
-     *     TIMER2 <=> IC1 <=> QEI1 <=> LEFT <=> 1
-     *     TIMER3 <=> IC2 <=> QEI2 <=> RIGHT <=> 0
-     */
-
-    VarModbus[INDICE_PID_ERROR_RIGHT] = (int) PID1.error_T_0;
-    VarModbus[INDICE_PID_ERROR_LEFT] = (int) PID2.error_T_0;
+    VarModbus[INDICE_DEBUG_08] = (unsigned int)Motore1.encoderTimeBase;
+    VarModbus[INDICE_DEBUG_09] = (unsigned int)Motore2.encoderTimeBase;
 
 
+    VarModbus[INDICE_DEBUG_10] = (unsigned int)((long)Motore1.period);
+    VarModbus[INDICE_DEBUG_11] = (unsigned int)((long)Motore1.period / 10);
+    VarModbus[INDICE_DEBUG_12] = (unsigned int)((long)Motore1.period / 100);
+    VarModbus[INDICE_DEBUG_13] = (unsigned int)((long)Motore1.period / 1000);
+    VarModbus[INDICE_DEBUG_14] = (unsigned int)((long)Motore1.period / 10000);
 
+    VarModbus[INDICE_DEBUG_15] = (unsigned int)((long)Motore2.period);
+    VarModbus[INDICE_DEBUG_16] = (unsigned int)((long)Motore2.period / 10);
+    VarModbus[INDICE_DEBUG_17] = (unsigned int)((long)Motore2.period / 100);
+    VarModbus[INDICE_DEBUG_18] = (unsigned int)((long)Motore2.period / 1000);
+    VarModbus[INDICE_DEBUG_19] = (unsigned int)((long)Motore2.period / 10000);
 
-    /* */
-    //Struttura per accedere ad un dato o come Long o come due Integer ( per inviare il dato via Modbus )
-    //    typedef struct
-    //    {   union
-    //        {   struct
-    //            {   unsigned int high_part;
-    //                unsigned int low_part;
-    //            };
-    //            long LongVal;
-    //       };
-    //    } lvalue;
-    //      extern volatile lvalue TmpSplitLongToWord;
-
-
-//    TmpSplitLongToWord.LongVal = 0;
-//    TmpSplitLongToWord.high_part = 0;
-//    TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = (long)Motore1.period;
-    VarModbus[INDICE_DEBUG_00] = TmpSplitLongToWord.low_part;
-    VarModbus[INDICE_DEBUG_01] = TmpSplitLongToWord.high_part;
-
-//    TmpSplitLongToWord.LongVal = 0;
-//    TmpSplitLongToWord.high_part = 0;
-//    TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = (long)Motore2.period;
-    VarModbus[INDICE_DEBUG_02] = TmpSplitLongToWord.low_part;
-    VarModbus[INDICE_DEBUG_03] = TmpSplitLongToWord.high_part;
-
-
-//    TmpSplitLongToWord.LongVal = 0;
-//    TmpSplitLongToWord.high_part = 0;
-//    TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = (long)PID1.setpoint;
-    VarModbus[INDICE_DEBUG_04] = TmpSplitLongToWord.low_part;
-    VarModbus[INDICE_DEBUG_05] = TmpSplitLongToWord.high_part;
-
-//    TmpSplitLongToWord.LongVal = 0;
-//    TmpSplitLongToWord.high_part = 0;
-//    TmpSplitLongToWord.low_part = 0;
-    TmpSplitLongToWord.LongVal = (long)PID1.setpoint;
-    VarModbus[INDICE_DEBUG_06] = TmpSplitLongToWord.low_part;
-    VarModbus[INDICE_DEBUG_07] = TmpSplitLongToWord.high_part;
 }
 
 void __attribute__((interrupt, auto_psv, shadow)) _StackError(void)

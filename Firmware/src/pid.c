@@ -190,6 +190,7 @@ void Pid(volatile Pid_t *PID, volatile Motor_t *MOTORE)
     }
 
     PID->error_T_0 = (PID->ramp - Processo); // calcolo errore tra il setpoint e il Current
+    //PID->error_T_0 = (Processo - PID->ramp); // calcolo errore tra il setpoint e il Current
 
     //    PID->ComponenteFeedForward = RescaledErrore * 2;
     //    if (PID->ComponenteFeedForward >  2045 )

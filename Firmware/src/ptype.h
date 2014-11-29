@@ -51,22 +51,22 @@ typedef struct _inputCapture_t_
 } InputCapture_t;
 
 typedef struct _pid_t_
-{   volatile long       Kp;
-    volatile long       Ki;
-    volatile long       Kd;
-    volatile long       integral;       // ??????????????
-    volatile long       sum;            // error sum
-    volatile long       oldContrValue;  // Last control value
-    volatile long       setpoint;       // setpoint :)
-    volatile long       ramp;           // ramp setpoint
-    volatile long       rampStep;       // step of the ramp
-    volatile long       error_T_0;      // current error
-    volatile long       error_T_1;      // error at T-1
-    volatile long       error_T_2;      // error at T-2
-    volatile long int   propContrib;    // proportional contribution
-    volatile long int   integrContrib;  // integral contribution
-    volatile long int   derivContrib;   // derivative contribution
-    volatile long       outPid;          // LAst output value
+{   volatile long   Kp;
+    volatile long   Ki;
+    volatile long   Kd;
+    volatile long   integral;       // ??????????????
+    volatile long   sum;            // error sum
+    volatile long   oldContrValue;  // Last control value
+    volatile long   setpoint;       // setpoint :)
+    volatile long   ramp;           // ramp setpoint
+    volatile long   rampStep;       // step of the ramp
+    volatile long   error_T_0;      // current error
+    volatile long   error_T_1;      // error at T-1
+    volatile long   error_T_2;      // error at T-2
+    volatile long   propContrib;    // proportional contribution
+    volatile long   integrContrib;  // integral contribution
+    volatile long   derivContrib;   // derivative contribution
+    volatile long   outPid;          // LAst output value
 } Pid_t;
 
 

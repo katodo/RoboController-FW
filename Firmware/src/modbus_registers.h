@@ -57,34 +57,29 @@
 #define INDICE_DEBUG_19                 40
 
 /* *****************************************************************************
- Flag per agire sui bit delle word modbus WORD_STATUSBIT1
+ Flag used on WORD_STATUSBIT1
  ******************************************************************************/
-
-///*! \def FLG_JOYMODE
-// *  \brief Flag per agire sui bit delle word modbus WORD_STATUSBIT1
-// */
-//#define FLG_STATUSBI1_JOYMODE                     0x0001  //!< Se "1" la robocontroller funzionerà in modalità JoyStick
 
 /*! \def FLG_STATUSBI1_PID_EN
  *  \brief Se a "1" attiva la modalità con PID e nelle word WORD_PWM_CHx si metterà il dato di velocità da mantenere espresso in mm/Sec
  * mentre se a "0" il dato in WORD_PWM_CHx sarà interpretato come PWM puro ( 0-4096 con motori fermi a 2048 ).
  */
-#define FLG_STATUSBI1_PID_EN                     0x0001  //!< Se "1" sarà abilitato il PID.
+#define FLG_STATUSBI1_PID_EN            0x0001  //!< Se "1" sarà abilitato il PID.
 
 /*! \def FLG_JOYMODE
  *  \brief Flag per agire sui bit delle word modbus WORD_STATUSBIT1
  */
-#define FLG_STATUSBI1_COMWATCHDOG                 0x0002  //!< Se "1" viene abilitato il watchdog
+#define FLG_STATUSBI1_COMWATCHDOG       0x0002  //!< Se "1" viene abilitato il watchdog
 
 /*! \def FLG_EEPROM_SAVE_EN
  *  \brief Flag per agire sui bit delle word modbus WORD_STATUSBIT1 e attivare il salvataggio automatico dei parametri in EEPROM
  */
-#define FLG_STATUSBI1_EEPROM_SAVE_EN              0x0004  //!< Se "1" viene abilitato il salvataggio automatico dei parametri in EEPROM
+#define FLG_STATUSBI1_EEPROM_SAVE_EN    0x0004  //!< Se "1" viene abilitato il salvataggio automatico dei parametri in EEPROM
 
 /*! \def FLG_EEPROM_RAMP_EN
  *  \brief Flag per agire sui bit delle word modbus WORD_STATUSBIT1 e attivare il salvataggio automatico dei parametri in EEPROM
  */
-#define FLG_STATUSBI1_EEPROM_RAMP_EN              0x0008  //!< Se "1" viene abilitato il funzionamento RAMPA
+#define FLG_STATUSBI1_EEPROM_RAMP_EN    0x0008  //!< Se "1" viene abilitato il funzionamento RAMPA
 
 
 /* *****************************************************************************
